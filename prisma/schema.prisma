@@ -1,0 +1,149 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/prisma/generated"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Board {
+  id        Int         @id @default(autoincrement())
+  content   String      @db.Text
+  schoolId  String      @map("school_id") @db.Char(36)
+  comment   String?     @db.Text
+  createdAt DateTime?   @default(now()) @db.DateTime(0)
+  updatedAt DateTime?   @db.DateTime(0)
+  deletedAt DateTime?   @db.DateTime(0)
+  status    BoardStatus @default(UNANSWERED)
+  title     String      @db.VarChar(255)
+  school    School      @relation(fields: [schoolId], references: [schoolId], onDelete: NoAction, onUpdate: NoAction, map: "fk_board_school_uuid")
+
+  @@index([schoolId], map: "fk_board_school_uuid")
+}
+
+model Brushed {
+  id            Int                  @id @default(autoincrement())
+  studentId     String               @map("student_id") @db.Char(36)
+  brushedAt     DateTime             @default(now()) @map("brushed_at") @db.DateTime(0)
+  brushedStatus BrushedBrushedStatus @map("brushed_status")
+  student       Student              @relation(fields: [studentId], references: [studentId], onDelete: Cascade, map: "Brushed_ibfk_1")
+
+  @@index([studentId], map: "student_id")
+}
+
+model Contents {
+  id             Int     @id @default(autoincrement())
+  schoolId       String  @map("school_id") @db.Char(36)
+  fileType       String  @map("file_type") @db.VarChar(20)
+  fileName       String  @map("file_name") @db.VarChar(255)
+  seq            Int     @db.TinyInt
+  contentsStatus Boolean @default(true) @map("contents_status")
+  school         School  @relation(fields: [schoolId], references: [schoolId], onDelete: Cascade, map: "Contents_ibfk_1")
+
+  @@index([schoolId], map: "school_id")
+}
+
+model Holiday {
+  id            Int      @id @default(autoincrement())
+  holidayName   String   @map("holiday_name") @db.VarChar(255)
+  holidayAt     DateTime @map("holiday_at") @db.Date
+  holidayStatus Boolean  @default(true) @map("holiday_status")
+}
+
+model Schedules {
+  id             Int      @id @default(autoincrement())
+  schoolId       String   @map("school_id") @db.Char(36)
+  scheduleName   String   @map("schedule_name") @db.VarChar(255)
+  scheduleTarget String   @map("schedule_target") @db.VarChar(255)
+  scheduleAt     DateTime @map("schedule_at") @db.Date
+  scheduleStatus Boolean  @default(true) @map("schedule_status")
+  school         School   @relation(fields: [schoolId], references: [schoolId], onDelete: Cascade, map: "Schedules_ibfk_1")
+
+  @@index([schoolId], map: "school_id")
+}
+
+model School {
+  id           Int               @unique(map: "id") @default(autoincrement())
+  schoolId     String            @id @unique(map: "school_id") @map("school_id") @db.Char(36)
+  schoolName   String            @map("school_name") @db.VarChar(20)
+  loginId      String            @map("login_id") @db.VarChar(12)
+  loginPw      String            @map("login_pw") @db.VarChar(60)
+  teacherName  String            @map("teacher_name") @db.VarChar(10)
+  teacherEmail String            @map("teacher_email") @db.VarChar(30)
+  teacherPhone String            @map("teacher_phone") @db.VarChar(11)
+  schoolLogo   String?           @map("school_logo") @db.VarChar(255)
+  startAt      DateTime          @default(dbgenerated("(now())")) @map("start_at") @db.DateTime(0)
+  endAt        DateTime          @map("end_at") @db.DateTime(0)
+  schoolType   SchoolSchoolType  @default(teacher) @map("school_type")
+  schoolLevel  SchoolSchoolLevel @default(elementary) @map("school_level")
+  createdAt    DateTime          @default(dbgenerated("(now())")) @map("created_at") @db.DateTime(0)
+  schoolStatus Boolean           @default(true) @map("school_status")
+  officeCode   String            @map("office_code") @db.VarChar(3)
+  schoolCode   String            @map("school_code") @db.VarChar(10)
+  address      String            @db.VarChar(255)
+  board        Board[]
+  contents     Contents[]
+  schedules    Schedules[]
+  student      Student[]
+}
+
+model Student {
+  id            Int                  @unique(map: "id") @default(autoincrement())
+  studentId     String               @id @map("student_id") @db.Char(36)
+  schoolId      String               @map("school_id") @db.Char(36)
+  studentGrade  Int                  @map("student_grade") @db.TinyInt
+  studentClass  String               @map("student_class") @db.VarChar(10)
+  studentNumber Int                  @map("student_number") @db.TinyInt
+  studentName   String               @map("student_name") @db.VarChar(10)
+  studentGender StudentStudentGender @map("student_gender")
+  studentStatus Boolean              @default(true) @map("student_status")
+  createdAt     DateTime             @default(dbgenerated("(now())")) @map("created_at") @db.DateTime(0)
+  brushed       Brushed[]
+  school        School               @relation(fields: [schoolId], references: [schoolId], onDelete: Cascade, onUpdate: NoAction, map: "fk_student_school")
+
+  @@index([schoolId], map: "fk_student_school")
+}
+
+enum BrushedBrushedStatus {
+  No
+  Ok
+  EarlyLeave
+  Travel
+  Workshop
+  Absence
+
+  @@map("Brushed_brushed_status")
+}
+
+enum StudentStudentGender {
+  male
+  female
+
+  @@map("Student_student_gender")
+}
+
+enum BoardStatus {
+  UNANSWERED
+  ANSWERED
+  DELETED
+
+  @@map("Board_status")
+}
+
+enum SchoolSchoolType {
+  master
+  teacher
+
+  @@map("School_school_type")
+}
+
+enum SchoolSchoolLevel {
+  elementary
+  middle
+  high
+
+  @@map("School_school_level")
+}

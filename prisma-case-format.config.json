@@ -1,0 +1,3 @@
+{
+  "default": "field=camel;mapField=snake;table=pascal;mapTable=snake"
+}
