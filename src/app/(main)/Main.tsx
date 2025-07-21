@@ -11,8 +11,7 @@ export default function Main() {
 
   return (
     <Wrapper>
-      
-      <span style={{ fontWeight: 900, fontSize: 32 }}>가나다라</span>
+      <span style={{ fontWeight: 900, fontSize: 32 }}>테스트 배포</span>
       <span style={{ fontWeight: 800, fontSize: 32 }}>가나다라</span>
       <span style={{ fontWeight: 700, fontSize: 32 }}>가나다라</span>
       <span style={{ fontWeight: 400, fontSize: 32 }}>가나다라</span>
