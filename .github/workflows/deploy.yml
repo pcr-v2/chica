@@ -1,4 +1,4 @@
-name: Deploy Chica-admin
+name: Deploy Chica
 
 on:
   push:
@@ -67,9 +67,9 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             source $NVM_DIR/nvm.sh
             export PATH="$NVM_DIR/versions/node/v22.11.0/bin:$PATH"
-            mkdir -p ~/chica-admin
-            tar -xzf ~/deploy/standalone.tar.gz -C ~/chica-admin --strip-components=0
-            cd ~/chica-admin
-            pm2 delete chica-admin || true
-            pm2 start .next/standalone/server.js --name chica-admin
+            mkdir -p ~/chica
+            tar -xzf ~/deploy/standalone.tar.gz -C ~/chica --strip-components=0
+            cd ~/chica
+            pm2 delete chica || true
+            pm2 start .next/standalone/server.js --name chica
             pm2 save

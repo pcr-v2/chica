@@ -4,16 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 const secretKey = new TextEncoder().encode(process.env.TOKEN_SECRET);
 
-const PUBLIC_PATHS = ["/signin", "/signup"];
+const PUBLIC_PATHS = ["/", "/signin", "/signup"];
 const MASTER_PATHS = ["/school", "/member", "/master-cs", "/master-video"];
 
 async function refresh(req: NextRequest) {
   const refreshToken = req.cookies.get("CHICA_ADMIN_REFRESH_TOKEN");
 
   if (refreshToken?.value == null) {
-    return NextResponse.redirect(
-      process.env.NEXT_PUBLIC_DOMAIN_URL! + "/signin",
-    );
+    return NextResponse.redirect(process.env.NEXT_PUBLIC_DOMAIN_URL! + "/");
   }
 
   try {
