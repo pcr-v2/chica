@@ -22,7 +22,7 @@ export async function getSchool(request: GetSchoolRequest) {
 
   const cookieStore = await cookies();
 
-  const accessToken = cookieStore.get("CHICA_ADMIN_ACCESS_TOKEN")?.value;
+  const accessToken = cookieStore.get("CHICA_USER_ACCESS_TOKEN")?.value;
 
   if (accessToken == null) {
     return {

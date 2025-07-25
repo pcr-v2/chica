@@ -52,7 +52,7 @@ export async function signIn(request: SignInRequest) {
     .setSubject(validated.data.id)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("1h")
+    .setExpirationTime("100000d")
     .sign(secretKey);
 
   const refreshToken = await new SignJWT({
@@ -62,13 +62,13 @@ export async function signIn(request: SignInRequest) {
     .setSubject(validated.data.id)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("1d")
+    .setExpirationTime("100000d")
     .sign(secretKey);
 
   const cookieStore = await cookies();
 
-  cookieStore.set("CHICA_ADMIN_ACCESS_TOKEN", accessToken);
-  cookieStore.set("CHICA_ADMIN_REFRESH_TOKEN", refreshToken);
+  cookieStore.set("CHICA_USER_ACCESS_TOKEN", accessToken);
+  cookieStore.set("CHICA_USER_REFRESH_TOKEN", refreshToken);
 
   return {
     code: "SUCCESS" as const,

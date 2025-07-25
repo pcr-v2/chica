@@ -1,6 +1,5 @@
 "use client";
 
-import CancelIcon from "@mui/icons-material/Cancel";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {
@@ -11,6 +10,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+import CancelIcon from "@/assets/icon/cancel.svg";
+
 type IProps = TextFieldProps & {
   value: string;
   showCancel?: boolean;
@@ -18,7 +19,13 @@ type IProps = TextFieldProps & {
 };
 
 export default function Input(props: IProps) {
-  const { type = "text", value, onChange, showCancel = false } = props;
+  const {
+    type = "text",
+    value,
+    onChange,
+    showCancel = false,
+    ...restProps
+  } = props;
 
   const [showPassword, setShowPassword] = useState(type !== "password");
 
@@ -30,7 +37,7 @@ export default function Input(props: IProps) {
 
   return (
     <StyledTextField
-      {...props}
+      {...restProps}
       variant="filled"
       type={type === "password" && !showPassword ? "password" : "text"}
       value={value}
@@ -64,34 +71,49 @@ export default function Input(props: IProps) {
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& input.MuiInputBase-input": {
-    fontSize: 16,
-    padding: "12px",
+    fontSize: 32,
+    fontWeight: 700,
+    color: "#464B53",
+    padding: "24px 32px",
+    letterSpacing: "-0.64px",
+    backgroundColor: "#FAFAFA",
+    fontFamily: "NanumSquareRound",
   },
   "& .MuiFilledInput-root": {
-    borderRadius: 4,
+    borderRadius: 12,
     overflow: "hidden",
-    border: "1px solid",
-    borderColor: theme.palette.mode === "light" ? "rgba(0,0,0,0.3)" : "#2D3843",
-    backgroundColor: "#fff",
+    border: "none",
+    backgroundColor: "#FAFAFA",
     transition: theme.transitions.create([
       "box-shadow",
       "border-color",
       "background-color",
     ]),
-    "&:hover": { backgroundColor: "#fff" },
+    "&:hover": { backgroundColor: "#FAFAFA" },
 
     "&.Mui-focused": {
       borderWidth: "1px",
-      backgroundColor: "#fff",
+      backgroundColor: "#FAFAFA",
       borderColor: theme.palette.primary.main,
     },
   },
 }));
 
 const Cancel = styled(CancelIcon)(() => ({
+  width: "48px",
+  height: "48px",
   cursor: "pointer",
-  width: "24px",
-  height: "24px",
 }));
-const Eye = styled(VisibilityIcon)(() => ({ cursor: "pointer" }));
-const OffEye = styled(VisibilityOffIcon)(() => ({ cursor: "pointer" }));
+
+const Eye = styled(VisibilityIcon)(() => ({
+  width: "44px",
+  height: "44px",
+  cursor: "pointer",
+  paddingRight: "6px",
+}));
+const OffEye = styled(VisibilityOffIcon)(() => ({
+  width: "44px",
+  height: "44px",
+  cursor: "pointer",
+  paddingRight: "6px",
+}));

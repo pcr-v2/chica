@@ -4,14 +4,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 const secretKey = new TextEncoder().encode(process.env.TOKEN_SECRET);
 
-const PUBLIC_PATHS = ["/", "/signin", "/signup"];
+const PUBLIC_PATHS = ["/signin"];
 const MASTER_PATHS = ["/school", "/member", "/master-cs", "/master-video"];
 
 async function refresh(req: NextRequest) {
-  const refreshToken = req.cookies.get("CHICA_ADMIN_REFRESH_TOKEN");
+  const refreshToken = req.cookies.get("CHICA_USER_REFRESH_TOKEN");
 
   if (refreshToken?.value == null) {
-    return NextResponse.redirect(process.env.NEXT_PUBLIC_DOMAIN_URL! + "/");
+    return NextResponse.redirect(
+      process.env.NEXT_PUBLIC_DOMAIN_URL! + "/signin",
+    );
   }
 
   try {
@@ -22,27 +24,27 @@ async function refresh(req: NextRequest) {
       .setSubject(verified.payload.sub!)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("1h")
+      .setExpirationTime("100000d")
       .sign(secretKey);
 
     const newRefreshToken = await new SignJWT({ id, type })
       .setSubject(verified.payload.sub!)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("1d")
+      .setExpirationTime("100000d")
       .sign(secretKey);
 
     // Request rewrite
-    req.cookies.set("CHICA_ADMIN_ACCESS_TOKEN", newAccessToken);
-    req.cookies.set("CHICA_ADMIN_REFRESH_TOKEN", newRefreshToken);
+    req.cookies.set("CHICA_USER_ACCESS_TOKEN", newAccessToken);
+    req.cookies.set("CHICA_USER_REFRESH_TOKEN", newRefreshToken);
 
     // Response rewrite
     const res = NextResponse.next({
       request: req,
     });
 
-    res.cookies.set("CHICA_ADMIN_ACCESS_TOKEN", newAccessToken);
-    res.cookies.set("CHICA_ADMIN_REFRESH_TOKEN", newRefreshToken);
+    res.cookies.set("CHICA_USER_ACCESS_TOKEN", newAccessToken);
+    res.cookies.set("CHICA_USER_REFRESH_TOKEN", newRefreshToken);
     return res;
   } catch (error) {
     console.error(error);
@@ -55,6 +57,14 @@ async function refresh(req: NextRequest) {
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  const accessToken = req.cookies.get("CHICA_USER_ACCESS_TOKEN");
+  const refreshToken = req.cookies.get("CHICA_USER_REFRESH_TOKEN");
+
+  // ✅ 이미 로그인된 유저는 /signin 접근 차단
+  if (pathname.startsWith("/signin") && accessToken) {
+    return NextResponse.redirect(new URL("/", req.url)); // 홈으로 보내거나 다른 적절한 경로
+  }
+
   if (pathname === "/alive") return NextResponse.next();
 
   // 공개 경로는 그냥 통과
@@ -62,24 +72,12 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const accessToken = req.cookies.get("CHICA_ADMIN_ACCESS_TOKEN");
-  const refreshToken = req.cookies.get("CHICA_ADMIN_REFRESH_TOKEN");
-
   if (!accessToken) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
   try {
-    const { payload } = await jwtVerify(accessToken.value, secretKey);
-
-    const userType = payload.type as string | undefined;
-
-    // 마스터 권한 필요한 경로 접근 제어
-    if (MASTER_PATHS.some((path) => pathname.startsWith(path))) {
-      if (userType !== "master") {
-        return NextResponse.redirect(new URL("/", req.url)); // 권한 없으면 홈으로 리다이렉트
-      }
-    }
+    // const { payload } = await jwtVerify(accessToken.value, secretKey);
 
     return NextResponse.next();
   } catch (error) {

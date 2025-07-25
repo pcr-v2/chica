@@ -7,7 +7,7 @@ import toast, { Toaster, useToasterStore } from "react-hot-toast";
 import Info from "@/public/images/icons/info.svg";
 
 export function RootToast({
-  max = 10,
+  max = 2,
   ...props
 }: React.ComponentProps<typeof Toaster> & {
   max?: number;
@@ -31,16 +31,16 @@ export function RootToast({
       toastOptions={{
         icon: <InfoImg />,
         style: {
-          fontSize: 16,
-          fontWeight: 500,
+          fontSize: 20,
+          fontWeight: 700,
           color: "#fff",
-          display: "inline-flex",
-          whiteSpace: "nowrap",
-          padding: "8px 16px",
           maxWidth: "none",
           lineHeight: "160%",
+          padding: "8px 16px",
           textAlign: "center",
+          whiteSpace: "nowrap",
           alignItems: "center",
+          display: "inline-flex",
           justifyContent: "center",
           letterSpacing: "-0.16px",
           backgroundColor: "#424242",
