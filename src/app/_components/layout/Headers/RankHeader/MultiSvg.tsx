@@ -1,0 +1,65 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+interface IProps {
+  isActive: boolean;
+}
+
+export default function MultiSvg(props: IProps) {
+  const { isActive } = props;
+
+  const [active, setActive] = useState({
+    fill1: "#747D8A",
+    fill2: "#D5D7DB",
+    fill3: "#D5D7DB",
+  });
+
+  useEffect(() => {
+    if (isActive) {
+      setActive({
+        fill1: "#32C794",
+        fill2: "#8EE3C5",
+        fill3: "#8EE3C5",
+      });
+    } else {
+      setActive({
+        fill1: "#747D8A",
+        fill2: "#D5D7DB",
+        fill3: "#D5D7DB",
+      });
+    }
+  }, [isActive]);
+
+  return (
+    <motion.svg
+      width="28"
+      height="28"
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      initial={{ scale: 1 }}
+      animate={{ scale: 1 }}
+    >
+      <motion.path
+        d="M12.625 22C12.625 22 11.25 22 11.25 20.6667C11.25 19.3333 12.625 15.3333 18.125 15.3333C23.625 15.3333 25 19.3333 25 20.6667C25 22 23.625 22 23.625 22H12.625ZM18.125 14C19.219 14 20.2682 13.5786 21.0418 12.8284C21.8154 12.0783 22.25 11.0609 22.25 10C22.25 8.93913 21.8154 7.92172 21.0418 7.17157C20.2682 6.42143 19.219 6 18.125 6C17.031 6 15.9818 6.42143 15.2082 7.17157C14.4346 7.92172 14 8.93913 14 10C14 11.0609 14.4346 12.0783 15.2082 12.8284C15.9818 13.5786 17.031 14 18.125 14Z"
+        fill={active.fill1}
+        animate={{ fill: active.fill1 }}
+        transition={{ duration: 0.3, ease: "linear" }}
+      />
+      <motion.path
+        d="M9.875 20.6665C9.86661 21.1272 9.96826 21.5835 10.172 21.9998H4.375C4.375 21.9998 3 21.9998 3 20.6665C3 19.3331 4.375 15.3331 9.875 15.3331C10.777 15.3224 11.6751 15.4484 12.537 15.7065C10.81 16.9998 9.875 18.8598 9.875 20.6665Z"
+        fill={active.fill2}
+        animate={{ fill: active.fill2 }}
+        transition={{ duration: 0.3, ease: "linear" }}
+      />
+      <motion.path
+        d="M11.6182 13.0239C10.9735 13.649 10.0992 14.0002 9.1875 14.0002C8.27582 14.0002 7.40148 13.649 6.75682 13.0239C6.11216 12.3987 5.75 11.5509 5.75 10.6668C5.75 9.78277 6.11216 8.93493 6.75682 8.30981C7.40148 7.68469 8.27582 7.3335 9.1875 7.3335C10.0992 7.3335 10.9735 7.68469 11.6182 8.30981C12.2628 8.93493 12.625 9.78277 12.625 10.6668C12.625 11.5509 12.2628 12.3987 11.6182 13.0239Z"
+        fill={active.fill3}
+        animate={{ fill: active.fill3 }}
+        transition={{ duration: 0.3, ease: "linear" }}
+      />
+    </motion.svg>
+  );
+}

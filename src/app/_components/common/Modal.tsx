@@ -1,7 +1,8 @@
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Box, styled } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { ReactNode, useEffect } from "react";
+
+import CloseIcon from "@/assets/icon/close-icon.svg";
 
 interface IProps {
   open: boolean;
@@ -11,6 +12,18 @@ interface IProps {
 
 export default function Modal(props: IProps) {
   const { children, onClose, open } = props;
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -41,7 +54,7 @@ export default function Modal(props: IProps) {
             transition={{ duration: 0.25 }}
           >
             {children}
-            <CloseIcon onClick={onClose} />
+            <Close onClick={onClose} />
           </Content>
         </Background>
       )}
@@ -52,38 +65,40 @@ export default function Modal(props: IProps) {
 const Background = styled(motion.div)(() => {
   return {
     inset: 0,
+    zIndex: 3,
     width: "100%",
-    padding: "24px",
     display: "flex",
-    minHeight: "100dvh",
-    position: "absolute",
-    background: "rgba(0, 0, 0, 0.40)",
+    height: "100dvh",
+    position: "fixed",
+    overflowY: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "rgba(0, 0, 0, 0.8)",
   };
 });
 
 const Content = styled(motion.div)(() => {
   return {
     width: "100%",
-    margin: "auto",
-    maxWidth: "500px",
-    borderRadius: "12px",
-    position: "relative",
     display: "flex",
-    padding: "24px",
+    maxWidth: "560px",
+    borderRadius: "24px",
+    position: "relative",
+    alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    padding: "64px 40px 40px",
     backgroundColor: "#fff",
-    boxShadow: "0px 0px 12px 0px rgba(0, 0, 0, 0.16)",
+    boxShadow: "2px 4px 24px 0 rgba(0, 0, 0, 0.40)",
   };
 });
 
-const CloseIcon = styled(CloseRoundedIcon)(() => {
+const Close = styled(CloseIcon)(() => {
   return {
-    top: 24,
-    right: 24,
-    width: "24px",
-    height: "24px",
+    top: 40,
+    right: 40,
+    width: "32px",
+    height: "32px",
     cursor: "pointer",
     position: "absolute",
   };

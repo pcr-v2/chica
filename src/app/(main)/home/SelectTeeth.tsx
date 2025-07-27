@@ -17,7 +17,7 @@ export default function SelectTeeth({
       viewBox="0 0 120 120"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      initial={{ scale: 1 }}
+      initial={false}
       animate={{ scale: 1 }}
     >
       <motion.path

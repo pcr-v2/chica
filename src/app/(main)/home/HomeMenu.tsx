@@ -7,7 +7,13 @@ import Meal from "@/assets/home/meal.png";
 import Rank from "@/assets/home/rank.png";
 import Video from "@/assets/home/video.png";
 
-export default function HomeMenu() {
+interface IProps {
+  onClick: () => void;
+}
+
+export default function HomeMenu(props: IProps) {
+  const { onClick } = props;
+
   const router = useRouter();
 
   return (
@@ -18,7 +24,7 @@ export default function HomeMenu() {
         onClick={() => alert("비디오 화면 보호 바로 시작")}
       />
       <MenuImg src={Rank.src} alt="rank" onClick={() => router.push("/rank")} />
-      <MenuImg src={Meal.src} alt="meal" onClick={() => alert("급식")} />
+      <MenuImg src={Meal.src} alt="meal" onClick={onClick} />
     </Wrapper>
   );
 }

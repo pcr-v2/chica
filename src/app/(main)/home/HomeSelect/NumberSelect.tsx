@@ -13,8 +13,6 @@ interface IProps {
 export default function NumberSelect(props: IProps) {
   const { onClick, activeOk } = props;
 
-  console.log("activeOk", activeOk);
-
   const numberPad = [
     "1",
     "2",
@@ -67,6 +65,7 @@ const NumberBtn = styled(Box)(() => {
     fontSize: 40,
     display: "flex",
     fontWeight: 800,
+    cursor: "pointer",
     color: "#747d8a",
     lineHeight: "150%",
     alignItems: "center",

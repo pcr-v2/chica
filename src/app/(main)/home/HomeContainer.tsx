@@ -1,26 +1,38 @@
 "use client";
 
-import { Box, Button, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import HomeMenu from "@/app/(main)/home/HomeMenu";
 import HomeSelect from "@/app/(main)/home/HomeSelect";
-import Input from "@/app/_components/common/Input";
+import MealContent from "@/app/(main)/home/MealContent";
+import Modal from "@/app/_components/common/Modal";
+import HomeHeader from "@/app/_components/layout/Headers/HomeHeader";
+import { GetMeResponse } from "@/app/actions/auth/getMe";
+import { getMeal, Meal } from "@/app/actions/meal/getMeal";
 
-type TUserValue = {
-  grade: number | null;
-  class: number | null;
-  number: number | null;
+export type TUserValue = {
+  grade: string | null;
+  class: string | null;
+  number: string | null;
 };
 
 export type TUserSelectValue = {
   name: "grade" | "class" | "number";
-  value: number;
+  value: string;
 };
 
-export default function HomeContainer() {
-  const router = useRouter();
+interface IProps {
+  me: GetMeResponse;
+}
+
+export default function HomeContainer(props: IProps) {
+  const { me } = props;
+
+  const [open, setOpen] = useState(false);
+  const [mealRes, setMealRes] = useState<Meal[]>();
 
   const [userValue, setUserValue] = useState<TUserValue>({
     grade: null,
@@ -28,14 +40,48 @@ export default function HomeContainer() {
     number: null,
   });
 
+  const handleMeal = async () => {
+    const res = await getMeal({ schoolId: me.data?.schoolId as string });
+    if (res == null) {
+      toast.error("급식 정보를 가져오는중 문제가 발생했습니다.");
+      return;
+    }
+
+    setMealRes(res.result);
+    setOpen(true);
+  };
+
+  console.log("userValue", userValue);
+
   return (
     <Wrapper>
-      {userValue.grade === null && <HomeMenu />}
+      <HomeHeader
+        grade={userValue.grade}
+        classNum={userValue.class}
+        onClickGoMain={() =>
+          setUserValue({ grade: null, class: null, number: null })
+        }
+      />
+
+      {userValue.grade === null && <HomeMenu onClick={handleMeal} />}
 
       <HomeSelect
+        userValue={userValue}
         onClickInfo={(value: TUserSelectValue) => {
-          console.log(value);
+          if (value.name === "grade") {
+            setUserValue({ ...userValue, grade: value.value });
+          } else if (value.name === "class") {
+            setUserValue({ ...userValue, class: value.value });
+          } else {
+            setUserValue({ ...userValue, number: value.value });
+          }
         }}
+      />
+
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        children={<MealContent meal={mealRes ?? []} />}
       />
     </Wrapper>
   );

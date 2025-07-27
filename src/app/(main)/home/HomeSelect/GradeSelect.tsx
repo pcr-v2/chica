@@ -55,6 +55,7 @@ const GradeBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
     fontSize: 32,
     fontWeight: 700,
     display: "flex",
+    cursor: "pointer",
     lineHeight: "150%",
     alignItems: "center",
     padding: "24px 40px",

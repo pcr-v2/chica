@@ -2,35 +2,61 @@
 
 import { Box, styled } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { TUserSelectValue } from "@/app/(main)/home/HomeContainer";
+import { TUserSelectValue, TUserValue } from "@/app/(main)/home/HomeContainer";
 import ClassSelect from "@/app/(main)/home/HomeSelect/ClassSelect";
 import GradeSelect from "@/app/(main)/home/HomeSelect/GradeSelect";
 import NumberSelect from "@/app/(main)/home/HomeSelect/NumberSelect";
 import SelectTeeth from "@/app/(main)/home/SelectTeeth";
 import Class from "@/assets/home/class.png";
 import Grade from "@/assets/home/grade.png";
-import Number from "@/assets/home/number.png";
-import SelectNumber from "@/assets/home/select-number.svg";
+import NumberImg from "@/assets/home/number.png";
 
 interface IProps {
+  userValue: TUserValue;
   onClickInfo: (value: TUserSelectValue) => void;
 }
 
 export default function HomeSelect(props: IProps) {
-  const { onClickInfo } = props;
+  const { onClickInfo, userValue } = props;
+
+  const router = useRouter();
 
   const [selectStep, setSelectStep] =
-    useState<TUserSelectValue["name"]>("class");
+    useState<TUserSelectValue["name"]>("grade");
 
-  const [value, setValue] = useState(""); // 최대 2자리까지 입력됨
+  useEffect(() => {
+    if (
+      userValue.grade == null &&
+      userValue.class == null &&
+      userValue.number == null
+    ) {
+      setSelectStep("grade");
+      setValue("");
+    } else if (
+      userValue.grade != null &&
+      userValue.class == null &&
+      userValue.number == null
+    ) {
+      setSelectStep("class");
+      setValue("");
+    } else if (
+      userValue.grade != null &&
+      userValue.class != null &&
+      userValue.number == null
+    ) {
+      setValue("");
+      setSelectStep("number");
+    }
+  }, [userValue]);
+
+  const [value, setValue] = useState("");
 
   // 숫자 입력
   const handleClick = (v: string) => {
-    console.log(value);
-
     if (v === "BACKSPACE") {
       setValue((prev) => prev.slice(0, -1));
     } else if (v === "OK") {
@@ -45,6 +71,12 @@ export default function HomeSelect(props: IProps) {
         toast.error("0번은 존재 할 수 없습니다.");
         return;
       }
+
+      onClickInfo({ name: "number", value });
+
+      router.replace(
+        `/summary?grade=${userValue.grade}&class=${userValue.class}&number=${value}`,
+      );
     } else {
       if (value.length === 2) {
         return;
@@ -63,7 +95,10 @@ export default function HomeSelect(props: IProps) {
         <>
           <TitleImg src={Grade.src} alt="title1" />
           <GradeSelect
-            onClick={(v) => setValue(v)}
+            onClick={(v) => {
+              onClickInfo({ name: "grade", value: v });
+              setSelectStep("class");
+            }}
             schoolLevel="elementary"
             selected={value}
           />
@@ -73,7 +108,10 @@ export default function HomeSelect(props: IProps) {
         <>
           <TitleImg src={Class.src} alt="title2" />
           <ClassSelect
-            onClick={(v) => setValue(v)}
+            onClick={(v) => {
+              onClickInfo({ name: "class", value: v });
+              setSelectStep("number");
+            }}
             selected={value}
             classList={["a", "b", "c", "d", "e", "f", "g", "h", "i"]}
           />
@@ -90,7 +128,7 @@ export default function HomeSelect(props: IProps) {
               alignItems: "center",
             }}
           >
-            <TitleImg src={Number.src} alt="title3" />
+            <TitleImg src={NumberImg.src} alt="title3" />
             <Box sx={{ display: "flex", gap: "24px" }}>
               <TeethWrapper>
                 <SelectTeeth

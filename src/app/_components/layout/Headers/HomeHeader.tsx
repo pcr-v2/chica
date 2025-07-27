@@ -3,17 +3,34 @@
 import { Box, styled } from "@mui/material";
 
 import LeftArrow from "@/assets/icon/left-arrow.svg";
+import Logo from "@/assets/logo/page-logo.png";
 
-export default function SelectInfoStep() {
+interface IProps {
+  grade: string | null;
+  classNum: string | null;
+  onClickGoMain: () => void;
+}
+
+export default function HomeHeader(props: IProps) {
+  const { grade, classNum, onClickGoMain } = props;
+
   return (
-    <Wrapper>
-      <GoMainBtn>
-        <ArrowImg src={LeftArrow.src} alt="arrow" />
+    <Wrapper sx={{ justifyContent: grade === null ? "center" : "start" }}>
+      {grade == null ? (
+        <LogoImg src={Logo.src} alt="logo" />
+      ) : (
+        <>
+          <GoMainBtn onClick={onClickGoMain}>
+            <ArrowImg src={LeftArrow.src} alt="arrow" />
 
-        <span>처음으로</span>
-      </GoMainBtn>
+            <span>처음으로</span>
+          </GoMainBtn>
 
-      <InfoBox>정보</InfoBox>
+          <InfoBox>
+            {grade}학년 {classNum && `${classNum}반`}
+          </InfoBox>
+        </>
+      )}
     </Wrapper>
   );
 }
@@ -24,7 +41,14 @@ const Wrapper = styled(Box)(() => {
     width: "100%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "start",
+    padding: "105px 64px 24px",
+  };
+});
+
+const LogoImg = styled("img")(() => {
+  return {
+    width: "192px",
+    height: "64px",
   };
 });
 
