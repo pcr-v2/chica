@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prebuild": "npx prisma db pull --schema=./prisma/schema.prisma && npx prisma-case-format --file ./prisma/schema.prisma && npx prisma generate --schema=./prisma/schema.prisma",
-    "build:batch": "rollup -c",
+    "build:batch": "tsc -p ./tsconfig.batch.json",
     "run:batch": "node dist/scripts/run-dailyBrushed.js"
   },
   "dependencies": {
