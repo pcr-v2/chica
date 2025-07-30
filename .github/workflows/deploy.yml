@@ -50,7 +50,7 @@ jobs:
             package.json \
             next.config.ts \
             .env \
-            dist/scripts/run-dailyBrushed.js
+            dist
 
       - name: Upload build to EC2
         uses: appleboy/scp-action@v0.1.7
