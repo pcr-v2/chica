@@ -1,2 +1,2 @@
 // scripts/run-dailyBrushed.ts
-import "@/lib/batch/dailyBrushed";
+import "../src/libs/batch/dailyBrushed";
