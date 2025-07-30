@@ -27,6 +27,9 @@ jobs:
       - name: Run prebuild script (prisma db pull + case format + generate)
         run: npm run prebuild
 
+      - name: Build batch script
+        run: npm run build:batch
+
       - name: Build project (standalone)
         run: npm run build
 
@@ -46,7 +49,8 @@ jobs:
             public \
             package.json \
             next.config.ts \
-            .env
+            .env \
+            dist/scripts/run-dailyBrushed.js
 
       - name: Upload build to EC2
         uses: appleboy/scp-action@v0.1.7

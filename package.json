@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prebuild": "npx prisma db pull --schema=./prisma/schema.prisma && npx prisma-case-format --file ./prisma/schema.prisma && npx prisma generate --schema=./prisma/schema.prisma"
+    "prebuild": "npx prisma db pull --schema=./prisma/schema.prisma && npx prisma-case-format --file ./prisma/schema.prisma && npx prisma generate --schema=./prisma/schema.prisma",
+    "run:batch": "node dist/scripts/run-dailyBrushed.js"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -24,6 +25,7 @@
     "jose": "^6.0.11",
     "js-cookie": "^3.0.5",
     "next": "15.3.4",
+    "node-cron": "^4.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",

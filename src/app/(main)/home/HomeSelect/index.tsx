@@ -11,17 +11,19 @@ import ClassSelect from "@/app/(main)/home/HomeSelect/ClassSelect";
 import GradeSelect from "@/app/(main)/home/HomeSelect/GradeSelect";
 import NumberSelect from "@/app/(main)/home/HomeSelect/NumberSelect";
 import SelectTeeth from "@/app/(main)/home/SelectTeeth";
+import { checkBrush } from "@/app/actions/brush/checkBrushAction";
 import Class from "@/assets/home/class.png";
 import Grade from "@/assets/home/grade.png";
 import NumberImg from "@/assets/home/number.png";
 
 interface IProps {
   userValue: TUserValue;
+  classList: { grade: string; class: string[] }[];
   onClickInfo: (value: TUserSelectValue) => void;
 }
 
 export default function HomeSelect(props: IProps) {
-  const { onClickInfo, userValue } = props;
+  const { onClickInfo, userValue, classList } = props;
 
   const router = useRouter();
 
@@ -29,65 +31,61 @@ export default function HomeSelect(props: IProps) {
     useState<TUserSelectValue["name"]>("grade");
 
   useEffect(() => {
-    if (
-      userValue.grade == null &&
-      userValue.class == null &&
-      userValue.number == null
-    ) {
-      setSelectStep("grade");
-      setValue("");
-    } else if (
-      userValue.grade != null &&
-      userValue.class == null &&
-      userValue.number == null
-    ) {
-      setSelectStep("class");
-      setValue("");
-    } else if (
-      userValue.grade != null &&
-      userValue.class != null &&
-      userValue.number == null
-    ) {
-      setValue("");
-      setSelectStep("number");
-    }
+    updateSelectStep();
   }, [userValue]);
+
+  const updateSelectStep = () => {
+    const { grade, class: cls, number } = userValue;
+    setValue("");
+
+    if (!grade && !cls && !number) return setSelectStep("grade");
+    if (grade && !cls && !number) return setSelectStep("class");
+    if (grade && cls && !number) return setSelectStep("number");
+  };
 
   const [value, setValue] = useState("");
 
-  // 숫자 입력
-  const handleClick = (v: string) => {
-    if (v === "BACKSPACE") {
-      setValue((prev) => prev.slice(0, -1));
-    } else if (v === "OK") {
-      // 완료 로직 실행
+  const isInvalidZero = (val: string) =>
+    (val.length === 2 && val.startsWith("0")) ||
+    (val.length === 1 && val === "0");
 
-      if (value.length === 2 && value.slice(0, 1) === "0") {
-        toast.error("번호는 0으로 시작 할 수 없습니다.");
+  const handleClick = async (v: string) => {
+    if (v === "BACKSPACE") return setValue((prev) => prev.slice(0, -1));
+
+    if (v === "OK") {
+      if (isInvalidZero(value)) {
+        toast.error("번호는 0으로 시작할 수 없습니다.");
         return;
       }
 
-      if (value.length === 1 && value.slice(0, 1) === "0") {
-        toast.error("0번은 존재 할 수 없습니다.");
-        return;
-      }
+      const query = new URLSearchParams({
+        grade: userValue.grade!,
+        class: userValue.class!,
+        number: value,
+      });
 
       onClickInfo({ name: "number", value });
 
-      router.replace(
-        `/summary?grade=${userValue.grade}&class=${userValue.class}&number=${value}`,
-      );
-    } else {
-      if (value.length === 2) {
-        return;
-      }
-      setValue((prev) => prev + v);
+      const test = await checkBrush({
+        schoolId: "21a01ae2-2f60-4f7c-bcae-9fa4fc287564",
+        studentClass: userValue.class as string,
+        studentGrade: Number(userValue.grade),
+        studentNumber: Number(userValue.number),
+      });
+
+      // router.replace(`/summary?${query}`);
+      return;
     }
+
+    if (value.length < 2) setValue((prev) => prev + v);
   };
 
   // teeth에 보여줄 각 자리
   const leftDigit = value.length === 2 ? value[0] : "";
   const rightDigit = value.length >= 1 ? value[value.length - 1] : "";
+
+  const selectedGradeClassList =
+    classList.find((item) => item.grade === userValue.grade)?.class ?? [];
 
   return (
     <Wrapper>
@@ -104,6 +102,7 @@ export default function HomeSelect(props: IProps) {
           />
         </>
       )}
+
       {selectStep === "class" && (
         <>
           <TitleImg src={Class.src} alt="title2" />
@@ -113,57 +112,40 @@ export default function HomeSelect(props: IProps) {
               setSelectStep("number");
             }}
             selected={value}
-            classList={["a", "b", "c", "d", "e", "f", "g", "h", "i"]}
+            classList={selectedGradeClassList}
           />
         </>
       )}
+
       {selectStep === "number" && (
         <>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "24px",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <NumberTopWrap>
             <TitleImg src={NumberImg.src} alt="title3" />
             <Box sx={{ display: "flex", gap: "24px" }}>
-              <TeethWrapper>
-                <SelectTeeth
-                  fillColor={value.length === 2 ? "#6EDBB5" : "#FAFAFA"}
-                  strokeColor={value.length === 2 ? "#32C794" : "#D5D7DB"}
-                />
-                {value.length === 2 && (
-                  <DigitText
-                    key={leftDigit}
-                    initial={{ scale: 0.5, y: -20, opacity: 0.5 }}
-                    animate={{ scale: 1, y: 0, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                  >
-                    {leftDigit}
-                  </DigitText>
-                )}
-              </TeethWrapper>
-              <TeethWrapper>
-                <SelectTeeth
-                  fillColor={value.length >= 1 ? "#6EDBB5" : "#FAFAFA"}
-                  strokeColor={value.length >= 1 ? "#32C794" : "#D5D7DB"}
-                />
-                {value.length >= 1 && (
-                  <DigitText
-                    key={rightDigit}
-                    initial={{ scale: 0.5, y: -20, opacity: 0.5 }}
-                    animate={{ scale: 1, y: 0, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                  >
-                    {rightDigit}
-                  </DigitText>
-                )}
-              </TeethWrapper>
+              {[leftDigit, rightDigit].map((digit, idx) => (
+                <TeethWrapper key={idx}>
+                  <SelectTeeth
+                    fillColor={digit ? "#6EDBB5" : "#FAFAFA"}
+                    strokeColor={digit ? "#32C794" : "#D5D7DB"}
+                  />
+                  {digit && (
+                    <DigitText
+                      key={`${digit}-${idx}`}
+                      initial={{ scale: 0.5, y: -20, opacity: 0.5 }}
+                      animate={{ scale: 1, y: 0, opacity: 1 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 15,
+                      }}
+                    >
+                      {digit}
+                    </DigitText>
+                  )}
+                </TeethWrapper>
+              ))}
             </Box>
-          </Box>
+          </NumberTopWrap>
           <NumberSelect onClick={handleClick} activeOk={value.length >= 1} />
         </>
       )}
@@ -211,3 +193,13 @@ const DigitText = styled(motion.div)(() => ({
   pointerEvents: "none",
   letterSpacing: "-0.96px",
 }));
+
+const NumberTopWrap = styled(Box)(() => {
+  return {
+    gap: "24px",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "center",
+  };
+});

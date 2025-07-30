@@ -36,6 +36,29 @@ export async function getMe() {
     };
   }
 
+  const list = await mysqlPrisma.$queryRawUnsafe<
+    {
+      studentGrade: number;
+      studentClass: string;
+    }[]
+  >(
+    `
+      SELECT
+        student_grade,
+        GROUP_CONCAT(DISTINCT student_class ORDER BY student_class) AS class_list
+      FROM Student
+      WHERE school_id = ? AND student_status = 1
+      GROUP BY student_grade
+      ORDER BY student_grade;
+    `,
+    admin.schoolId,
+  );
+
+  const classList = list.map(({ student_grade, class_list }: any) => ({
+    grade: student_grade.toString(),
+    class: class_list.split(","),
+  }));
+
   return {
     code: "SUCCESS",
     data: {
@@ -44,6 +67,7 @@ export async function getMe() {
       schoolId: admin.schoolId,
       schoolLevel: admin.schoolLevel,
       name: admin.teacherName,
+      classList,
     },
   };
 }

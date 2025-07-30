@@ -51,8 +51,6 @@ export default function HomeContainer(props: IProps) {
     setOpen(true);
   };
 
-  console.log("userValue", userValue);
-
   return (
     <Wrapper>
       <HomeHeader
@@ -67,11 +65,17 @@ export default function HomeContainer(props: IProps) {
 
       <HomeSelect
         userValue={userValue}
+        classList={me?.data?.classList ?? []}
         onClickInfo={(value: TUserSelectValue) => {
           if (value.name === "grade") {
-            setUserValue({ ...userValue, grade: value.value });
+            setUserValue({
+              ...userValue,
+              grade: value.value,
+              class: null,
+              number: null,
+            });
           } else if (value.name === "class") {
-            setUserValue({ ...userValue, class: value.value });
+            setUserValue({ ...userValue, class: value.value, number: null });
           } else {
             setUserValue({ ...userValue, number: value.value });
           }
@@ -97,15 +101,5 @@ const Wrapper = styled(Box)(() => {
     flexDirection: "column",
     border: "1px solid red",
     justifyContent: "space-between",
-  };
-});
-
-const GradeBox = styled(Box)(() => {
-  return {
-    width: "100%",
-    display: "grid",
-    maxWidth: "956px",
-    border: "2px solid red",
-    gridTemplateColumns: "1fr 1fr",
   };
 });
