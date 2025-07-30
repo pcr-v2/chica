@@ -3,7 +3,7 @@ name: Deploy Chica
 on:
   push:
     tags:
-      - "v*" # v로 시작하는 태그 (예: v1.0.0)
+      - "v*"
 
 jobs:
   build-and-deploy:
@@ -27,8 +27,8 @@ jobs:
       - name: Run prebuild script (prisma db pull + case format + generate)
         run: npm run prebuild
 
-      - name: Build batch script
-        run: npm run run:batch
+      - name: Build batch script (compile TS to JS)
+        run: npm run build:batch
 
       - name: Build project (standalone)
         run: npm run build
