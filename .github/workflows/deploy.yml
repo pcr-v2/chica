@@ -27,11 +27,13 @@ jobs:
       - name: Run prebuild script (prisma db pull + case format + generate)
         run: npm run prebuild
 
-      - name: Build batch script (compile TS to JS)
-        run: npm run build:batch
-
       - name: Build project (standalone)
         run: npm run build
+
+      - name: Build batch script (compile TS to JS)
+        run: |
+          npm run build:batch
+          ls
 
       - name: Copy Prisma Client to standalone
         run: |
