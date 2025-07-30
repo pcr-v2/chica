@@ -34,7 +34,7 @@ export default function ScreenSaver() {
           onEnded={handleVideoEnd}
           onPlay={() => {}}
         />
-        <AbSpan>0번슬라이드</AbSpan>
+        <AbSpan>0번슬라이asdfasdfasdf드</AbSpan>
       </SlideST>
     </SwiperST>
   );
