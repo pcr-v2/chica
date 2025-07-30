@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["scripts/run-dailyBrushed.ts"]
+  "include": ["scripts/run-dailyBrushed.ts", "src/prisma/generated/**/*"]
 }

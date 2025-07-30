@@ -1,4 +1,6 @@
 // dailyBrushed.ts
+import "dotenv/config";
+
 import { mysqlPrisma } from "../src/libs/prisma";
 
 async function main() {
