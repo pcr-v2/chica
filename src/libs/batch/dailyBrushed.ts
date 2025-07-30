@@ -8,7 +8,7 @@ import { mysqlPrisma } from "@/libs/prisma";
 const secretKey = new TextEncoder().encode(process.env.TOKEN_SECRET);
 
 // 매일 오전 6시 (서버 시간 기준) 실행
-cron.schedule("15 5 * * *", async () => {
+cron.schedule("35 5 * * *", async () => {
   const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD 기준
   //   const brushedAt = new Date(`${today}T06:00:00+09:00`);
 
