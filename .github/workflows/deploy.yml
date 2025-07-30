@@ -28,7 +28,7 @@ jobs:
         run: npm run prebuild
 
       - name: Build batch script
-        run: npm run build:batch
+        run: npm run run:batch
 
       - name: Build project (standalone)
         run: npm run build
