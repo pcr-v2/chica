@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prebuild": "npx prisma db pull --schema=./prisma/schema.prisma && npx prisma-case-format --file ./prisma/schema.prisma && npx prisma generate --schema=./prisma/schema.prisma",
-    "build:batch": "tsc -p tsconfig.batch.json",
+    "build:batch": "rollup -c",
     "run:batch": "node dist/scripts/run-dailyBrushed.js"
   },
   "dependencies": {
@@ -35,6 +35,9 @@
     "zod-search-params": "^0.1.5"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@svgr/webpack": "^8.1.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/bcryptjs": "^3.0.0",
@@ -45,6 +48,8 @@
     "@types/uuid": "^10.0.0",
     "prisma": "^6.10.1",
     "prisma-case-format": "^2.2.1",
+    "rollup": "^4.46.2",
+    "rollup-plugin-esbuild": "^6.2.1",
     "typescript": "^5"
   }
 }

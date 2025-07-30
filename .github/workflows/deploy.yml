@@ -31,9 +31,7 @@ jobs:
         run: npm run build
 
       - name: Build batch script (compile TS to JS)
-        run: |
-          npm run build:batch
-          cp -r src/prisma dist/src/prisma
+        run: npm run build:batch
 
       - name: Copy Prisma Client to standalone
         run: |
