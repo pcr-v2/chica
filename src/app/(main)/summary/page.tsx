@@ -5,8 +5,6 @@ interface ISearchParams {
   searchParams: Promise<{ studentId?: string }>;
 }
 export default async function page({ searchParams }: ISearchParams) {
-  //  searchParams;
-
   const params = await searchParams;
 
   const unCheckedList = await getUnChecked({

@@ -6,6 +6,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import weekday from "dayjs/plugin/weekday";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import SummaryTab from "@/app/(main)/summary/SummaryTab";
 import UnCheckContent from "@/app/(main)/summary/UnCheckContent";
@@ -44,7 +45,16 @@ export default function SummaryContainer(props: IProps) {
 
   return (
     <Wrapper>
-      <SummaryHeader onClick={() => setOpen(true)} />
+      <SummaryHeader
+        onClick={() => {
+          if (unCheckedList.data == null) {
+            // console.log(unCheckedList.data?.length);
+            toast.success("일주일간 양치를 잘 실천하셨습니다!");
+            return;
+          }
+          setOpen(true);
+        }}
+      />
 
       <Content>
         <TopContent>

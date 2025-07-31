@@ -55,7 +55,7 @@ export async function checkBrush(
         },
       });
 
-      // console.log("findStudent", findStudent);
+      console.log("findStudent", findStudent);
 
       if (findStudent == null) {
         throw {
@@ -75,7 +75,7 @@ export async function checkBrush(
         },
       });
 
-      // console.log("findBrushToday", findBrushToday);
+      console.log("findBrushToday", findBrushToday);
 
       if (findBrushToday == null) {
         throw {
@@ -98,6 +98,8 @@ export async function checkBrush(
           brushedAt: customDayjs().toDate(),
         },
       });
+
+      console.log("updateBurshedToday", updateBurshedToday);
 
       if (updateBurshedToday == null) {
         throw {
