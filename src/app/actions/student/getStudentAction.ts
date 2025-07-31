@@ -4,13 +4,10 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import weekday from "dayjs/plugin/weekday";
-import { jwtVerify } from "jose";
-import { cookies } from "next/headers";
 import z from "zod";
 
 import { getStudentSchema } from "@/app/actions/student/studentSchema";
 import { mysqlPrisma } from "@/libs/prisma";
-import customDayjs from "@/utils/customDayjs";
 
 dayjs.extend(weekday);
 dayjs.extend(utc);

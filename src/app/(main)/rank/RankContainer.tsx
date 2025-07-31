@@ -1,16 +1,16 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 import RankSpan from "@/app/(main)/rank/RankSpan";
 import TitleBadge from "@/app/_components/common/TitleBadge";
 import RankHeader from "@/app/_components/layout/Headers/RankHeader";
 import Rank1_Pattern from "@/assets/pattern/rank1-pattern.png";
-import customDayjs from "@/utils/customDayjs";
 
 export default function RankContainer() {
-  const today = customDayjs();
+  const today = dayjs();
 
   const [month, setMonth] = useState<number>(today.month() + 1);
 

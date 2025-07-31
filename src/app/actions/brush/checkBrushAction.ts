@@ -7,12 +7,11 @@ import z from "zod";
 
 import { checkBrushSchema } from "@/app/actions/brush/brushSchema";
 import { mysqlPrisma } from "@/libs/prisma";
-import customDayjs from "@/utils/customDayjs";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-dayjs.tz.setDefault("Asia/Seoul");
+// dayjs.tz.setDefault("Asia/Seoul");
 
 export type CheckBrushRequest = z.infer<typeof checkBrushSchema>;
 
@@ -36,7 +35,7 @@ export async function checkBrush(
     };
   }
 
-  const today = customDayjs();
+  const today = dayjs();
   const startOfDay = today.startOf("day").toDate();
   const endOfDay = today.endOf("day").toDate();
 
@@ -95,7 +94,7 @@ export async function checkBrush(
         },
         data: {
           brushedStatus: "Ok",
-          brushedAt: customDayjs().toDate(),
+          brushedAt: dayjs().toDate(),
         },
       });
 
