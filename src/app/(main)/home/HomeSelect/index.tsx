@@ -12,6 +12,7 @@ import GradeSelect from "@/app/(main)/home/HomeSelect/GradeSelect";
 import NumberSelect from "@/app/(main)/home/HomeSelect/NumberSelect";
 import SelectTeeth from "@/app/(main)/home/SelectTeeth";
 import { checkBrush } from "@/app/actions/brush/checkBrushAction";
+import { getTest } from "@/app/actions/brush/testAction";
 import Class from "@/assets/home/class.png";
 import Grade from "@/assets/home/grade.png";
 import NumberImg from "@/assets/home/number.png";
@@ -65,6 +66,10 @@ export default function HomeSelect(props: IProps) {
         studentGrade: Number(userValue.grade),
         studentNumber: Number(value),
       });
+
+      const test = await getTest();
+
+      console.log("test", test);
 
       if (updateBrush.code !== "SUCCESS") {
         toast.error(updateBrush.message);
