@@ -44,7 +44,6 @@ export default function HomeSelect(props: IProps) {
   };
 
   const [value, setValue] = useState("");
-
   const isInvalidZero = (val: string) =>
     (val.length === 2 && val.startsWith("0")) ||
     (val.length === 1 && val === "0");
@@ -58,22 +57,26 @@ export default function HomeSelect(props: IProps) {
         return;
       }
 
-      const query = new URLSearchParams({
-        grade: userValue.grade!,
-        class: userValue.class!,
-        number: value,
-      });
-
       onClickInfo({ name: "number", value });
 
-      const test = await checkBrush({
+      const updateBrush = await checkBrush({
         schoolId: "21a01ae2-2f60-4f7c-bcae-9fa4fc287564",
         studentClass: userValue.class as string,
         studentGrade: Number(userValue.grade),
-        studentNumber: Number(userValue.number),
+        studentNumber: Number(value),
       });
 
-      // router.replace(`/summary?${query}`);
+      if (updateBrush.code !== "SUCCESS") {
+        toast.error(updateBrush.message);
+
+        router.replace("/");
+        return;
+      }
+
+      toast.success(updateBrush.message);
+
+      router.replace(`/summary?studentId=${updateBrush.data?.studentId}`);
+
       return;
     }
 
@@ -163,8 +166,6 @@ const Wrapper = styled(Box)(() => {
     flexDirection: "column",
     justifyContent: "start",
     padding: "64px 64px 48px",
-
-    border: "1px solid blue",
   };
 });
 

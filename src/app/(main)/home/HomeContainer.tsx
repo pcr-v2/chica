@@ -40,6 +40,8 @@ export default function HomeContainer(props: IProps) {
     number: null,
   });
 
+  console.log("userValue", userValue);
+
   const handleMeal = async () => {
     const res = await getMeal({ schoolId: me.data?.schoolId as string });
     if (res == null) {
@@ -99,7 +101,6 @@ const Wrapper = styled(Box)(() => {
     maxWidth: "834px",
     alignItems: "center",
     flexDirection: "column",
-    border: "1px solid red",
     justifyContent: "space-between",
   };
 });

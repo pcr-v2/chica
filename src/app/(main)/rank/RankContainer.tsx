@@ -87,14 +87,14 @@ const RankBox = styled(Box)<{ rank: number }>(({ rank }) => {
   return {
     gap: "10px",
     width: "100%",
-    padding: "16px 24px",
-    display: "flex",
-    alignItems: "center",
     fontSize: 28,
+    display: "flex",
     fontWeight: 800,
     lineHeight: "150%",
-    letterSpacing: "-0.56px",
+    alignItems: "center",
     borderRadius: "12px",
+    padding: "16px 24px",
+    letterSpacing: "-0.56px",
     color:
       rank === 1 ? "#fff" : rank === 2 || rank === 3 ? "#FFA000" : "#747D8A",
   };

@@ -16,11 +16,19 @@ dayjs.tz.setDefault("Asia/Seoul");
 
 export type CheckBrushRequest = z.infer<typeof checkBrushSchema>;
 
-export type CheckBrushResponse = Awaited<ReturnType<typeof checkBrush>>;
+export type CheckBrushResponse = {
+  code: "VALIDATION_ERROR" | "SUCCESS" | "FAIL";
+  message: string;
+  data?: {
+    studentId: string;
+  };
+};
 
-export async function checkBrush(request: CheckBrushRequest) {
+export async function checkBrush(
+  request: CheckBrushRequest,
+): Promise<CheckBrushResponse> {
   const validated = checkBrushSchema.safeParse(request);
-
+  console.log("validated", validated);
   if (!validated.success) {
     return {
       code: "VALIDATION_ERROR" as const,
@@ -34,48 +42,97 @@ export async function checkBrush(request: CheckBrushRequest) {
 
   const { schoolId, studentGrade, studentClass, studentNumber } =
     validated.data;
-  //   console.log(validated.data);
-  const res = await mysqlPrisma.student.findFirst({
-    where: {
-      schoolId,
-      studentGrade,
-      studentClass,
-      studentNumber,
-      studentStatus: true,
-    },
-  });
 
-  //   console.log("res", res);
+  try {
+    const checkBrush = mysqlPrisma.$transaction(async (trx) => {
+      const findStudent = await trx.student.findFirst({
+        where: {
+          schoolId,
+          studentGrade,
+          studentClass,
+          studentNumber,
+          studentStatus: true,
+        },
+      });
 
-  if (res == null) {
+      // console.log("findStudent", findStudent);
+
+      if (findStudent == null) {
+        throw {
+          code: "FAIL" as const,
+          message: "학생을 찾을 수 없습니다.",
+        };
+      }
+
+      const findBrushToday = await mysqlPrisma.brushed.findFirst({
+        where: {
+          studentId: findStudent.studentId,
+          brushedStatus: "No",
+          brushedAt: {
+            gte: startOfDay,
+            lte: endOfDay,
+          },
+        },
+      });
+
+      // console.log("findBrushToday", findBrushToday);
+
+      if (findBrushToday == null) {
+        throw {
+          code: "FAIL" as const,
+          message: "양치 데이터를 찾을 수 없습니다.",
+        };
+      }
+
+      const updateBurshedToday = await mysqlPrisma.brushed.update({
+        where: {
+          id: findBrushToday.id,
+          brushedStatus: "No",
+          brushedAt: {
+            gte: startOfDay,
+            lte: endOfDay,
+          },
+        },
+        data: {
+          brushedStatus: "Ok",
+          brushedAt: customDayjs().toDate(),
+        },
+      });
+
+      if (updateBurshedToday == null) {
+        throw {
+          code: "FAIL" as const,
+          message: "양치 업데이트 중 문제가 발생했습니다.",
+        };
+      }
+
+      return {
+        data: {
+          studentId: findStudent.studentId,
+        },
+      };
+    });
+
+    if (checkBrush == null) {
+      throw {
+        code: "FAIL" as const,
+        message: "양치 업데이트 중 문제가 발생했습니다.",
+      };
+    }
+
+    return {
+      code: "SUCCESS" as const,
+      message: "양치 실천을 완료했습니다.",
+      data: {
+        studentId: (await checkBrush).data.studentId,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+
     return {
       code: "FAIL",
-      message: "학생을 찾을 수 없습니다.",
+      message: "양치 기록 업데이트 중 문제가 발생했습니다.",
     };
   }
-  const nowSeoul = dayjs().tz("Asia/Seoul");
-
-  const findBrushToday = await mysqlPrisma.brushed.findFirst({
-    where: {
-      studentId: res.studentId,
-      brushedStatus: "No",
-      brushedAt: {
-        gte: startOfDay,
-        lte: endOfDay,
-      },
-    },
-  });
-
-  console.log("findBrushToday", findBrushToday);
-
-  return {
-    code: "SUCCESS",
-    data: {
-      //   type: admin.schoolType,
-      //   loginId: admin.loginId,
-      //   schoolId: admin.schoolId,
-      //   schoolLevel: admin.schoolLevel,
-      //   name: admin.teacherName,
-    },
-  };
 }
