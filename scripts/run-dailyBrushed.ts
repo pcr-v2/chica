@@ -1,4 +1,5 @@
 // dailyBrushed.ts
+import dayjs from "dayjs";
 import "dotenv/config";
 
 import { mysqlPrisma } from "../src/libs/prisma";
@@ -10,6 +11,7 @@ async function main() {
     const insertData = students.map((student) => ({
       studentId: student.studentId,
       brushedStatus: "No",
+      brushedAt: dayjs().startOf("day").toDate(),
     }));
 
     await mysqlPrisma.brushed.createMany({

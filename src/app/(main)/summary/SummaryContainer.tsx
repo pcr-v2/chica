@@ -37,8 +37,8 @@ export default function SummaryContainer(props: IProps) {
   // 이번 주 금요일 23:59:59
   const endOfWeek = today.weekday(5).endOf("day");
 
-  console.log("startOfWeek:", startOfWeek.format()); // 예: 2025-07-28T00:00:00+09:00
-  console.log("endOfWeek:", endOfWeek.format()); // 예: 2025-08-01T23:59:59+09:00
+  // console.log("startOfWeek:", startOfWeek.format()); // 예: 2025-07-28T00:00:00+09:00
+  // console.log("endOfWeek:", endOfWeek.format()); // 예: 2025-08-01T23:59:59+09:00
 
   const [selectedTab, setSelectedTab] = useState<TTab>("week");
   const [open, setOpen] = useState(false);

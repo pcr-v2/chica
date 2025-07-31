@@ -13,7 +13,7 @@ interface IProps {
 
 export default function UnCheckContent(props: IProps) {
   const { unCheckedList } = props;
-  console.log("unCheckedList", unCheckedList);
+
   return (
     <Wrapper>
       <Title>스케줄</Title>
@@ -22,7 +22,7 @@ export default function UnCheckContent(props: IProps) {
         {unCheckedList?.data?.map((uncheck, idx) => {
           return (
             <ListRow key={idx}>
-              {customDayjs(uncheck.brushedAt).format("YY년 MM월 DD일 ddd요일")}
+              {customDayjs(uncheck.brushedAt).format("YY년 MM월 DD일 (ddd)")}
               <ReasonPicker status={uncheck.brushedStatus} />
             </ListRow>
           );
