@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export default async function page(props: IProps) {
-  const { studentId } = await props.searchParams;
+  const { studentId } = props.searchParams;
   console.log("studentId", studentId);
 
   const unCheckedList = await getUnChecked({ studentId: studentId as string });
