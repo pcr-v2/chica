@@ -54,8 +54,6 @@ export async function checkBrush(
         },
       });
 
-      console.log("findStudent", findStudent);
-
       if (findStudent == null) {
         throw {
           code: "FAIL" as const,

@@ -8,11 +8,15 @@ import weekday from "dayjs/plugin/weekday";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
+import Execution from "@/app/(main)/summary/Execution";
+import ExecutionBoard from "@/app/(main)/summary/ExecutionBoard";
+import ExecutionMyClass from "@/app/(main)/summary/ExecutionMyClass";
 import SummaryTab from "@/app/(main)/summary/SummaryTab";
 import UnCheckContent from "@/app/(main)/summary/UnCheckContent";
 import Modal from "@/app/_components/common/Modal";
 import TitleBadge from "@/app/_components/common/TitleBadge";
 import SummaryHeader from "@/app/_components/layout/Headers/SummaryHeader";
+import { GetStudentInfoResponse } from "@/app/actions/student/getStudentInfoAction";
 import { getUnCheckedResponse } from "@/app/actions/summary/getUnCheckedAction";
 
 dayjs.extend(weekday);
@@ -22,11 +26,12 @@ dayjs.extend(timezone);
 type TTab = "week" | "month" | "term";
 
 interface IProps {
+  student: GetStudentInfoResponse["data"];
   unCheckedList: getUnCheckedResponse;
 }
 
 export default function SummaryContainer(props: IProps) {
-  const { unCheckedList } = props;
+  const { unCheckedList, student } = props;
 
   // KST 기준 오늘
   const today = dayjs();
@@ -58,7 +63,9 @@ export default function SummaryContainer(props: IProps) {
 
       <Content>
         <TopContent>
-          <TitleBadge text="1학년 1반 1번 ㅁㄴㅇㄹ" />
+          <TitleBadge
+            text={`${student?.studentGrade}학년 ${student?.studentClass}반 ${student?.studentNumber}번 ${student?.studentName}`}
+          />
 
           <SummaryTab
             selectedTab={selectedTab}
@@ -66,7 +73,22 @@ export default function SummaryContainer(props: IProps) {
           />
         </TopContent>
 
-        <Box>asdfadf</Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            width: "100%",
+          }}
+        >
+          <Execution />
+
+          <ExecutionMyClass />
+
+          <ExecutionBoard />
+        </Box>
+
+        <Btn>완료</Btn>
       </Content>
 
       <Modal
@@ -108,5 +130,23 @@ const TopContent = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+  };
+});
+
+const Btn = styled(Box)(() => {
+  return {
+    fontSize: 28,
+    width: "100%",
+    fontWeight: 800,
+    color: "#fff",
+    cursor: "pointer",
+    maxWidth: "200px",
+    lineHeight: "150%",
+    textAlign: "center",
+    padding: "16px 24px",
+    borderRadius: "100px",
+    letterSpacing: "-0.56px",
+    backgroundColor: "#6EDBB5",
+    border: "4px solid #32C794",
   };
 });

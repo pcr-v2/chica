@@ -48,6 +48,7 @@ export default function SummaryTab(props: TProps) {
         {tabList?.map((tab, index) => {
           return (
             <TabST
+              disableRipple
               key={`${tab.value}_${index}`}
               label={tab.label}
               value={tab.value}

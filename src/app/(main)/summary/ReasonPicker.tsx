@@ -58,6 +58,8 @@ export default function ReasonPicker(props: IProps) {
     };
   }, [isOpen]);
 
+  console.log("isOpen", isOpen);
+
   return (
     <Container ref={containerRef} sx={{ zIndex: isOpen ? 999 : 0 }}>
       {/* 버튼 */}

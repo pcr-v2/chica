@@ -1,6 +1,9 @@
 "use server";
 
+import dayjs from "dayjs";
+
 import { mysqlPrisma } from "@/libs/prisma";
+import customDayjs from "@/utils/customDayjs";
 
 export async function getTest() {
   const test = await mysqlPrisma.brushed.count();
@@ -15,6 +18,8 @@ export async function getTest() {
       studentId: "86dda7d4-fafc-42ff-868a-59da0f1947cf",
     },
   });
+
+  console.log(dayjs(test3[0].brushedAt).format("YYYY-MM-DD-ddd"));
 
   return {
     code: "SUCCESS",
