@@ -73,20 +73,13 @@ export default function SummaryContainer(props: IProps) {
           />
         </TopContent>
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-            width: "100%",
-          }}
-        >
+        <ExecutionWrap>
           <Execution />
 
           <ExecutionMyClass />
 
           <ExecutionBoard />
-        </Box>
+        </ExecutionWrap>
 
         <Btn>완료</Btn>
       </Content>
@@ -130,6 +123,15 @@ const TopContent = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+  };
+});
+
+const ExecutionWrap = styled(Box)(() => {
+  return {
+    gap: "24px",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
   };
 });
 

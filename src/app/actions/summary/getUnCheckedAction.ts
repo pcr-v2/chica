@@ -6,7 +6,6 @@ import utc from "dayjs/plugin/utc";
 import weekday from "dayjs/plugin/weekday";
 import z from "zod";
 
-import { getStudentSchema } from "@/app/actions/student/studentSchema";
 import { getUnCheckedSchema } from "@/app/actions/summary/summarySchema";
 import { mysqlPrisma } from "@/libs/prisma";
 
