@@ -5,7 +5,9 @@ import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
+import { getUnCheckedResponse } from "@/app/actions/summary/getUnCheckedAction";
 import Arrow from "@/assets/icon/select-arrow.svg";
+import { $Enums } from "@/prisma/generated";
 
 const reasonList: TReason[] = [
   { label: "안함", value: "No" },
@@ -22,18 +24,21 @@ type TReason = {
 };
 
 interface IProps {
-  status: "No" | "Ok" | "EarlyLeave" | "Travel" | "Workshop" | "Absence";
+  uncheckRow: {
+    studentId: string;
+    id: number;
+    brushedAt: Date;
+    brushedStatus: $Enums.BrushedBrushedStatus;
+  };
+  selectedReason: TReason;
+  onChange: (id: number, reason: TReason) => void;
 }
 
 export default function ReasonPicker(props: IProps) {
-  const { status } = props;
+  const { uncheckRow, selectedReason, onChange } = props;
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [selectedReason, setSelectedReason] = useState<TReason>({
-    label: reasonList.find((el) => el.value === status)?.label ?? "안함",
-    value: reasonList.find((el) => el.value === status)?.value ?? "No",
-  });
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -58,8 +63,6 @@ export default function ReasonPicker(props: IProps) {
     };
   }, [isOpen]);
 
-  console.log("isOpen", isOpen);
-
   return (
     <Container ref={containerRef} sx={{ zIndex: isOpen ? 999 : 0 }}>
       {/* 버튼 */}
@@ -81,9 +84,9 @@ export default function ReasonPicker(props: IProps) {
           >
             {reasonList.map((reason, idx) => (
               <Item
-                key={`${selectedReason.value}+${idx}`}
+                key={`${reason.value}-${idx}`}
                 onClick={() => {
-                  setSelectedReason(reason);
+                  onChange(uncheckRow.id, reason);
                   setIsOpen(false);
                 }}
                 selected={selectedReason.value === reason.value}

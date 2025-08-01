@@ -10,20 +10,38 @@ import RankHeader from "@/app/_components/layout/Headers/RankHeader";
 import Rank1_Pattern from "@/assets/pattern/rank1-pattern.png";
 
 export default function RankContainer() {
-  const today = dayjs();
+  // const [month, setMonth] = useState<number>(today.month() + 1);
 
-  const [month, setMonth] = useState<number>(today.month() + 1);
+  // const [term, setTerm] = useState(1);
 
-  const [term, setTerm] = useState(1);
+  // const [rankList, setRankList] = useState([]);
 
-  const [rankList, setRankList] = useState([]);
+  const month = dayjs().month() + 1; // 0-based라 +1 필요
+  const term = month >= 3 && month <= 7 ? 1 : 2;
+
+  const [singleMulti, setSingleMulti] = useState<"single" | "multi">("single");
+  const [monthTerm, setMonthTerm] = useState<"month" | "term">("month");
+
+  const handleValue = (value: "single" | "multi" | "month" | "term") => {
+    if (value === "single" || value === "multi") {
+      setSingleMulti(value);
+    } else {
+      setMonthTerm(value);
+    }
+  };
 
   return (
     <Wrapper>
-      <RankHeader />
+      <RankHeader
+        singleMulti={singleMulti}
+        monthTerm={monthTerm}
+        onChange={handleValue}
+        currentMonth={`${month}월`}
+        currentTerm={`${term}학기`}
+      />
 
       <Content>
-        <TitleBadge text="12월 양치왕" />
+        <TitleBadge text={`${month}월 양치왕`} />
 
         <RankWrap>
           <RankBox

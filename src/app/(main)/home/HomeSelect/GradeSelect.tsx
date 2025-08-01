@@ -31,7 +31,7 @@ export default function GradeSelect(props: IProps) {
             isselect={(selected === grade).toString()}
             onClick={() => onClick(grade)}
           >
-            {grade}학년.
+            {grade}학년
           </GradeBtn>
         );
       })}

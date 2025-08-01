@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -10,11 +11,20 @@ import SingleSvg from "@/app/_components/layout/Headers/RankHeader/SingleSvg";
 import TermPicker from "@/app/_components/layout/Headers/RankHeader/TermPicker";
 import LeftArrow from "@/assets/icon/left-arrow.svg";
 
-type TValue = "single" | "multi";
+interface IProps {
+  singleMulti: "single" | "multi";
+  monthTerm: "month" | "term";
 
-export default function RankHeader() {
+  currentMonth: string;
+  currentTerm: string;
+
+  onChange: (value: "single" | "multi" | "month" | "term") => void;
+}
+
+export default function RankHeader(props: IProps) {
+  const { singleMulti, monthTerm, currentMonth, currentTerm, onChange } = props;
+
   const router = useRouter();
-  const [value, setValue] = useState<TValue>("single");
 
   return (
     <Wrapper>
@@ -24,30 +34,46 @@ export default function RankHeader() {
         <span>처음으로</span>
       </GoMainBtn>
 
-      <InfoBox>
-        <SelectWrap>
-          <SingleTab
-            onClick={() => setValue("single")}
-            isactive={(value === "single").toString()}
-          >
-            <SingleSvg isActive={value === "single"} />
+      <SelectWrap>
+        <SingleTab
+          onClick={() => onChange("single")}
+          isactive={(singleMulti === "single").toString()}
+        >
+          <SingleSvg isActive={singleMulti === "single"} />
 
-            <span>개인전</span>
-          </SingleTab>
+          <span>개인전</span>
+        </SingleTab>
 
-          <MultiTab
-            onClick={() => setValue("multi")}
-            isactive={(value === "multi").toString()}
-          >
-            <MultiSvg isActive={value === "multi"} />
-            <span>팀전</span>
-          </MultiTab>
-        </SelectWrap>
+        <MultiTab
+          onClick={() => onChange("multi")}
+          isactive={(singleMulti === "multi").toString()}
+        >
+          <MultiSvg isActive={singleMulti === "multi"} />
+          <span>팀전</span>
+        </MultiTab>
+      </SelectWrap>
 
-        <MonthPicker />
+      <SelectWrap>
+        <SingleTab
+          onClick={() => onChange("month")}
+          isactive={(monthTerm === "month").toString()}
+        >
+          <span style={{ width: "50px", textAlign: "center" }}>
+            {currentMonth}
+          </span>
+        </SingleTab>
 
-        <TermPicker />
-      </InfoBox>
+        <MultiTab
+          onClick={() => onChange("term")}
+          isactive={(monthTerm === "term").toString()}
+        >
+          <span style={{ width: "50px" }}>{currentTerm}</span>
+        </MultiTab>
+      </SelectWrap>
+
+      {/* <MonthPicker />
+
+        <TermPicker /> */}
     </Wrapper>
   );
 }

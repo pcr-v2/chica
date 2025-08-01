@@ -87,7 +87,13 @@ export default function SummaryContainer(props: IProps) {
       <Modal
         open={open}
         onClose={() => setOpen(false)}
-        children={<UnCheckContent unCheckedList={unCheckedList} />}
+        children={
+          <UnCheckContent
+            unCheckedList={unCheckedList}
+            studentId={student?.studentId as string}
+            onUpdate={() => setOpen(false)}
+          />
+        }
       />
     </Wrapper>
   );

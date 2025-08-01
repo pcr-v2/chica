@@ -3,8 +3,10 @@
 import { Box, styled } from "@mui/material";
 import { ReactNode } from "react";
 
+import ScreenSaver from "@/app/_components/common/ScreenSaver";
 import Bottom_Pattern from "@/assets/pattern/main-bottom-pattern.png";
 import Top_Pattern from "@/assets/pattern/top-pattern.png";
+import { useScreenSaverStore } from "@/store/useScreenSaverStore";
 
 interface IProps {
   children: ReactNode;
@@ -12,6 +14,10 @@ interface IProps {
 
 export default function MainLayout(props: IProps) {
   const { children } = props;
+
+  const isActive = useScreenSaverStore((s) => s.isActive);
+  const deactivate = useScreenSaverStore((s) => s.deactivate);
+
   return (
     <Wrapper>
       <BackgroundLayer>
@@ -24,12 +30,29 @@ export default function MainLayout(props: IProps) {
           {children}
         </Box>
       </ContentLayer>
+
+      {isActive && (
+        <>
+          <ScreenSaver />
+
+          <div
+            style={{
+              inset: 0,
+              zIndex: 9999,
+              position: "absolute",
+              // backgroundColor: "rgba(0,0,0,0.4)",
+            }}
+            onClick={deactivate}
+            onTouchStart={deactivate}
+          />
+        </>
+      )}
     </Wrapper>
   );
 }
 const Wrapper = styled(Box)(() => ({
   width: "100%",
-  overflow: "hidden", // 배경 넘침 방지
+  // overflow: "hidden", // 배경 넘침 방지
   minHeight: "100dvh",
   position: "relative",
 }));
@@ -40,6 +63,7 @@ const BackgroundLayer = styled(Box)(() => ({
   right: 0,
   bottom: 0,
   zIndex: 0,
+  minHeight: "100dvh",
   position: "absolute",
   pointerEvents: "none", // 클릭 방지
 }));

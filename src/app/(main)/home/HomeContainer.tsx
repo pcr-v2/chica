@@ -40,7 +40,7 @@ export default function HomeContainer(props: IProps) {
     number: null,
   });
 
-  console.log("userValue", userValue);
+  // console.log("userValue", userValue);
 
   const handleMeal = async () => {
     const res = await getMeal({ schoolId: me.data?.schoolId as string });

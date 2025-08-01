@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Meal from "@/assets/home/meal.png";
 import Rank from "@/assets/home/rank.png";
 import Video from "@/assets/home/video.png";
+import { useScreenSaverStore } from "@/store/useScreenSaverStore";
 
 interface IProps {
   onClick: () => void;
@@ -16,13 +17,11 @@ export default function HomeMenu(props: IProps) {
 
   const router = useRouter();
 
+  const activate = useScreenSaverStore((s) => s.activate);
+
   return (
     <Wrapper>
-      <MenuImg
-        src={Video.src}
-        alt="video"
-        onClick={() => alert("비디오 화면 보호 바로 시작")}
-      />
+      <MenuImg src={Video.src} alt="video" onClick={activate} />
       <MenuImg src={Rank.src} alt="rank" onClick={() => router.push("/rank")} />
       <MenuImg src={Meal.src} alt="meal" onClick={onClick} />
     </Wrapper>

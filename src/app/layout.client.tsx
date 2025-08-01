@@ -8,7 +8,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ReactNode, useEffect, useState } from "react";
 
 import { RootToast } from "@/app/_components/RootToast";
-import MainSplash from "@/app/_components/common/MainSplash";
 import theme from "@/theme";
 
 interface IProps {
@@ -33,7 +32,7 @@ export default function ClientLayout(props: IProps) {
     <AppRouterCacheProvider options={{ enableCssLayer: false, prepend: false }}>
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"ko"}>
-          <ChildrenWrap>{showSplash ? <MainSplash /> : children}</ChildrenWrap>
+          <ChildrenWrap>{children}</ChildrenWrap>
         </LocalizationProvider>
         <CssBaseline />
         <RootToast />
