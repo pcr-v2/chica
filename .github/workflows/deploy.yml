@@ -41,6 +41,9 @@ jobs:
           mkdir -p .next/standalone/node_modules/@prisma
           cp -r node_modules/@prisma/client .next/standalone/node_modules/@prisma/client
 
+      - name: Copy public folder to standalone
+        run: cp -r public .next/standalone/public
+
       - name: Compress standalone output
         run: |
           tar -czf standalone.tar.gz \
