@@ -11,12 +11,10 @@ import { mysqlPrisma } from "@/libs/prisma";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-// dayjs.tz.setDefault("Asia/Seoul");
-
 export type CheckBrushRequest = z.infer<typeof checkBrushSchema>;
 
 export type CheckBrushResponse = {
-  code: "VALIDATION_ERROR" | "SUCCESS" | "FAIL";
+  code: "VALIDATION_ERROR" | "SUCCESS" | "FAIL" | "ALREADY";
   message: string;
   data?: {
     studentId: string;
@@ -27,24 +25,24 @@ export async function checkBrush(
   request: CheckBrushRequest,
 ): Promise<CheckBrushResponse> {
   const validated = checkBrushSchema.safeParse(request);
-  console.log("validated", validated);
+
   if (!validated.success) {
     return {
-      code: "VALIDATION_ERROR" as const,
+      code: "VALIDATION_ERROR",
       message: validated.error.issues[0].message,
     };
   }
+
+  const { schoolId, studentGrade, studentClass, studentNumber } =
+    validated.data;
 
   const today = dayjs();
   const startOfDay = today.startOf("day").toDate();
   const endOfDay = today.endOf("day").toDate();
 
-  const { schoolId, studentGrade, studentClass, studentNumber } =
-    validated.data;
-
   try {
-    const checkBrush = mysqlPrisma.$transaction(async (trx) => {
-      const findStudent = await trx.student.findFirst({
+    const result = await mysqlPrisma.$transaction(async (trx) => {
+      const student = await trx.student.findFirst({
         where: {
           schoolId,
           studentGrade,
@@ -54,16 +52,39 @@ export async function checkBrush(
         },
       });
 
-      if (findStudent == null) {
-        throw {
+      if (!student) {
+        return {
           code: "FAIL" as const,
           message: "학생을 찾을 수 없습니다.",
         };
       }
 
-      const findBrushToday = await mysqlPrisma.brushed.findFirst({
+      const { studentId } = student;
+
+      // 이미 오늘 양치 완료했는지 확인
+      const already = await trx.brushed.findFirst({
         where: {
-          studentId: findStudent.studentId,
+          studentId,
+          brushedStatus: "Ok",
+          brushedAt: {
+            gte: startOfDay,
+            lte: endOfDay,
+          },
+        },
+      });
+
+      if (already) {
+        return {
+          code: "ALREADY" as const,
+          message: "오늘은 양치 체크를 완료했습니다.",
+          data: { studentId },
+        };
+      }
+
+      // 아직 체크 안 한 상태가 있는지 확인
+      const toUpdate = await trx.brushed.findFirst({
+        where: {
+          studentId,
           brushedStatus: "No",
           brushedAt: {
             gte: startOfDay,
@@ -72,65 +93,33 @@ export async function checkBrush(
         },
       });
 
-      console.log("findBrushToday", findBrushToday);
-
-      if (findBrushToday == null) {
-        throw {
+      if (!toUpdate) {
+        return {
           code: "FAIL" as const,
           message: "양치 데이터를 찾을 수 없습니다.",
         };
       }
 
-      const updateBurshedToday = await mysqlPrisma.brushed.update({
-        where: {
-          id: findBrushToday.id,
-          brushedStatus: "No",
-          brushedAt: {
-            gte: startOfDay,
-            lte: endOfDay,
-          },
-        },
+      await trx.brushed.update({
+        where: { id: toUpdate.id },
         data: {
           brushedStatus: "Ok",
           brushedAt: dayjs().toDate(),
         },
       });
 
-      console.log("updateBurshedToday", updateBurshedToday);
-
-      if (updateBurshedToday == null) {
-        throw {
-          code: "FAIL" as const,
-          message: "양치 업데이트 중 문제가 발생했습니다.",
-        };
-      }
-
       return {
-        data: {
-          studentId: findStudent.studentId,
-        },
+        code: "SUCCESS" as const,
+        message: "양치 실천을 완료했습니다.",
+        data: { studentId },
       };
     });
 
-    if (checkBrush == null) {
-      throw {
-        code: "FAIL" as const,
-        message: "양치 업데이트 중 문제가 발생했습니다.",
-      };
-    }
-
+    return result;
+  } catch (err) {
+    console.error("양치 처리 중 오류:", err);
     return {
-      code: "SUCCESS" as const,
-      message: "양치 실천을 완료했습니다.",
-      data: {
-        studentId: (await checkBrush).data.studentId,
-      },
-    };
-  } catch (error) {
-    console.error(error);
-
-    return {
-      code: "FAIL",
+      code: "FAIL" as const,
       message: "양치 기록 업데이트 중 문제가 발생했습니다.",
     };
   }

@@ -31,6 +31,7 @@ interface IProps {
 export default function HomeContainer(props: IProps) {
   const { me } = props;
   // console.log("me", me);
+
   const [open, setOpen] = useState(false);
   const [mealRes, setMealRes] = useState<Meal[]>();
 
@@ -66,6 +67,7 @@ export default function HomeContainer(props: IProps) {
       {userValue.grade === null && <HomeMenu onClick={handleMeal} />}
 
       <HomeSelect
+        schoolId={me.data?.schoolId as string}
         userValue={userValue}
         classList={me?.data?.classList ?? []}
         onClickInfo={(value: TUserSelectValue) => {

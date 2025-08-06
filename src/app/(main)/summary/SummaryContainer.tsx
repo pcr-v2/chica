@@ -5,7 +5,8 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import weekday from "dayjs/plugin/weekday";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import Execution from "@/app/(main)/summary/Execution";
@@ -33,6 +34,8 @@ interface IProps {
 export default function SummaryContainer(props: IProps) {
   const { unCheckedList, student } = props;
 
+  const router = useRouter();
+
   // KST 기준 오늘
   const today = dayjs();
 
@@ -48,12 +51,27 @@ export default function SummaryContainer(props: IProps) {
   const [selectedTab, setSelectedTab] = useState<TTab>("week");
   const [open, setOpen] = useState(false);
 
+  const [count, setCount] = useState(15);
+
+  useEffect(() => {
+    if (count <= 0) {
+      router.replace("/");
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setCount((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [count]);
+
   return (
-    <Wrapper>
+    <Wrapper onTouchStart={() => setCount(15)}>
       <SummaryHeader
+        count={count}
         onClick={() => {
           if (unCheckedList.data == null) {
-            // console.log(unCheckedList.data?.length);
             toast.success("일주일간 양치를 잘 실천하셨습니다!");
             return;
           }
@@ -81,7 +99,7 @@ export default function SummaryContainer(props: IProps) {
           <ExecutionBoard />
         </ExecutionWrap>
 
-        <Btn>완료</Btn>
+        <Btn onClick={() => router.replace("/home")}>완료</Btn>
       </Content>
 
       <Modal

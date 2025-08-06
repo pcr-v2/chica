@@ -16,7 +16,7 @@ async function main() {
     const insertData = students.map((student) => ({
       studentId: student.studentId,
       brushedStatus: "No",
-      brushedAt: new Date(dayjs().format("YYYY-MM-DD")),
+      brushedAt: new Date().toISOString(),
     }));
 
     await mysqlPrisma.brushed.createMany({

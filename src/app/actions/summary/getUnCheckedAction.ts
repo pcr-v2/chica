@@ -37,7 +37,7 @@ export async function getUnChecked(request: GetUnCheckedRequest) {
   const endOfWeek = today.weekday(5).endOf("day");
 
   // console.log("startOfWeek:", startOfWeek.format()); // 예: 2025-07-28T00:00:00+09:00
-  console.log("일주일전:", today.subtract(7, "day").format()); // 예: 2025-08-01T23:59:59+09:00
+  // console.log("일주일전:", today.subtract(7, "day").format()); // 예: 2025-08-01T23:59:59+09:00
 
   const unCheckedList = await mysqlPrisma.brushed.findMany({
     where: {
@@ -50,7 +50,7 @@ export async function getUnChecked(request: GetUnCheckedRequest) {
     },
   });
 
-  console.log("unCheckedSevenDaysAgo", unCheckedList);
+  // console.log("unCheckedSevenDaysAgo", unCheckedList);
 
   if (unCheckedList.length <= 0) {
     return {

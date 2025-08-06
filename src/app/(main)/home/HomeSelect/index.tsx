@@ -19,12 +19,13 @@ import NumberImg from "@/assets/home/number.png";
 
 interface IProps {
   userValue: TUserValue;
+  schoolId: string;
   classList: { grade: string; class: string[] }[];
   onClickInfo: (value: TUserSelectValue) => void;
 }
 
 export default function HomeSelect(props: IProps) {
-  const { onClickInfo, userValue, classList } = props;
+  const { onClickInfo, userValue, classList, schoolId } = props;
 
   const router = useRouter();
 
@@ -61,7 +62,7 @@ export default function HomeSelect(props: IProps) {
       onClickInfo({ name: "number", value });
 
       const updateBrush = await checkBrush({
-        schoolId: "21a01ae2-2f60-4f7c-bcae-9fa4fc287564",
+        schoolId: schoolId,
         studentClass: userValue.class as string,
         studentGrade: Number(userValue.grade),
         studentNumber: Number(value),
@@ -70,6 +71,14 @@ export default function HomeSelect(props: IProps) {
       const test = await getTest();
 
       // console.log("test", test);
+      // console.log("updateBrush", updateBrush);
+
+      if (updateBrush.code === "ALREADY") {
+        toast.success(updateBrush.message);
+
+        router.replace(`/summary?studentId=${updateBrush.data?.studentId}`);
+        return;
+      }
 
       if (updateBrush.code !== "SUCCESS") {
         toast.error(updateBrush.message);

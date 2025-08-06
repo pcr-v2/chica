@@ -41,7 +41,11 @@ export default function RankContainer() {
       />
 
       <Content>
-        <TitleBadge text={`${month}월 양치왕`} />
+        <TitleBadge
+          text={
+            monthTerm === "month" ? `${month}월 양치왕` : `${term}학기 양치왕`
+          }
+        />
 
         <RankWrap>
           <RankBox
@@ -50,29 +54,87 @@ export default function RankContainer() {
               background: `url(${Rank1_Pattern.src}) no-repeat #FFCA28`,
             }}
           >
-            <RankSpan rank={1} />
-            1학년 2반 박철련
+            <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <RankSpan rank={1} />
+              1학년 2반 {singleMulti === "single" && "신예은"}
+            </Box>
+
+            <Box
+              sx={{
+                fontSize: 28,
+                fontWeight: 800,
+                lineHeight: "150%",
+                letterSpacing: "-0.56px",
+                color: "#fff",
+              }}
+            >
+              100%
+            </Box>
           </RankBox>
           <RankBox rank={2} style={{ backgroundColor: "#FFF8E1" }}>
-            <RankSpan rank={2} />
-            2학년 3반 박철련
+            <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <RankSpan rank={2} />
+              2학년 3반{singleMulti === "single" && " 박연진"}
+            </Box>
+            <Box
+              sx={{
+                fontSize: 28,
+                fontWeight: 800,
+                lineHeight: "150%",
+                letterSpacing: "-0.56px",
+                color: "#FFA000",
+              }}
+            >
+              97%
+            </Box>
           </RankBox>
           <RankBox rank={3} style={{ backgroundColor: "#FFF8E1" }}>
-            <RankSpan rank={3} />
-            3학년 4반 박철련
+            <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <RankSpan rank={3} />
+              3학년 4반 {singleMulti === "single" && "신유나"}
+            </Box>
+
+            <Box
+              sx={{
+                fontSize: 28,
+                fontWeight: 800,
+                lineHeight: "150%",
+                letterSpacing: "-0.56px",
+                color: "#FFA000",
+              }}
+            >
+              91%
+            </Box>
           </RankBox>
-          <RankBox rank={4} style={{ backgroundColor: "#F1F2F3" }}>
-            <RankSpan rank={4} />
-            4학년 5반 박철련
-          </RankBox>
-          <RankBox rank={5} style={{ backgroundColor: "#F1F2F3" }}>
-            <RankSpan rank={5} />
-            5학년 5반 박철련
-          </RankBox>
-          <RankBox rank={6} style={{ backgroundColor: "#F1F2F3" }}>
-            <RankSpan rank={6} />
-            6학년 5반 박철련
-          </RankBox>
+          {Array.from({ length: 10 }, (_, i) => (i + 1).toString()).map(
+            (el, idx) => {
+              return (
+                <RankBox
+                  key={idx}
+                  rank={idx + 4}
+                  style={{ backgroundColor: "#F1F2F3" }}
+                >
+                  <Box
+                    sx={{ display: "flex", gap: "10px", alignItems: "center" }}
+                  >
+                    <RankSpan rank={idx + 4} />
+                    4학년 {idx + 1}반 {singleMulti === "single" && "정소민"}
+                  </Box>
+                  <Box
+                    sx={{
+                      fontSize: 28,
+                      fontWeight: 800,
+                      lineHeight: "150%",
+                      letterSpacing: "-0.56px",
+                      color: "#747D8A",
+                    }}
+                  >
+                    75%
+                  </Box>
+                </RankBox>
+              );
+            },
+          )}
         </RankWrap>
       </Content>
     </Wrapper>
@@ -110,6 +172,7 @@ const RankBox = styled(Box)<{ rank: number }>(({ rank }) => {
     fontWeight: 800,
     lineHeight: "150%",
     alignItems: "center",
+    justifyContent: "space-between",
     borderRadius: "12px",
     padding: "16px 24px",
     letterSpacing: "-0.56px",
@@ -123,8 +186,12 @@ const RankWrap = styled(Box)(() => {
     gap: "24px",
     width: "100%",
     display: "flex",
-    alignItems: "center",
+    height: "100%",
+    // flexGrow: 1,
+    maxHeight: "600px",
+    overflowY: "auto",
+    alignItems: "flex-start",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   };
 });

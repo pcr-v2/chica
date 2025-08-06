@@ -7,28 +7,14 @@ import { useEffect, useState } from "react";
 import Calendar from "@/assets/summary/calendar.svg";
 
 interface IProps {
+  count: number;
   onClick: () => void;
 }
 
 export default function SummaryHeader(props: IProps) {
-  const { onClick } = props;
+  const { onClick, count } = props;
 
   const router = useRouter();
-
-  const [count, setCount] = useState(10);
-
-  useEffect(() => {
-    if (count <= 0) {
-      //   router.replace("/");
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setCount((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [count]);
 
   return (
     <Wrapper>
@@ -36,9 +22,12 @@ export default function SummaryHeader(props: IProps) {
         <CalendarIcon />
       </CalendarBtn>
 
-      <CountDownText>{count}초 뒤 자동으로 처음으로 이동합니다.</CountDownText>
+      <CountDownText>
+        <span style={{ color: "#32C794", fontWeight: 900 }}>{count}</span>초 뒤
+        자동으로 처음으로 이동합니다.
+      </CountDownText>
 
-      <DoneBtn onClick={() => router.replace("/")}> 완료</DoneBtn>
+      <DoneBtn onClick={() => router.replace("/home")}> 완료</DoneBtn>
     </Wrapper>
   );
 }

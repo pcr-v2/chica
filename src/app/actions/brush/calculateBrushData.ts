@@ -30,5 +30,5 @@ export async function calculateBrush(request: CalculateBrushRequest) {
     },
   });
 
-  console.log("totalNo", totalNo);
+  // console.log("totalNo", totalNo);
 }
