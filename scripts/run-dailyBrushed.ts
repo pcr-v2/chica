@@ -7,15 +7,30 @@ import { mysqlPrisma } from "../src/libs/prisma";
 async function main() {
   const today = new Date().toISOString().split("T")[0];
   try {
-    const students = await mysqlPrisma.student.findMany({});
+    const students = await mysqlPrisma.student.findMany({
+      where: {
+        studentStatus: true,
+      },
+    });
+
     const insertData = students.map((student) => ({
       studentId: student.studentId,
       brushedStatus: "No",
-      brushedAt: dayjs().startOf("day").toDate(),
+      brushedAt: new Date(dayjs().format("YYYY-MM-DD")),
     }));
 
     await mysqlPrisma.brushed.createMany({
-      data: insertData as any[],
+      data: insertData.map((el) => ({
+        brushedAt: el.brushedAt,
+        brushedStatus: el.brushedStatus as
+          | "No"
+          | "Ok"
+          | "EarlyLeave"
+          | "Travel"
+          | "Workshop"
+          | "Absence",
+        studentId: el.studentId,
+      })),
       skipDuplicates: true,
     });
 
