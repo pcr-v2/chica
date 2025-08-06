@@ -69,7 +69,7 @@ export default function HomeSelect(props: IProps) {
 
       const test = await getTest();
 
-      console.log("test", test);
+      // console.log("test", test);
 
       if (updateBrush.code !== "SUCCESS") {
         toast.error(updateBrush.message);

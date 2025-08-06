@@ -13,9 +13,9 @@ const testList = [
   { type: "image", src: "test2.png" },
   { type: "image", src: "test3.png" },
   { type: "image", src: "test4.png" },
-  { type: "video", src: "test1.mp4" },
-  // { type: "video", src: "test1.mp4" },
-  // { type: "video", src: "test1.mp4" },
+  { type: "video", src: "test3.mp4" },
+  { type: "video", src: "test2.mp4" },
+  { type: "video", src: "test0.mp4" },
 ];
 
 export default function ScreenSaver() {
@@ -94,7 +94,7 @@ export default function ScreenSaver() {
               }}
             />
           )}
-          <AbSpan>{index + 1}번 슬라이드</AbSpan>
+          {/* <AbSpan >{index + 1}번 슬라이드</AbSpan> */}
         </SlideST>
       ))}
     </SwiperST>

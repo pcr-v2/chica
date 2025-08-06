@@ -42,7 +42,7 @@ export default function MealContent(props: IProps) {
 
       <Contents>
         <Meals>
-          Test용 계성초 4월1일식단
+          {/* Test용 계성초 4월1일식단 */}
           {meal.map((m, idx) => {
             return (
               <Box key={idx} sx={{ display: "flex", gap: "4px" }}>
