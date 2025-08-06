@@ -30,7 +30,7 @@ interface IProps {
 
 export default function HomeContainer(props: IProps) {
   const { me } = props;
-
+  console.log("me", me);
   const [open, setOpen] = useState(false);
   const [mealRes, setMealRes] = useState<Meal[]>();
 
