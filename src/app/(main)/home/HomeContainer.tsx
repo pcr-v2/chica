@@ -67,9 +67,8 @@ export default function HomeContainer(props: IProps) {
       {userValue.grade === null && <HomeMenu onClick={handleMeal} />}
 
       <HomeSelect
-        schoolId={me.data?.schoolId as string}
+        me={me?.data}
         userValue={userValue}
-        classList={me?.data?.classList ?? []}
         onClickInfo={(value: TUserSelectValue) => {
           if (value.name === "grade") {
             setUserValue({

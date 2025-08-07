@@ -67,8 +67,14 @@ export async function signIn(request: SignInRequest) {
 
   const cookieStore = await cookies();
 
-  cookieStore.set("CHICA_USER_ACCESS_TOKEN", accessToken);
-  cookieStore.set("CHICA_USER_REFRESH_TOKEN", refreshToken);
+  cookieStore.set("CHICA_USER_ACCESS_TOKEN", accessToken, {
+    maxAge: 60 * 60 * 24 * 399,
+  });
+  cookieStore.set("CHICA_USER_REFRESH_TOKEN", refreshToken, {
+    maxAge: 60 * 60 * 24 * 399,
+  });
+
+  // localStorage.setItem("test", "test");
 
   return {
     code: "SUCCESS" as const,

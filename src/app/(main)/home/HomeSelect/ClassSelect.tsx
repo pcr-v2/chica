@@ -42,12 +42,12 @@ const ClassBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
 
   return {
     fontSize: 32,
+    padding: "24px",
     fontWeight: 700,
     display: "flex",
     cursor: "pointer",
     lineHeight: "150%",
     alignItems: "center",
-    padding: "24px 40px",
     borderRadius: "100px",
     justifyContent: "center",
     letterSpacing: "-0.64px",

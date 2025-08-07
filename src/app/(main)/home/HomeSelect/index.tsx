@@ -11,6 +11,8 @@ import ClassSelect from "@/app/(main)/home/HomeSelect/ClassSelect";
 import GradeSelect from "@/app/(main)/home/HomeSelect/GradeSelect";
 import NumberSelect from "@/app/(main)/home/HomeSelect/NumberSelect";
 import SelectTeeth from "@/app/(main)/home/SelectTeeth";
+import SuccessAnimation from "@/app/_components/common/SuccessAnimation";
+import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { checkBrush } from "@/app/actions/brush/checkBrushAction";
 import { getTest } from "@/app/actions/brush/testAction";
 import Class from "@/assets/home/class.png";
@@ -18,14 +20,14 @@ import Grade from "@/assets/home/grade.png";
 import NumberImg from "@/assets/home/number.png";
 
 interface IProps {
+  me: GetMeResponse["data"];
+
   userValue: TUserValue;
-  schoolId: string;
-  classList: { grade: string; class: string[] }[];
   onClickInfo: (value: TUserSelectValue) => void;
 }
 
 export default function HomeSelect(props: IProps) {
-  const { onClickInfo, userValue, classList, schoolId } = props;
+  const { onClickInfo, userValue, me } = props;
 
   const router = useRouter();
 
@@ -50,6 +52,9 @@ export default function HomeSelect(props: IProps) {
     (val.length === 2 && val.startsWith("0")) ||
     (val.length === 1 && val === "0");
 
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
+
   const handleClick = async (v: string) => {
     if (v === "BACKSPACE") return setValue((prev) => prev.slice(0, -1));
 
@@ -62,7 +67,7 @@ export default function HomeSelect(props: IProps) {
       onClickInfo({ name: "number", value });
 
       const updateBrush = await checkBrush({
-        schoolId: schoolId,
+        schoolId: me?.schoolId as string,
         studentClass: userValue.class as string,
         studentGrade: Number(userValue.grade),
         studentNumber: Number(value),
@@ -87,9 +92,18 @@ export default function HomeSelect(props: IProps) {
         return;
       }
 
-      toast.success(updateBrush.message);
+      // toast.success(updateBrush.message);
+      // <SuccessAnimation />;
+      if (updateBrush.code === "SUCCESS") {
+        setRedirectUrl(`/summary?studentId=${updateBrush.data?.studentId}`);
 
-      router.replace(`/summary?studentId=${updateBrush.data?.studentId}`);
+        setIsSuccess(true); // 성공 애니메이션 표시
+
+        // setTimeout(() => {
+        //   router.replace();
+        // }, 1000); // 애니메이션 보여준 후 이동
+        return;
+      }
 
       return;
     }
@@ -102,10 +116,14 @@ export default function HomeSelect(props: IProps) {
   const rightDigit = value.length >= 1 ? value[value.length - 1] : "";
 
   const selectedGradeClassList =
-    classList.find((item) => item.grade === userValue.grade)?.class ?? [];
-
+    me?.classList
+      .find((item) => item.grade === userValue.grade)
+      ?.class?.sort((a: string, b: string) => Number(a) - Number(b)) ?? [];
+  // console.log("selectedGradeClassList", selectedGradeClassList);
   return (
     <Wrapper>
+      {isSuccess && <SuccessAnimation redirectUrl={redirectUrl ?? undefined} />}
+
       {selectStep === "grade" && (
         <>
           <TitleImg src={Grade.src} alt="title1" />
@@ -114,7 +132,8 @@ export default function HomeSelect(props: IProps) {
               onClickInfo({ name: "grade", value: v });
               setSelectStep("class");
             }}
-            schoolLevel="elementary"
+            // schoolLevel="elementary"
+            schoolLevel={me?.schoolLevel as "elementary" | "middle" | "high"}
             selected={value}
           />
         </>
