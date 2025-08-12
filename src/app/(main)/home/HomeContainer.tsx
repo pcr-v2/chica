@@ -56,7 +56,7 @@ export default function HomeContainer(props: IProps) {
   };
 
   const isActive = useScreenSaverStore((s) => s.isActive);
-  console.log("isActive", isActive);
+  // console.log("isActive", isActive);
   return (
     <Wrapper
       style={{

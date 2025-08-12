@@ -2,13 +2,14 @@
 
 import { Button, styled } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { getMe } from "@/app/actions/auth/getMe";
+import { refreshToken } from "@/app/actions/auth/refreshToken";
 import { getContentsList } from "@/app/actions/contents/getContentsListAction";
 
 export type FileType = "image" | "video";
@@ -90,7 +91,7 @@ export default function ScreenSaver() {
       // 10초 후 다음 슬라이드로
       const timeoutId = setTimeout(() => {
         swiper.slideNext();
-      }, 5000);
+      }, 10000);
       timeouts.current.push(timeoutId);
     }
   };
@@ -99,6 +100,15 @@ export default function ScreenSaver() {
     return () => {
       timeouts.current.forEach((t) => clearTimeout(t));
     };
+  }, []);
+
+  useEffect(() => {
+    startTransition(() => {
+      refreshToken().catch(() => {
+        // 토큰 갱신 실패 시 로그인 페이지 이동
+        window.location.href = "/signin";
+      });
+    });
   }, []);
 
   return (

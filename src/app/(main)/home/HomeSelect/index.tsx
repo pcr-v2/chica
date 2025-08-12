@@ -85,8 +85,15 @@ export default function HomeSelect(props: IProps) {
         return;
       }
 
+      if (updateBrush.code === "NOTTODAY") {
+        toast.success(updateBrush.message);
+
+        router.replace(`/summary?studentId=${updateBrush.data?.studentId}`);
+        return;
+      }
+
       if (updateBrush.code !== "SUCCESS") {
-        toast.error(updateBrush.message);
+        toast.success(updateBrush.message);
 
         router.replace("/");
         return;

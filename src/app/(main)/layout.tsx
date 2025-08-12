@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 import ScreenSaver from "@/app/_components/common/ScreenSaver";
 import { signOut } from "@/app/actions/auth/SignOutAction";
@@ -20,6 +20,46 @@ export default function MainLayout(props: IProps) {
 
   const isActive = useScreenSaverStore((s) => s.isActive);
   const deactivate = useScreenSaverStore((s) => s.deactivate);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 사용자 인터랙션 있을 때마다 호출할 함수
+  const resetTimer = () => {
+    // 스크린세이버 활성화 상태면 끄기
+    if (isActive) {
+      deactivate();
+    }
+    // 기존 타이머 있으면 초기화
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    // 1분 뒤 스크린세이버 활성화
+    timerRef.current = setTimeout(() => {
+      // 스크린세이버 활성화 함수 (store 내 isActive를 true로)
+      // isActive 상태 변경 로직을 useScreenSaverStore에서 제공해야 함
+      useScreenSaverStore.getState().activate();
+    }, 60 * 1000); // 1분
+  };
+
+  // 화면 클릭/터치 이벤트 감지
+  useEffect(() => {
+    // 초기 타이머 설정
+    resetTimer();
+
+    // 이벤트 핸들러 (사용자 인터랙션)
+    const onUserActivity = () => {
+      resetTimer();
+    };
+
+    window.addEventListener("click", onUserActivity);
+    window.addEventListener("touchstart", onUserActivity);
+
+    return () => {
+      window.removeEventListener("click", onUserActivity);
+      window.removeEventListener("touchstart", onUserActivity);
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (easterEgg > 9) {
@@ -70,12 +110,12 @@ export default function MainLayout(props: IProps) {
             onClick={(e) => {
               e.stopPropagation();
               deactivate();
-              console.log("click");
+              resetTimer(); // 터치 시 타이머 초기화도 추가해줘야 함
             }}
             onTouchStart={(e) => {
               e.stopPropagation();
               deactivate();
-              console.log("touch");
+              resetTimer(); // 터치 시 타이머 초기화도 추가해줘야 함
             }}
           />
         </>

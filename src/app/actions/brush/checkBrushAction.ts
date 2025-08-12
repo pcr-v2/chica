@@ -14,7 +14,7 @@ dayjs.extend(timezone);
 export type CheckBrushRequest = z.infer<typeof checkBrushSchema>;
 
 export type CheckBrushResponse = {
-  code: "VALIDATION_ERROR" | "SUCCESS" | "FAIL" | "ALREADY";
+  code: "VALIDATION_ERROR" | "SUCCESS" | "FAIL" | "ALREADY" | "NOTTODAY";
   message: string;
   data?: {
     studentId: string;
@@ -97,8 +97,8 @@ export async function checkBrush(
 
       if (!toUpdate) {
         return {
-          code: "FAIL" as const,
-          message: "양치 데이터를 찾을 수 없습니다.",
+          code: "NOTTODAY" as const,
+          message: "오늘은 양치 체크하는 날이 아닙니다.",
         };
       }
 

@@ -3,6 +3,6 @@ import { getMe } from "@/app/actions/auth/getMe";
 
 export default async function page() {
   const me = await getMe();
-  console.log("me", me);
+  // console.log("me", me);
   return <HomeContainer me={me} />;
 }

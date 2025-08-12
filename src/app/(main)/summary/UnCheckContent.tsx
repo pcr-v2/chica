@@ -94,7 +94,7 @@ export default function UnCheckContent(props: IProps) {
       <Btn
         onClick={async () => {
           const changed = getChangedList();
-          console.log("변경된 항목:", changed);
+          // console.log("변경된 항목:", changed);
 
           if (changed && changed?.length > 0) {
             await updateUnChecked({

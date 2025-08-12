@@ -69,6 +69,7 @@ export async function signIn(request: SignInRequest) {
 
   cookieStore.set("CHICA_USER_ACCESS_TOKEN", accessToken, {
     maxAge: 60 * 60 * 24 * 399,
+    // maxAge: 10,
   });
   cookieStore.set("CHICA_USER_REFRESH_TOKEN", refreshToken, {
     maxAge: 60 * 60 * 24 * 399,

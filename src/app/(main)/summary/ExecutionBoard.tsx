@@ -50,7 +50,7 @@ export default function ExecutionBoard(props: IProps) {
     };
   });
 
-  console.log("uiData", uiData);
+  // console.log("uiData", uiData);
 
   return (
     <>
