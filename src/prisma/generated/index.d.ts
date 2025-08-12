@@ -3492,11 +3492,13 @@ export namespace Prisma {
   export type ContentsAvgAggregateOutputType = {
     id: number | null
     seq: number | null
+    fileSize: number | null
   }
 
   export type ContentsSumAggregateOutputType = {
     id: number | null
     seq: number | null
+    fileSize: number | null
   }
 
   export type ContentsMinAggregateOutputType = {
@@ -3506,6 +3508,8 @@ export namespace Prisma {
     fileName: string | null
     seq: number | null
     contentsStatus: boolean | null
+    userFileName: string | null
+    fileSize: number | null
   }
 
   export type ContentsMaxAggregateOutputType = {
@@ -3515,6 +3519,8 @@ export namespace Prisma {
     fileName: string | null
     seq: number | null
     contentsStatus: boolean | null
+    userFileName: string | null
+    fileSize: number | null
   }
 
   export type ContentsCountAggregateOutputType = {
@@ -3524,6 +3530,8 @@ export namespace Prisma {
     fileName: number
     seq: number
     contentsStatus: number
+    userFileName: number
+    fileSize: number
     _all: number
   }
 
@@ -3531,11 +3539,13 @@ export namespace Prisma {
   export type ContentsAvgAggregateInputType = {
     id?: true
     seq?: true
+    fileSize?: true
   }
 
   export type ContentsSumAggregateInputType = {
     id?: true
     seq?: true
+    fileSize?: true
   }
 
   export type ContentsMinAggregateInputType = {
@@ -3545,6 +3555,8 @@ export namespace Prisma {
     fileName?: true
     seq?: true
     contentsStatus?: true
+    userFileName?: true
+    fileSize?: true
   }
 
   export type ContentsMaxAggregateInputType = {
@@ -3554,6 +3566,8 @@ export namespace Prisma {
     fileName?: true
     seq?: true
     contentsStatus?: true
+    userFileName?: true
+    fileSize?: true
   }
 
   export type ContentsCountAggregateInputType = {
@@ -3563,6 +3577,8 @@ export namespace Prisma {
     fileName?: true
     seq?: true
     contentsStatus?: true
+    userFileName?: true
+    fileSize?: true
     _all?: true
   }
 
@@ -3659,6 +3675,8 @@ export namespace Prisma {
     fileName: string
     seq: number
     contentsStatus: boolean
+    userFileName: string | null
+    fileSize: number | null
     _count: ContentsCountAggregateOutputType | null
     _avg: ContentsAvgAggregateOutputType | null
     _sum: ContentsSumAggregateOutputType | null
@@ -3687,6 +3705,8 @@ export namespace Prisma {
     fileName?: boolean
     seq?: boolean
     contentsStatus?: boolean
+    userFileName?: boolean
+    fileSize?: boolean
     school?: boolean | SchoolDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contents"]>
 
@@ -3699,9 +3719,11 @@ export namespace Prisma {
     fileName?: boolean
     seq?: boolean
     contentsStatus?: boolean
+    userFileName?: boolean
+    fileSize?: boolean
   }
 
-  export type ContentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "fileType" | "fileName" | "seq" | "contentsStatus", ExtArgs["result"]["contents"]>
+  export type ContentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "schoolId" | "fileType" | "fileName" | "seq" | "contentsStatus" | "userFileName" | "fileSize", ExtArgs["result"]["contents"]>
   export type ContentsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     school?: boolean | SchoolDefaultArgs<ExtArgs>
   }
@@ -3718,6 +3740,8 @@ export namespace Prisma {
       fileName: string
       seq: number
       contentsStatus: boolean
+      userFileName: string | null
+      fileSize: number | null
     }, ExtArgs["result"]["contents"]>
     composites: {}
   }
@@ -4094,6 +4118,8 @@ export namespace Prisma {
     readonly fileName: FieldRef<"Contents", 'String'>
     readonly seq: FieldRef<"Contents", 'Int'>
     readonly contentsStatus: FieldRef<"Contents", 'Boolean'>
+    readonly userFileName: FieldRef<"Contents", 'String'>
+    readonly fileSize: FieldRef<"Contents", 'Float'>
   }
     
 
@@ -8651,7 +8677,9 @@ export namespace Prisma {
     fileType: 'fileType',
     fileName: 'fileName',
     seq: 'seq',
-    contentsStatus: 'contentsStatus'
+    contentsStatus: 'contentsStatus',
+    userFileName: 'userFileName',
+    fileSize: 'fileSize'
   };
 
   export type ContentsScalarFieldEnum = (typeof ContentsScalarFieldEnum)[keyof typeof ContentsScalarFieldEnum]
@@ -8755,7 +8783,8 @@ export namespace Prisma {
   export const ContentsOrderByRelevanceFieldEnum: {
     schoolId: 'schoolId',
     fileType: 'fileType',
-    fileName: 'fileName'
+    fileName: 'fileName',
+    userFileName: 'userFileName'
   };
 
   export type ContentsOrderByRelevanceFieldEnum = (typeof ContentsOrderByRelevanceFieldEnum)[keyof typeof ContentsOrderByRelevanceFieldEnum]
@@ -8852,6 +8881,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
    * Reference to a field of type 'SchoolSchoolType'
    */
   export type EnumSchoolSchoolTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolSchoolType'>
@@ -8869,13 +8905,6 @@ export namespace Prisma {
    * Reference to a field of type 'StudentStudentGender'
    */
   export type EnumStudentStudentGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentStudentGender'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
   /**
    * Deep Input Types
@@ -9023,6 +9052,8 @@ export namespace Prisma {
     fileName?: StringFilter<"Contents"> | string
     seq?: IntFilter<"Contents"> | number
     contentsStatus?: BoolFilter<"Contents"> | boolean
+    userFileName?: StringNullableFilter<"Contents"> | string | null
+    fileSize?: FloatNullableFilter<"Contents"> | number | null
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
   }
 
@@ -9033,22 +9064,26 @@ export namespace Prisma {
     fileName?: SortOrder
     seq?: SortOrder
     contentsStatus?: SortOrder
+    userFileName?: SortOrderInput | SortOrder
+    fileSize?: SortOrderInput | SortOrder
     school?: SchoolOrderByWithRelationInput
     _relevance?: ContentsOrderByRelevanceInput
   }
 
   export type ContentsWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    fileName?: string
     AND?: ContentsWhereInput | ContentsWhereInput[]
     OR?: ContentsWhereInput[]
     NOT?: ContentsWhereInput | ContentsWhereInput[]
     schoolId?: StringFilter<"Contents"> | string
     fileType?: StringFilter<"Contents"> | string
-    fileName?: StringFilter<"Contents"> | string
     seq?: IntFilter<"Contents"> | number
     contentsStatus?: BoolFilter<"Contents"> | boolean
+    userFileName?: StringNullableFilter<"Contents"> | string | null
+    fileSize?: FloatNullableFilter<"Contents"> | number | null
     school?: XOR<SchoolScalarRelationFilter, SchoolWhereInput>
-  }, "id">
+  }, "id" | "fileName">
 
   export type ContentsOrderByWithAggregationInput = {
     id?: SortOrder
@@ -9057,6 +9092,8 @@ export namespace Prisma {
     fileName?: SortOrder
     seq?: SortOrder
     contentsStatus?: SortOrder
+    userFileName?: SortOrderInput | SortOrder
+    fileSize?: SortOrderInput | SortOrder
     _count?: ContentsCountOrderByAggregateInput
     _avg?: ContentsAvgOrderByAggregateInput
     _max?: ContentsMaxOrderByAggregateInput
@@ -9074,6 +9111,8 @@ export namespace Prisma {
     fileName?: StringWithAggregatesFilter<"Contents"> | string
     seq?: IntWithAggregatesFilter<"Contents"> | number
     contentsStatus?: BoolWithAggregatesFilter<"Contents"> | boolean
+    userFileName?: StringNullableWithAggregatesFilter<"Contents"> | string | null
+    fileSize?: FloatNullableWithAggregatesFilter<"Contents"> | number | null
   }
 
   export type HolidayWhereInput = {
@@ -9537,6 +9576,8 @@ export namespace Prisma {
     fileName: string
     seq: number
     contentsStatus?: boolean
+    userFileName?: string | null
+    fileSize?: number | null
     school: SchoolCreateNestedOneWithoutContentsInput
   }
 
@@ -9547,6 +9588,8 @@ export namespace Prisma {
     fileName: string
     seq: number
     contentsStatus?: boolean
+    userFileName?: string | null
+    fileSize?: number | null
   }
 
   export type ContentsUpdateInput = {
@@ -9554,6 +9597,8 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    userFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
     school?: SchoolUpdateOneRequiredWithoutContentsNestedInput
   }
 
@@ -9564,6 +9609,8 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    userFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ContentsCreateManyInput = {
@@ -9573,6 +9620,8 @@ export namespace Prisma {
     fileName: string
     seq: number
     contentsStatus?: boolean
+    userFileName?: string | null
+    fileSize?: number | null
   }
 
   export type ContentsUpdateManyMutationInput = {
@@ -9580,6 +9629,8 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    userFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ContentsUncheckedUpdateManyInput = {
@@ -9589,6 +9640,8 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    userFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type HolidayCreateInput = {
@@ -10231,6 +10284,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type ContentsOrderByRelevanceInput = {
     fields: ContentsOrderByRelevanceFieldEnum | ContentsOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -10244,11 +10308,14 @@ export namespace Prisma {
     fileName?: SortOrder
     seq?: SortOrder
     contentsStatus?: SortOrder
+    userFileName?: SortOrder
+    fileSize?: SortOrder
   }
 
   export type ContentsAvgOrderByAggregateInput = {
     id?: SortOrder
     seq?: SortOrder
+    fileSize?: SortOrder
   }
 
   export type ContentsMaxOrderByAggregateInput = {
@@ -10258,6 +10325,8 @@ export namespace Prisma {
     fileName?: SortOrder
     seq?: SortOrder
     contentsStatus?: SortOrder
+    userFileName?: SortOrder
+    fileSize?: SortOrder
   }
 
   export type ContentsMinOrderByAggregateInput = {
@@ -10267,11 +10336,14 @@ export namespace Prisma {
     fileName?: SortOrder
     seq?: SortOrder
     contentsStatus?: SortOrder
+    userFileName?: SortOrder
+    fileSize?: SortOrder
   }
 
   export type ContentsSumOrderByAggregateInput = {
     id?: SortOrder
     seq?: SortOrder
+    fileSize?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -10280,6 +10352,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type HolidayOrderByRelevanceInput = {
@@ -10661,6 +10749,14 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type SchoolUpdateOneRequiredWithoutContentsNestedInput = {
@@ -11125,12 +11221,39 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumSchoolSchoolTypeFilter<$PrismaModel = never> = {
@@ -11620,6 +11743,8 @@ export namespace Prisma {
     fileName: string
     seq: number
     contentsStatus?: boolean
+    userFileName?: string | null
+    fileSize?: number | null
   }
 
   export type ContentsUncheckedCreateWithoutSchoolInput = {
@@ -11628,6 +11753,8 @@ export namespace Prisma {
     fileName: string
     seq: number
     contentsStatus?: boolean
+    userFileName?: string | null
+    fileSize?: number | null
   }
 
   export type ContentsCreateOrConnectWithoutSchoolInput = {
@@ -11758,6 +11885,8 @@ export namespace Prisma {
     fileName?: StringFilter<"Contents"> | string
     seq?: IntFilter<"Contents"> | number
     contentsStatus?: BoolFilter<"Contents"> | boolean
+    userFileName?: StringNullableFilter<"Contents"> | string | null
+    fileSize?: FloatNullableFilter<"Contents"> | number | null
   }
 
   export type SchedulesUpsertWithWhereUniqueWithoutSchoolInput = {
@@ -11995,6 +12124,8 @@ export namespace Prisma {
     fileName: string
     seq: number
     contentsStatus?: boolean
+    userFileName?: string | null
+    fileSize?: number | null
   }
 
   export type SchedulesCreateManySchoolInput = {
@@ -12054,6 +12185,8 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    userFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ContentsUncheckedUpdateWithoutSchoolInput = {
@@ -12062,6 +12195,8 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    userFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ContentsUncheckedUpdateManyWithoutSchoolInput = {
@@ -12070,6 +12205,8 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     seq?: IntFieldUpdateOperationsInput | number
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
+    userFileName?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type SchedulesUpdateWithoutSchoolInput = {

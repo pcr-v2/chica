@@ -38,9 +38,11 @@ model Contents {
   id             Int     @id @default(autoincrement())
   schoolId       String  @map("school_id") @db.Char(36)
   fileType       String  @map("file_type") @db.VarChar(20)
-  fileName       String  @map("file_name") @db.VarChar(255)
+  fileName       String  @unique(map: "unique_file_name") @map("file_name") @db.VarChar(255)
   seq            Int     @db.TinyInt
   contentsStatus Boolean @default(true) @map("contents_status")
+  userFileName   String? @db.VarChar(255)
+  fileSize       Float?  @db.Float
   school         School  @relation(fields: [schoolId], references: [schoolId], onDelete: Cascade, map: "Contents_ibfk_1")
 
   @@index([schoolId], map: "school_id")
@@ -97,7 +99,7 @@ model Student {
   studentGrade  Int                  @map("student_grade") @db.TinyInt
   studentClass  String               @map("student_class") @db.VarChar(10)
   studentNumber Int                  @map("student_number") @db.TinyInt
-  studentName   String               @map("student_name") @db.VarChar(10)
+  studentName   String               @map("student_name") @db.VarChar(30)
   studentGender StudentStudentGender @map("student_gender")
   studentStatus Boolean              @default(true) @map("student_status")
   createdAt     DateTime             @default(dbgenerated("(now())")) @map("created_at") @db.DateTime(0)
