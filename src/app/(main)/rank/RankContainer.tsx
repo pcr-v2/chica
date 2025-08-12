@@ -105,9 +105,10 @@ export default function RankContainer(props: IProps) {
     isLoading ||
     !data ||
     !Array.isArray(singleRanks) ||
-    !Array.isArray(multiRanks) ||
-    (singleMulti === "single" && singleRanks.length === 0) ||
-    (singleMulti === "multi" && multiRanks.length === 0)
+    !Array.isArray(multiRanks)
+    // ||
+    // (singleMulti === "single" && singleRanks.length === 0) ||
+    // (singleMulti === "multi" && multiRanks.length === 0)
   ) {
     return <LoadingAnimation />;
   }
