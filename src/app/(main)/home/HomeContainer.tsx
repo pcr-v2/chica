@@ -100,17 +100,17 @@ export default function HomeContainer(props: IProps) {
         onClickInfo={(value: TUserSelectValue) => {
           if (isActive) return;
 
-          const koreaNow = getKoreaTime();
-          const limitTime = koreaNow
-            .set("hour", 11)
-            .set("minute", 30)
-            .set("second", 0);
+          // const koreaNow = getKoreaTime();
+          // const limitTime = koreaNow
+          //   .set("hour", 11)
+          //   .set("minute", 30)
+          //   .set("second", 0);
 
-          if (koreaNow.isBefore(limitTime)) {
-            toast.success("양치 체크는 11시 30분 부터 가능합니다.");
-            setUserValue({ grade: null, class: null, number: null });
-            return;
-          }
+          // if (koreaNow.isBefore(limitTime)) {
+          //   toast.success("양치 체크는 11시 30분 부터 가능합니다.");
+          //   setUserValue({ grade: null, class: null, number: null });
+          //   return;
+          // }
 
           if (value.name === "grade") {
             setUserValue({

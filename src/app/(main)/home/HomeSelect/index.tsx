@@ -17,6 +17,7 @@ import SelectTeeth from "@/app/(main)/home/SelectTeeth";
 import SuccessAnimation from "@/app/_components/common/SuccessAnimation";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { checkBrush } from "@/app/actions/brush/checkBrushAction";
+import { getStudentLatestSummary } from "@/app/actions/student/getStudentLatestAction";
 // import { getTest } from "@/app/actions/brush/testAction";
 import Class from "@/assets/home/class.png";
 import Grade from "@/assets/home/grade.png";
@@ -65,17 +66,6 @@ export default function HomeSelect(props: IProps) {
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
   const handleClick = async (v: string) => {
-    const koreaNow = getKoreaTime();
-    const limitTime = koreaNow
-      .set("hour", 11)
-      .set("minute", 30)
-      .set("second", 0);
-
-    if (koreaNow.isBefore(limitTime)) {
-      toast.success("양치 체크는 11시 30분 부터 가능합니다.");
-      return;
-    }
-
     if (v === "BACKSPACE") return setValue((prev) => prev.slice(0, -1));
 
     if (v === "OK") {
@@ -85,6 +75,37 @@ export default function HomeSelect(props: IProps) {
       }
 
       onClickInfo({ name: "number", value });
+
+      const koreaNow = getKoreaTime();
+      const limitTime = koreaNow
+        .set("hour", 11)
+        .set("minute", 30)
+        .set("second", 0);
+
+      if (koreaNow.isBefore(limitTime)) {
+        toast.success("양치 체크는 11시 30분 부터 가능합니다.");
+
+        if (
+          userValue.grade != null &&
+          userValue.class != null &&
+          value != null
+        ) {
+          const res = await getStudentLatestSummary({
+            schoolId: me?.schoolId as string,
+            studentGrade: Number(userValue.grade),
+            studentClass: userValue.class,
+            studentNumber: Number(value),
+          });
+
+          if (res.code === "SUCCESS") {
+            router.replace(`/summary?studentId=${res.data?.studentId}`);
+            return;
+          }
+        }
+        return;
+      }
+
+      console.log("over updated");
 
       const updateBrush = await checkBrush({
         schoolId: me?.schoolId as string,
