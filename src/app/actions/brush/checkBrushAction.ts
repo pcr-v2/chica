@@ -99,6 +99,7 @@ export async function checkBrush(
         return {
           code: "NOTTODAY" as const,
           message: "오늘은 양치 체크하는 날이 아닙니다.",
+          data: { studentId },
         };
       }
 
