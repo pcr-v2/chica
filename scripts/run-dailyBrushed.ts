@@ -3,7 +3,15 @@ import "dotenv/config";
 import { mysqlPrisma } from "../src/libs/prisma";
 
 async function main() {
+  const todayDate = new Date();
   const today = new Date().toISOString().split("T")[0];
+  const dayOfWeek = todayDate.getDay();
+
+  // 토요일(6) 또는 일요일(0) 이면 종료
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    console.log(`[Batch] Today is weekend (${today}). No inserts.`);
+    return;
+  }
 
   try {
     // 1. 휴일 체크

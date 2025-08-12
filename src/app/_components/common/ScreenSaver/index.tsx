@@ -2,6 +2,7 @@
 
 import { Button, styled } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { redirect, useRouter } from "next/navigation";
 import { startTransition, useEffect, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -29,6 +30,8 @@ export interface IItem {
 export default function ScreenSaver() {
   const [items, setItems] = useState<IItem[]>([]);
 
+  const router = useRouter();
+
   const { data: me } = useQuery({
     queryKey: ["get-me"],
     queryFn: () => getMe(),
@@ -48,6 +51,10 @@ export default function ScreenSaver() {
 
   useEffect(() => {
     if (data?.result) {
+      if (data.result.length <= 0) {
+        // redirect("/home");
+      }
+
       setItems(
         data.result
           .slice() // 원본 배열 보호용 복사
@@ -72,7 +79,7 @@ export default function ScreenSaver() {
 
   const handleSlideChange = () => {
     const swiper = swiperRef.current;
-    if (!swiper) return;
+    if (!swiper || items.length <= 0) return;
 
     const currentIndex = swiper.realIndex;
     const currentItem = items[currentIndex];
@@ -81,13 +88,13 @@ export default function ScreenSaver() {
     timeouts.current.forEach((t) => clearTimeout(t));
     timeouts.current = [];
 
-    if (currentItem.type === "video") {
+    if (currentItem?.type === "video") {
       const videoEl = videoRefs.current[currentIndex];
       if (videoEl) {
         // videoEl.currentTime = 0;
         videoEl.play();
       }
-    } else if (currentItem.type === "image") {
+    } else if (currentItem?.type === "image") {
       // 10초 후 다음 슬라이드로
       const timeoutId = setTimeout(() => {
         swiper.slideNext();
@@ -122,38 +129,60 @@ export default function ScreenSaver() {
         swiperRef.current = swiper;
       }}
     >
-      {items.map((item, index) => (
-        <SlideST key={index}>
-          {item.type === "video" ? (
-            <video
-              ref={(el) => {
-                videoRefs.current[index] = el;
-              }}
-              src={item.url}
-              style={{
-                // minWidth: "768px",
-                width: "100%", // 가로 꽉 채움
-                height: "100%", // 비율 유지하며 세로 크기 자동 조절
-              }}
-              autoPlay
-              muted
-              playsInline
-              onEnded={() => {
-                swiperRef.current.slideNext();
-              }}
-            />
-          ) : (
-            <img
-              src={item.url}
-              style={{
-                width: "100%",
-                objectFit: "contain",
-                maxHeight: "100dvh",
-              }}
-            />
-          )}
+      {items.length <= 0 ? (
+        <SlideST
+          style={{
+            backgroundColor: "rgba(255,255,255,0.5)",
+            flexDirection: "column",
+          }}
+        >
+          <img
+            src="/images/logo/page-logo.png"
+            style={{
+              width: "100%",
+              maxWidth: "500px",
+              marginBottom: "64px",
+            }}
+          />
+
+          <span style={{ fontSize: 32, fontWeight: 600, color: "#747d8a" }}>
+            관리자에서 컨텐츠를 삽입해주세요.
+          </span>
         </SlideST>
-      ))}
+      ) : (
+        items.map((item, index) => (
+          <SlideST key={index}>
+            {item.type === "video" ? (
+              <video
+                ref={(el) => {
+                  videoRefs.current[index] = el;
+                }}
+                src={item.url}
+                style={{
+                  // minWidth: "768px",
+                  width: "100%", // 가로 꽉 채움
+                  height: "100%", // 비율 유지하며 세로 크기 자동 조절
+                }}
+                autoPlay
+                muted
+                playsInline
+                onEnded={() => {
+                  swiperRef.current.slideNext();
+                }}
+              />
+            ) : (
+              <img
+                src={item.url}
+                style={{
+                  width: "100%",
+                  objectFit: "contain",
+                  maxHeight: "100dvh",
+                }}
+              />
+            )}
+          </SlideST>
+        ))
+      )}
     </SwiperST>
   );
 }
