@@ -1,6 +1,9 @@
 "use client";
 
-import { Box, styled } from "@mui/material";
+import { Box, Button, styled } from "@mui/material";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -12,7 +15,15 @@ import Modal from "@/app/_components/common/Modal";
 import HomeHeader from "@/app/_components/layout/Headers/HomeHeader";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { getMeal, Meal } from "@/app/actions/meal/getMeal";
+import testAction from "@/app/actions/testAction";
 import { useScreenSaverStore } from "@/store/useScreenSaverStore";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const getKoreaTime = () => {
+  return dayjs().tz("Asia/Seoul");
+};
 
 export type TUserValue = {
   grade: string | null;
@@ -63,6 +74,16 @@ export default function HomeContainer(props: IProps) {
         display: isActive ? "none" : "unset",
       }}
     >
+      {/* 
+      // 배치 테스트 용
+      <Button
+        variant="contained"
+        onClick={async () => {
+          await testAction();
+        }}
+      >
+        TEST
+      </Button> */}
       <HomeHeader
         grade={userValue.grade}
         classNum={userValue.class}
@@ -78,6 +99,19 @@ export default function HomeContainer(props: IProps) {
         userValue={userValue}
         onClickInfo={(value: TUserSelectValue) => {
           if (isActive) return;
+
+          const koreaNow = getKoreaTime();
+          const limitTime = koreaNow
+            .set("hour", 11)
+            .set("minute", 30)
+            .set("second", 0);
+
+          if (koreaNow.isBefore(limitTime)) {
+            toast.success("양치 체크는 11시 30분 부터 가능합니다.");
+            setUserValue({ grade: null, class: null, number: null });
+            return;
+          }
+
           if (value.name === "grade") {
             setUserValue({
               ...userValue,

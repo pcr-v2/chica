@@ -1,6 +1,9 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,6 +22,12 @@ import Class from "@/assets/home/class.png";
 import Grade from "@/assets/home/grade.png";
 import NumberImg from "@/assets/home/number.png";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const getKoreaTime = () => {
+  return dayjs().tz("Asia/Seoul");
+};
 interface IProps {
   me: GetMeResponse["data"];
 
@@ -56,6 +65,17 @@ export default function HomeSelect(props: IProps) {
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
   const handleClick = async (v: string) => {
+    const koreaNow = getKoreaTime();
+    const limitTime = koreaNow
+      .set("hour", 11)
+      .set("minute", 30)
+      .set("second", 0);
+
+    if (koreaNow.isBefore(limitTime)) {
+      toast.success("양치 체크는 11시 30분 부터 가능합니다.");
+      return;
+    }
+
     if (v === "BACKSPACE") return setValue((prev) => prev.slice(0, -1));
 
     if (v === "OK") {

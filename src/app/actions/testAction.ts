@@ -1,8 +1,8 @@
-import "dotenv/config";
+"use server";
 
-import { mysqlPrisma } from "../src/libs/prisma";
+import { mysqlPrisma } from "@/libs/prisma";
 
-async function main() {
+export default async function testAction() {
   const todayDate = new Date();
   const today = new Date().toISOString().split("T")[0]; // "2025-08-12"
   const dayOfWeek = todayDate.getDay();
@@ -125,4 +125,3 @@ async function main() {
     console.error("[Batch Error] brushed insert failed:", err);
   }
 }
-main();
