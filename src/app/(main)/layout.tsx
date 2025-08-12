@@ -62,11 +62,21 @@ export default function MainLayout(props: IProps) {
             style={{
               inset: 0,
               zIndex: 9999,
-              position: "absolute",
-              // backgroundColor: "rgba(0,0,0,0.4)",
+              position: "fixed",
+              touchAction: "none",
+              pointerEvents: "all",
+              // backgroundColor: "rgba(0,0,0,0.1)", // 임시 시각화용 (투명도 조절 가능)
             }}
-            onClick={deactivate}
-            onTouchStart={deactivate}
+            onClick={(e) => {
+              e.stopPropagation();
+              deactivate();
+              console.log("click");
+            }}
+            onTouchStart={(e) => {
+              e.stopPropagation();
+              deactivate();
+              console.log("touch");
+            }}
           />
         </>
       )}

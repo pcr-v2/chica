@@ -48,21 +48,22 @@ export default function ScreenSaver() {
   useEffect(() => {
     if (data?.result) {
       setItems(
-        data.result.map((content) => ({
-          id: content.id.toString(),
-          type: content.fileType === "mp4" ? "video" : "image",
-          url: `${process.env.NEXT_PUBLIC_AWS_CLOUD_FRONT_KEY}/${content.schoolId}/${content.fileName}.${content.fileType}`,
-          fileName: content.fileName,
-          fileType: content.fileType,
-          schoolId: content.schoolId,
-          seq: content.seq,
-          contentsStatus: content.contentsStatus,
-        })),
+        data.result
+          .slice() // 원본 배열 보호용 복사
+          .sort((a, b) => (a.seq ?? 0) - (b.seq ?? 0)) // seq 기준 오름차순 정렬, seq가 없으면 0으로 처리
+          .map((content) => ({
+            id: content.id.toString(),
+            type: content.fileType === "mp4" ? "video" : "image",
+            url: `${process.env.NEXT_PUBLIC_AWS_CLOUD_FRONT_KEY}/${content.schoolId}/${content.fileName}.${content.fileType}`,
+            fileName: content.fileName,
+            fileType: content.fileType,
+            schoolId: content.schoolId,
+            seq: content.seq,
+            contentsStatus: content.contentsStatus,
+          })),
       );
     }
   }, [data]);
-
-  console.log("items", items);
 
   const swiperRef = useRef<any>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -101,65 +102,49 @@ export default function ScreenSaver() {
   }, []);
 
   return (
-    <div
-      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-        // e.stopPropagation();
-        // e.preventDefault();
-      }}
-      onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
-        // e.stopPropagation();
-        // e.preventDefault();
-      }}
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        zIndex: 99999,
-        pointerEvents: "auto", // 이 div가 이벤트를 받도록 보장
+    <SwiperST
+      direction="vertical"
+      modules={[Autoplay, Pagination]}
+      loop
+      onSlideChange={handleSlideChange}
+      className="mySwiper"
+      onSwiper={(swiper) => {
+        swiperRef.current = swiper;
       }}
     >
-      <SwiperST
-        direction="vertical"
-        modules={[Autoplay, Pagination]}
-        loop
-        onSlideChange={handleSlideChange}
-        className="mySwiper"
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-        }}
-      >
-        {items.map((item, index) => (
-          <SlideST key={index}>
-            {item.type === "video" ? (
-              <video
-                ref={(el) => {
-                  videoRefs.current[index] = el;
-                }}
-                src={item.url}
-                style={{ width: "100%", objectFit: "cover" }}
-                autoPlay
-                muted
-                playsInline
-                onEnded={() => {
-                  swiperRef.current.slideNext();
-                }}
-              />
-            ) : (
-              <img
-                src={item.url}
-                style={{
-                  width: "100%",
-                  objectFit: "contain",
-                  maxHeight: "100dvh",
-                }}
-              />
-            )}
-          </SlideST>
-        ))}
-      </SwiperST>
-    </div>
+      {items.map((item, index) => (
+        <SlideST key={index}>
+          {item.type === "video" ? (
+            <video
+              ref={(el) => {
+                videoRefs.current[index] = el;
+              }}
+              src={item.url}
+              style={{
+                // minWidth: "768px",
+                width: "100%", // 가로 꽉 채움
+                height: "100%", // 비율 유지하며 세로 크기 자동 조절
+              }}
+              autoPlay
+              muted
+              playsInline
+              onEnded={() => {
+                swiperRef.current.slideNext();
+              }}
+            />
+          ) : (
+            <img
+              src={item.url}
+              style={{
+                width: "100%",
+                objectFit: "contain",
+                maxHeight: "100dvh",
+              }}
+            />
+          )}
+        </SlideST>
+      ))}
+    </SwiperST>
   );
 }
 
@@ -168,9 +153,12 @@ const SwiperST = styled(Swiper)(() => {
     top: 0,
     left: "50%",
     width: "100%",
+    display: "flex",
     height: "100dvh",
     maxWidth: "1024px",
+    alignItems: "center",
     position: "absolute",
+    justifyContent: "center",
     transform: "translate(-50%)",
   };
 });
@@ -178,22 +166,10 @@ const SwiperST = styled(Swiper)(() => {
 const SlideST = styled(SwiperSlide)(() => {
   return {
     width: "100%",
+    height: "100dvh",
     display: "flex",
-    maxHeight: "100dvh",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
-  };
-});
-
-const AbSpan = styled("span")(() => {
-  return {
-    top: "50%",
-    left: "50%",
-    zIndex: 999999999,
-    fontWeight: 900,
-    color: "#fa0000",
-    fontSize: "100px",
-    position: "absolute",
+    backgroundColor: "rgba(0,0,0,0.9)",
   };
 });

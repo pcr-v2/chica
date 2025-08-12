@@ -12,6 +12,7 @@ import Modal from "@/app/_components/common/Modal";
 import HomeHeader from "@/app/_components/layout/Headers/HomeHeader";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { getMeal, Meal } from "@/app/actions/meal/getMeal";
+import { useScreenSaverStore } from "@/store/useScreenSaverStore";
 
 export type TUserValue = {
   grade: string | null;
@@ -54,8 +55,14 @@ export default function HomeContainer(props: IProps) {
     setOpen(true);
   };
 
+  const isActive = useScreenSaverStore((s) => s.isActive);
+  console.log("isActive", isActive);
   return (
-    <Wrapper>
+    <Wrapper
+      style={{
+        display: isActive ? "none" : "unset",
+      }}
+    >
       <HomeHeader
         grade={userValue.grade}
         classNum={userValue.class}
@@ -70,6 +77,7 @@ export default function HomeContainer(props: IProps) {
         me={me?.data}
         userValue={userValue}
         onClickInfo={(value: TUserSelectValue) => {
+          if (isActive) return;
           if (value.name === "grade") {
             setUserValue({
               ...userValue,

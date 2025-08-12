@@ -9,5 +9,9 @@ type ScreenSaverState = {
 export const useScreenSaverStore = create<ScreenSaverState>((set) => ({
   isActive: false,
   activate: () => set({ isActive: true }),
-  deactivate: () => set({ isActive: false }),
+  deactivate: () => {
+    setTimeout(() => {
+      set({ isActive: false });
+    }, 500);
+  },
 }));
