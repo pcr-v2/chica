@@ -21,6 +21,7 @@ import SummaryHeader from "@/app/_components/layout/Headers/SummaryHeader";
 import { getStatistic } from "@/app/actions/statistic/getStatistic";
 import { GetStudentInfoResponse } from "@/app/actions/student/getStudentInfoAction";
 import { getUnCheckedResponse } from "@/app/actions/summary/getUnCheckedAction";
+import { maskName } from "@/utils/maskName";
 
 dayjs.extend(weekday);
 dayjs.extend(utc);
@@ -115,7 +116,7 @@ export default function SummaryContainer(props: IProps) {
             test
           </Button> */}
           <TitleBadge
-            text={`${student?.studentGrade}학년 ${student?.studentClass}반 ${student?.studentNumber}번 ${student?.studentName}`}
+            text={`${student?.studentGrade}학년 ${student?.studentClass}반 ${student?.studentNumber}번 ${maskName(student?.studentName as string)}`}
           />
 
           <SummaryTab

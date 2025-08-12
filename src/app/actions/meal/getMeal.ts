@@ -47,14 +47,17 @@ export const getMeal = async (request: GetMealRequest) => {
     Type: "json",
     ATPT_OFCDC_SC_CODE: result?.officeCode, // 경기도교육청 예시
     SD_SCHUL_CODE: result?.schoolCode, // 학교 코드
-    MLSV_FROM_YMD: customDayjs("2025-08-14").format("YYYYMMDD"), // 시작일
-    MLSV_TO_YMD: customDayjs("2025-08-14").format("YYYYMMDD"), // 종료일
+
+    // 투두
+    MLSV_FROM_YMD: customDayjs().format("YYYYMMDD"), // 시작일
+    MLSV_TO_YMD: customDayjs().format("YYYYMMDD"), // 종료일
     MMEAL_SC_CODE: "2", // 중식
   });
 
   const res = await fetch(`${baseUrl}?${params.toString()}`);
   const data = await res.json();
-  console.log("오늘", customDayjs("2025-08-14").format("YYYYMMDD"));
+
+  console.log("오늘", customDayjs().format("YYYYMMDD"));
   console.log("data", data);
 
   if (data.mealServiceDietInfo?.[1].row?.[0] == null) {
