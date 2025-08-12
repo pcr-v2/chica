@@ -6,3 +6,10 @@ export const getStatisticSchema = z.object({
     required_error: "통계 타입이 없습니다.",
   }),
 });
+
+export const getRankPageStatisticSchema = z.object({
+  schoolId: z.string({ required_error: "학생 아이디가 없습니다." }),
+  type: z.enum(["month", "term"], {
+    required_error: "통계 타입이 없습니다.",
+  }),
+});

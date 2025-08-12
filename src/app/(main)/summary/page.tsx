@@ -1,5 +1,4 @@
 import SummaryContainer from "@/app/(main)/summary/SummaryContainer";
-import { calculateBrush } from "@/app/actions/brush/calculateBrushData";
 import { getStudentInfo } from "@/app/actions/student/getStudentInfoAction";
 import { getUnChecked } from "@/app/actions/summary/getUnCheckedAction";
 
@@ -16,8 +15,6 @@ export default async function page({ searchParams }: ISearchParams) {
   const student = await getStudentInfo({
     studentId: params.studentId as string,
   });
-
-  const test = await calculateBrush({ studentId: params.studentId as string });
 
   return (
     <SummaryContainer unCheckedList={unCheckedList} student={student?.data} />

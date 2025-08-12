@@ -19,16 +19,16 @@ interface IProps {
 export default function ClientLayout(props: IProps) {
   const { children } = props;
 
-  // 스플레시 로컬스토리지에 시간저장필요
-  const [showSplash, setShowSplash] = useState(false);
+  // // 스플레시 로컬스토리지에 시간저장필요
+  // const [showSplash, setShowSplash] = useState(false);
 
-  useEffect(() => {
-    if (showSplash) {
-      setTimeout(() => {
-        setShowSplash(false);
-      }, 5000);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (showSplash) {
+  //     setTimeout(() => {
+  //       setShowSplash(false);
+  //     }, 5000);
+  //   }
+  // }, []);
 
   return (
     <QueryClientProviders>

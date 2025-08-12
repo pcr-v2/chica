@@ -45,8 +45,8 @@ export default function HomeContainer(props: IProps) {
 
   const handleMeal = async () => {
     const res = await getMeal({ schoolId: me.data?.schoolId as string });
-    if (res == null) {
-      toast.error("급식 정보를 가져오는중 문제가 발생했습니다.");
+    if (res.code === "FAIL") {
+      toast.success(res.message);
       return;
     }
 

@@ -378,6 +378,7 @@ export async function getStatistic(request: GetDetailedStatisticRequest) {
       classPeopleCount: Number(classPeopleCount ?? 0),
       gradePeopleCount: Number(gradePeopleCount ?? 0),
       schoolPeopleCount: Number(schoolPeopleCount ?? 0),
+
       countClassInGrade: Number(countClassInGrade ?? 0),
       countClassInSchool: Number(countClassInSchool ?? 0),
     },

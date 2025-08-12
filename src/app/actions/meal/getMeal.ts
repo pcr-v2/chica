@@ -34,7 +34,7 @@ export const getMeal = async (request: GetMealRequest) => {
 
   if (result == null) {
     return {
-      code: "FAIL",
+      code: "FAIL" as const,
       message: "학교를 찾을 수 없습니다.",
     };
   }
@@ -45,17 +45,27 @@ export const getMeal = async (request: GetMealRequest) => {
   const params = new URLSearchParams({
     KEY: key ?? "",
     Type: "json",
-    ATPT_OFCDC_SC_CODE: "J10",
-    // result?.officeCode, // 경기도교육청 예시
-    SD_SCHUL_CODE: "7781173",
-    // result?.schoolCode, // 학교 코드
-    MLSV_FROM_YMD: "20250814", // 시작일
-    MLSV_TO_YMD: "20250814", // 종료일
+    ATPT_OFCDC_SC_CODE: result?.officeCode, // 경기도교육청 예시
+    SD_SCHUL_CODE: result?.schoolCode, // 학교 코드
+    MLSV_FROM_YMD: customDayjs("2025-08-14").format("YYYYMMDD"), // 시작일
+    MLSV_TO_YMD: customDayjs("2025-08-14").format("YYYYMMDD"), // 종료일
     MMEAL_SC_CODE: "2", // 중식
   });
 
   const res = await fetch(`${baseUrl}?${params.toString()}`);
   const data = await res.json();
+  console.log("오늘", customDayjs("2025-08-14").format("YYYYMMDD"));
+  console.log("data", data);
+
+  if (data.mealServiceDietInfo?.[1].row?.[0] == null) {
+    return {
+      code: "FAIL" as const,
+      message: "오늘은 급식이 없는날 입니다.",
+    };
+  }
+  // if (data.RESULT.CODE === "") {
+
+  // }
 
   function parseDDISH_NM(ddish: string): Meal[] {
     // <br/> 태그를 기준으로 각 메뉴 항목 분리
