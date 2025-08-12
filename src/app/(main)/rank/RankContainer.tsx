@@ -142,7 +142,7 @@ export default function RankContainer(props: IProps) {
             <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <RankSpan rank={1} />
               {singleMulti === "single"
-                ? `${firstSingle?.student_grade}학년 ${firstSingle?.student_class}반 ${maskName(firstSingle?.student_name) ?? ""}`
+                ? `${firstSingle?.student_grade}학년 ${firstSingle?.student_class}반 ${maskName(firstSingle?.student_name ?? "")}`
                 : `${firstMulti?.student_grade}학년 ${firstMulti?.student_class}반`}
             </Box>
             <Box
@@ -165,9 +165,9 @@ export default function RankContainer(props: IProps) {
             <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <RankSpan rank={2} />
               {singleMulti === "single"
-                ? `${secondSingle?.student_grade}학년 ${secondSingle?.student_class}반 ${
-                    maskName(secondSingle?.student_name) ?? ""
-                  }`
+                ? `${secondSingle?.student_grade}학년 ${secondSingle?.student_class}반 ${maskName(
+                    secondSingle?.student_name ?? "",
+                  )}`
                 : `${secondMulti?.student_grade}학년 ${secondMulti?.student_class}반`}
             </Box>
             <Box
@@ -190,9 +190,9 @@ export default function RankContainer(props: IProps) {
             <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <RankSpan rank={3} />
               {singleMulti === "single"
-                ? `${thirdSingle?.student_grade}학년 ${thirdSingle?.student_class}반 ${
-                    maskName(thirdSingle?.student_name) ?? ""
-                  }`
+                ? `${thirdSingle?.student_grade}학년 ${thirdSingle?.student_class}반 ${maskName(
+                    thirdSingle?.student_name ?? "",
+                  )}`
                 : `${thirdMulti?.student_grade}학년 ${thirdMulti?.student_class}반`}
             </Box>
             <Box
@@ -228,7 +228,7 @@ export default function RankContainer(props: IProps) {
                       }}
                     >
                       <RankSpan rank={idx + 4} />
-                      {`${item.student_grade}학년 ${item.student_class}반 ${maskName(item.student_name) ?? ""}`}
+                      {`${item.student_grade}학년 ${item.student_class}반 ${maskName(item.student_name ?? "")}`}
                     </Box>
                     <Box
                       sx={{
