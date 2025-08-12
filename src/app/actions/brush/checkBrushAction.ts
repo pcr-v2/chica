@@ -93,6 +93,8 @@ export async function checkBrush(
         },
       });
 
+      // console.log("toUpdate", toUpdate);
+
       if (!toUpdate) {
         return {
           code: "FAIL" as const,
@@ -104,7 +106,7 @@ export async function checkBrush(
         where: { id: toUpdate.id },
         data: {
           brushedStatus: "Ok",
-          brushedAt: dayjs().toDate(),
+          // brushedAt: dayjs().toDate(),
         },
       });
 

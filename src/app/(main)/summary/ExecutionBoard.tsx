@@ -6,51 +6,51 @@ import { useState } from "react";
 
 import Arrow from "@/assets/summary/board-arrow.svg";
 
-export default function ExecutionBoard() {
+interface IProps {
+  allClassRateArray: number[];
+}
+
+export default function ExecutionBoard(props: IProps) {
+  const { allClassRateArray } = props;
+
   const [open, setOpen] = useState(false);
 
-  const test = [
-    {
-      class: 1,
-      height: 240,
-    },
-    {
-      class: 2,
-      height: 200,
-    },
-    {
-      class: 3,
-      height: 180,
-    },
-    {
-      class: 4,
-      height: 140,
-    },
-    {
-      class: 5,
-      height: 120,
-    },
-    {
-      class: 6,
-      height: 100,
-    },
-    {
-      class: 7,
-      height: 90,
-    },
-    {
-      class: 8,
-      height: 80,
-    },
-    {
-      class: 9,
-      height: 40,
-    },
-    {
-      class: 10,
-      height: 20,
-    },
-  ];
+  const result = allClassRateArray
+    ?.map((rate, index) => ({
+      classNum: index + 1, // index + 1 → 반 번호
+      rate,
+    }))
+    .sort((a, b) => b.rate - a.rate); // 내림차순 정렬
+
+  // console.log("result", result);
+
+  const baseHeightTop3 = 240; // 1등 시작 높이
+  const baseHeightOthers = baseHeightTop3 - 40 * 2; // 3등 높이
+  const gapTop3 = 40;
+  const gapOthers = 20;
+
+  const uiData = result.map((item, index) => {
+    let height;
+
+    if (index < 3) {
+      // 1~3등
+      height = baseHeightTop3 - gapTop3 * index;
+    } else {
+      // 4등 이후
+      height = baseHeightOthers - gapTop3 - gapOthers * (index - 3);
+    }
+
+    // 음수 방지
+    height = Math.max(height, 20);
+
+    return {
+      class: item.classNum,
+      height,
+      rate: item.rate, // rate도 같이 넘기면 툴팁 등에서 활용 가능
+    };
+  });
+
+  console.log("uiData", uiData);
 
   return (
     <>
@@ -73,7 +73,7 @@ export default function ExecutionBoard() {
               ease: "linear",
             }}
           >
-            {test.map((el, idx) => {
+            {uiData.map((el, idx) => {
               return (
                 <GraphWrap key={idx}>
                   <GraphBar

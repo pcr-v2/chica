@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, styled } from "@mui/material";
+import { Box, Button, styled } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -17,6 +18,7 @@ import UnCheckContent from "@/app/(main)/summary/UnCheckContent";
 import Modal from "@/app/_components/common/Modal";
 import TitleBadge from "@/app/_components/common/TitleBadge";
 import SummaryHeader from "@/app/_components/layout/Headers/SummaryHeader";
+import { getStatistic } from "@/app/actions/statistic/getStatistic";
 import { GetStudentInfoResponse } from "@/app/actions/student/getStudentInfoAction";
 import { getUnCheckedResponse } from "@/app/actions/summary/getUnCheckedAction";
 
@@ -35,6 +37,20 @@ export default function SummaryContainer(props: IProps) {
   const { unCheckedList, student } = props;
 
   const router = useRouter();
+  const [selectedTab, setSelectedTab] = useState<TTab>("week");
+
+  const { data } = useQuery({
+    queryKey: ["get-statistic", selectedTab],
+    queryFn: () =>
+      getStatistic({
+        studentId: student?.studentId as string,
+        type: selectedTab,
+      }),
+    enabled: !!student && !!selectedTab, // boardId 있을 때만 실행
+    staleTime: 15 * 1000,
+  });
+
+  console.log("data", data);
 
   // KST 기준 오늘
   const today = dayjs();
@@ -48,14 +64,13 @@ export default function SummaryContainer(props: IProps) {
   // console.log("startOfWeek:", startOfWeek.format()); // 예: 2025-07-28T00:00:00+09:00
   // console.log("endOfWeek:", endOfWeek.format()); // 예: 2025-08-01T23:59:59+09:00
 
-  const [selectedTab, setSelectedTab] = useState<TTab>("week");
   const [open, setOpen] = useState(false);
 
   const [count, setCount] = useState(15);
 
   useEffect(() => {
     if (count <= 0) {
-      router.replace("/");
+      // router.replace("/");
       return;
     }
 
@@ -65,6 +80,21 @@ export default function SummaryContainer(props: IProps) {
 
     return () => clearInterval(timer);
   }, [count]);
+
+  const test = async () => {
+    const res = await getStatistic({
+      // 1/1/1신예은
+      // studentId: "8370c9cb-0c8f-465f-808f-b231ff5d2804",
+      // 1/3/3조정석
+      studentId: "2828dff3-15db-46e6-8825-608f50cdccd3",
+      // 1/1/2정소민
+      // studentId: "b8aa8d38-cfcf-4d8c-b526-c3ef8a497e18",
+      // 1/2/1연시은
+      // studentId: "8e20b906-ae78-4d55-a6da-bb6cbc1970dc",
+      type: "month",
+    });
+    console.log("res", res);
+  };
 
   return (
     <Wrapper onTouchStart={() => setCount(15)}>
@@ -81,6 +111,9 @@ export default function SummaryContainer(props: IProps) {
 
       <Content>
         <TopContent>
+          {/* <Button variant="contained" onClick={test}>
+            test
+          </Button> */}
           <TitleBadge
             text={`${student?.studentGrade}학년 ${student?.studentClass}반 ${student?.studentNumber}번 ${student?.studentName}`}
           />
@@ -92,11 +125,27 @@ export default function SummaryContainer(props: IProps) {
         </TopContent>
 
         <ExecutionWrap>
-          <Execution />
+          <Execution
+            myRate={data?.data?.myRate ?? 0}
+            myRankInClass={data?.data?.myRankInClass ?? 0}
+            myRankInGrade={data?.data?.myRankInGrade ?? 0}
+            myRankInSchool={data?.data?.myRankInSchool ?? 0}
+            classPeopleCount={data?.data?.classPeopleCount ?? 0}
+            gradePeopleCount={data?.data?.gradePeopleCount ?? 0}
+            schoolPeopleCount={data?.data?.schoolPeopleCount ?? 0}
+          />
 
-          <ExecutionMyClass />
+          <ExecutionMyClass
+            classRate={data?.data?.classRate ?? 0}
+            classRankInGrade={data?.data?.classRankInGrade ?? 0}
+            classRankInSchool={data?.data?.classRankInSchool ?? 0}
+            countClassInGrade={data?.data?.countClassInGrade ?? 0}
+            countClassInSchool={data?.data?.countClassInSchool ?? 0}
+          />
 
-          <ExecutionBoard />
+          <ExecutionBoard
+            allClassRateArray={data?.data?.allClassRateArray ?? []}
+          />
         </ExecutionWrap>
 
         <Btn onClick={() => router.replace("/home")}>완료</Btn>

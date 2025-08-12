@@ -1,10 +1,15 @@
 "use client";
 
-import { Player } from "@lottiefiles/react-lottie-player";
 import { Box, styled } from "@mui/material";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 
 import successLottie from "@/public/images/success.json";
+
+const Player = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false },
+);
 
 interface IProps {
   redirectUrl?: string;
@@ -12,11 +17,10 @@ interface IProps {
 
 export default function SuccessAnimation(props: IProps) {
   const { redirectUrl } = props;
-
   const router = useRouter();
 
   const handleComplete = () => {
-    if (redirectUrl) router.replace(redirectUrl);
+    if (redirectUrl != null) router.replace(redirectUrl);
   };
 
   return (

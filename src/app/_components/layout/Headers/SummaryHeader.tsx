@@ -27,7 +27,7 @@ export default function SummaryHeader(props: IProps) {
         자동으로 처음으로 이동합니다.
       </CountDownText>
 
-      <DoneBtn onClick={() => router.replace("/home")}> 완료</DoneBtn>
+      <DoneBtn onClick={() => router.replace("/home")}>완료</DoneBtn>
     </Wrapper>
   );
 }

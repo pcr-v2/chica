@@ -5,7 +5,24 @@ import { Box, styled } from "@mui/material";
 import ArrowIcon from "@/assets/summary/execution-arrow.svg";
 import Icon from "@/assets/summary/execution-icon-gray.svg";
 
-export default function ExecutionMyClass() {
+interface IProps {
+  classRate: number;
+  classRankInGrade: number;
+  classRankInSchool: number;
+
+  countClassInGrade: number;
+  countClassInSchool: number;
+}
+
+export default function ExecutionMyClass(props: IProps) {
+  const {
+    classRate,
+    classRankInGrade,
+    classRankInSchool,
+    countClassInGrade,
+    countClassInSchool,
+  } = props;
+
   return (
     <Wrapper>
       <Title>우리반</Title>
@@ -17,7 +34,7 @@ export default function ExecutionMyClass() {
             양치 실천율
           </ArrowText>
 
-          <ExecutionPercentText>100%</ExecutionPercentText>
+          <ExecutionPercentText>{classRate}%</ExecutionPercentText>
         </RankRow>
 
         <RankRow>
@@ -27,9 +44,9 @@ export default function ExecutionMyClass() {
           </ArrowText>
 
           <RankTextWrap>
-            <TextRank>1등</TextRank>
+            <TextRank>{classRankInGrade}등</TextRank>
             <TextSlash>/</TextSlash>
-            <TextTotalCount>12반</TextTotalCount>
+            <TextTotalCount>{countClassInGrade}반</TextTotalCount>
           </RankTextWrap>
         </RankRow>
 
@@ -40,9 +57,9 @@ export default function ExecutionMyClass() {
           </ArrowText>
 
           <RankTextWrap>
-            <TextRank>1등</TextRank>
+            <TextRank>{classRankInSchool}등</TextRank>
             <TextSlash>/</TextSlash>
-            <TextTotalCount>72반</TextTotalCount>
+            <TextTotalCount>{countClassInSchool}반</TextTotalCount>
           </RankTextWrap>
         </RankRow>
       </BottomWrap>

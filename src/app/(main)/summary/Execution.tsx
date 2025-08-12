@@ -6,7 +6,28 @@ import ArrowIcon from "@/assets/summary/execution-arrow.svg";
 import Icon from "@/assets/summary/execution-icon.svg";
 import Pattern from "@/assets/summary/execution-pattern.png";
 
-export default function Execution() {
+interface IProps {
+  myRate: number;
+  myRankInClass: number;
+  myRankInGrade: number;
+  myRankInSchool: number;
+
+  classPeopleCount: number;
+  gradePeopleCount: number;
+  schoolPeopleCount: number;
+}
+
+export default function Execution(props: IProps) {
+  const {
+    myRate,
+    myRankInClass,
+    myRankInGrade,
+    myRankInSchool,
+    classPeopleCount,
+    gradePeopleCount,
+    schoolPeopleCount,
+  } = props;
+
   return (
     <Wrapper>
       <Title>
@@ -15,7 +36,7 @@ export default function Execution() {
           양치 실천율
         </Box>
 
-        <Box>100%</Box>
+        <Box>{myRate}%</Box>
       </Title>
 
       <BottomWrap>
@@ -26,9 +47,9 @@ export default function Execution() {
           </ArrowText>
 
           <RankTextWrap>
-            <TextGreen>1등</TextGreen>
+            <TextGreen>{myRankInClass}등</TextGreen>
             <TextSlash>/</TextSlash>
-            <TextTotalCount>30명</TextTotalCount>
+            <TextTotalCount>{classPeopleCount}명</TextTotalCount>
           </RankTextWrap>
         </RankRow>
 
@@ -39,9 +60,9 @@ export default function Execution() {
           </ArrowText>
 
           <RankTextWrap>
-            <TextGreen>1등</TextGreen>
+            <TextGreen>{myRankInGrade}등</TextGreen>
             <TextSlash>/</TextSlash>
-            <TextTotalCount>300명</TextTotalCount>
+            <TextTotalCount>{gradePeopleCount}명</TextTotalCount>
           </RankTextWrap>
         </RankRow>
 
@@ -52,9 +73,9 @@ export default function Execution() {
           </ArrowText>
 
           <RankTextWrap>
-            <TextGreen>1등</TextGreen>
+            <TextGreen>{myRankInSchool}등</TextGreen>
             <TextSlash>/</TextSlash>
-            <TextTotalCount>1300명</TextTotalCount>
+            <TextTotalCount>{schoolPeopleCount}명</TextTotalCount>
           </RankTextWrap>
         </RankRow>
       </BottomWrap>
