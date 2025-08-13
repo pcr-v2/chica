@@ -4,6 +4,7 @@ import { Box, styled } from "@mui/material";
 import React from "react";
 
 import LeftArrow from "@/assets/home/numberpad-arrow.svg";
+import { convertVw } from "@/utils/convertVw";
 
 interface IProps {
   activeOk: boolean;
@@ -57,6 +58,9 @@ const Wrapper = styled(Box)(() => {
     display: "grid",
     maxWidth: "417px",
     gridTemplateColumns: "1fr 1fr 1fr",
+    "@media (max-width:834px)": {
+      gap: convertVw(24),
+    },
   };
 });
 
@@ -74,5 +78,11 @@ const NumberBtn = styled(Box)(() => {
     letterSpacing: "-0.8px",
     justifyContent: "center",
     backgroundColor: "#F1F2F3",
+    "@media (max-width:834px)": {
+      gap: convertVw(24),
+      fontSize: convertVw(40),
+      letterSpacing: convertVw(-0.8),
+      padding: `${convertVw(32)} ${convertVw(34)}`,
+    },
   };
 });

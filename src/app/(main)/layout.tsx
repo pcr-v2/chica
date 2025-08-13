@@ -38,7 +38,7 @@ export default function MainLayout(props: IProps) {
       // 스크린세이버 활성화 함수 (store 내 isActive를 true로)
       // isActive 상태 변경 로직을 useScreenSaverStore에서 제공해야 함
       useScreenSaverStore.getState().activate();
-    }, 60 * 1000); // 1분
+    }, 60 * 10000); // 1분
   };
 
   // 화면 클릭/터치 이벤트 감지

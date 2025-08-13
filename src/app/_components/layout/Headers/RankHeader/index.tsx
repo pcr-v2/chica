@@ -10,6 +10,7 @@ import MultiSvg from "@/app/_components/layout/Headers/RankHeader/MultiSvg";
 import SingleSvg from "@/app/_components/layout/Headers/RankHeader/SingleSvg";
 import TermPicker from "@/app/_components/layout/Headers/RankHeader/TermPicker";
 import LeftArrow from "@/assets/icon/left-arrow.svg";
+import { convertVw } from "@/utils/convertVw";
 
 interface IProps {
   singleMulti: "single" | "multi";
@@ -29,7 +30,7 @@ export default function RankHeader(props: IProps) {
   return (
     <Wrapper>
       <GoMainBtn onClick={() => router.replace("/home")}>
-        <ArrowImg src={LeftArrow.src} alt="arrow" />
+        <ArrowImg />
 
         <span>처음으로</span>
       </GoMainBtn>
@@ -39,17 +40,17 @@ export default function RankHeader(props: IProps) {
           onClick={() => onChange("single")}
           isactive={(singleMulti === "single").toString()}
         >
-          <SingleSvg isActive={singleMulti === "single"} />
+          <SingleSt isActive={singleMulti === "single"} />
 
-          <span>개인전</span>
+          <TextSpan>개인전</TextSpan>
         </SingleTab>
 
         <MultiTab
           onClick={() => onChange("multi")}
           isactive={(singleMulti === "multi").toString()}
         >
-          <MultiSvg isActive={singleMulti === "multi"} />
-          <span>팀전</span>
+          <MultiSt isActive={singleMulti === "multi"} />
+          <TextSpan>팀전</TextSpan>
         </MultiTab>
       </SelectWrap>
 
@@ -58,16 +59,14 @@ export default function RankHeader(props: IProps) {
           onClick={() => onChange("month")}
           isactive={(monthTerm === "month").toString()}
         >
-          <span style={{ width: "50px", textAlign: "center" }}>
-            {currentMonth}
-          </span>
+          <TextSpan>{currentMonth}</TextSpan>
         </SingleTab>
 
         <MultiTab
           onClick={() => onChange("term")}
           isactive={(monthTerm === "term").toString()}
         >
-          <span style={{ width: "50px" }}>{currentTerm}</span>
+          <TextSpan>{currentTerm}</TextSpan>
         </MultiTab>
       </SelectWrap>
 
@@ -85,6 +84,9 @@ const Wrapper = styled(Box)(() => {
     alignItems: "center",
     padding: "105px 64px 24px",
     justifyContent: "space-between",
+    "@media (max-width:834px)": {
+      padding: `${convertVw(105)} ${convertVw(64)} ${convertVw(24)}`,
+    },
   };
 });
 
@@ -105,29 +107,50 @@ const GoMainBtn = styled(Box)(() => {
     backgroundColor: "#fff",
     backdropFilter: "blur(4px)",
     border: "2px solid #D5D7DB",
+    "@media (max-width:834px)": {
+      gap: convertVw(6),
+      fontSize: convertVw(21),
+      letterSpacing: convertVw(-0.42),
+      border: `${convertVw(2)} solid #D5D7DB`,
+      padding: `${convertVw(12)} ${convertVw(20)}`,
+    },
   };
 });
+
+const SvgWrap = styled("div")(() => ({
+  width: "28px",
+  height: "28px",
+  "@media (max-width:834px)": {
+    width: convertVw(28),
+    height: convertVw(28),
+  },
+  "& svg": {
+    width: "100%",
+    height: "100%",
+  },
+}));
 
 const ArrowImg = styled(LeftArrow)(() => {
   return {
     width: "28px",
     height: "28px",
+    "@media (max-width:834px)": {
+      width: `${convertVw(28)} !important`,
+      height: `${convertVw(28)} !important`,
+    },
   };
 });
 
-const InfoBox = styled(Box)(() => {
+const TextSpan = styled("span")(() => {
   return {
-    // gap: "12px",
     width: "100%",
-    fontSize: 32,
-    display: "flex",
-    fontWeight: 800,
-    maxWidth: "510px",
-    color: "#747d8a",
-    lineHeight: "150%",
     textAlign: "center",
-    justifyContent: "space-between",
-    letterSpacing: "-0.64px",
+    whiteSpace: "nowrap",
+    lineHeight: "150%",
+
+    "@media (max-width:834px)": {
+      width: convertVw(50),
+    },
   };
 });
 
@@ -147,6 +170,7 @@ const SingleTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     display: "flex",
     cursor: "pointer",
     lineHeight: "150%",
+    alignItems: "center",
     padding: "12px 20px",
     borderTop: "2px solid",
     borderLeft: "2px solid",
@@ -159,6 +183,16 @@ const SingleTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     color: isactive === "true" ? "#6EDBB5" : "#747d8a",
     borderColor: isactive === "true" ? "8EE3C5" : "#d5d7d8",
     backgroundColor: isactive === "true" ? "#EDFCF7" : "#fff",
+
+    "@media (max-width:834px)": {
+      gap: convertVw(6),
+      fontSize: convertVw(21),
+      letterSpacing: convertVw(-0.42),
+      borderTop: `${convertVw(2)} solid`,
+      borderLeft: `${convertVw(2)} solid`,
+      borderBottom: `${convertVw(2)} solid`,
+      padding: `${convertVw(12)} ${convertVw(20)}`,
+    },
   };
 });
 
@@ -171,6 +205,7 @@ const MultiTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     cursor: "pointer",
     lineHeight: "150%",
     padding: "12px 20px",
+    alignItems: "center",
     borderTop: "2px solid",
     letterSpacing: "-0.42px",
     justifyContent: "center",
@@ -182,5 +217,36 @@ const MultiTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     color: isactive === "true" ? "#6EDBB5" : "#747d8a",
     borderColor: isactive === "true" ? "#8EE3C5" : "#d5d7d8",
     backgroundColor: isactive === "true" ? "#EDFCF7" : "#fff",
+    "@media (max-width:834px)": {
+      gap: convertVw(6),
+      fontSize: convertVw(21),
+      letterSpacing: convertVw(-0.42),
+      borderTop: `${convertVw(2)} solid`,
+      borderRight: `${convertVw(2)} solid`,
+      borderBottom: `${convertVw(2)} solid`,
+      padding: `${convertVw(12)} ${convertVw(20)}`,
+    },
+  };
+});
+
+const SingleSt = styled(SingleSvg)(() => {
+  return {
+    width: "28px",
+    height: "28px",
+    // "@media (max-width:834px)": {
+    //   width: convertVw(28),
+    //   height: convertVw(28),
+    // },
+  };
+});
+
+const MultiSt = styled(MultiSvg)(() => {
+  return {
+    width: "28px",
+    height: "28px",
+    // "@media (max-width:834px)": {
+    //   width: convertVw(28),
+    //   height: convertVw(28),
+    // },
   };
 });

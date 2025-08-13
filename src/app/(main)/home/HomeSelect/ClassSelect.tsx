@@ -2,6 +2,8 @@
 
 import { Box, styled } from "@mui/material";
 
+import { convertVw } from "@/utils/convertVw";
+
 interface IProps {
   selected: string;
   classList: string[];
@@ -34,6 +36,9 @@ const Wrapper = styled(Box)(() => {
     width: "100%",
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr 1fr",
+    "@media (max-width:834px)": {
+      gap: convertVw(40),
+    },
   };
 });
 
@@ -55,5 +60,11 @@ const ClassBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
     color: on ? "#fff" : "#747d8a",
     outline: on ? "4px solid #32C794" : "none",
     backgroundColor: on ? "#6EDBB5" : "#F1F2F3",
+    "@media (max-width:834px)": {
+      fontSize: convertVw(32),
+      padding: `${convertVw(24)}`,
+      letterSpacing: convertVw(-0.64),
+      outline: on ? `${convertVw(4)} solid #32C794` : "none",
+    },
   };
 });

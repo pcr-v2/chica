@@ -3,6 +3,8 @@
 import { Box, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import { convertVw } from "@/utils/convertVw";
+
 interface IProps {
   selected: string;
   schoolLevel: "elementary" | "middle" | "high";
@@ -45,6 +47,9 @@ const Wrapper = styled(Box)(() => {
     width: "100%",
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr",
+    "@media (max-width:834px)": {
+      gap: convertVw(40),
+    },
   };
 });
 
@@ -59,6 +64,7 @@ const GradeBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
     lineHeight: "150%",
     alignItems: "center",
     padding: "24px 40px",
+    whiteSpace: "nowrap",
     borderRadius: "100px",
     justifyContent: "center",
     letterSpacing: "-0.64px",
@@ -66,5 +72,10 @@ const GradeBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
     color: on ? "#fff" : "#747d8a",
     outline: on ? "4px solid #32C794" : "none",
     backgroundColor: on ? "#6EDBB5" : "#F1F2F3",
+    "@media (max-width:834px)": {
+      fontSize: convertVw(32),
+      letterSpacing: convertVw(-0.64),
+      padding: `${convertVw(24)} ${convertVw(40)}`,
+    },
   };
 });

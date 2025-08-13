@@ -22,6 +22,7 @@ import { getStudentLatestSummary } from "@/app/actions/student/getStudentLatestA
 import Class from "@/assets/home/class.png";
 import Grade from "@/assets/home/grade.png";
 import NumberImg from "@/assets/home/number.png";
+import { convertVw } from "@/utils/convertVw";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -247,6 +248,11 @@ const Wrapper = styled(Box)(() => {
     flexDirection: "column",
     justifyContent: "start",
     padding: "64px 64px 48px",
+
+    "@media (max-width:834px)": {
+      gap: convertVw(64),
+      padding: `${convertVw(64)} ${convertVw(64)} ${convertVw(48)}`,
+    },
   };
 });
 
@@ -261,6 +267,10 @@ const TeethWrapper = styled(Box)(() => ({
   height: "120px",
   textAlign: "center",
   position: "relative",
+  "@media (max-width:834px)": {
+    width: convertVw(120),
+    height: convertVw(120),
+  },
 }));
 
 const DigitText = styled(motion.div)(() => ({
@@ -274,6 +284,12 @@ const DigitText = styled(motion.div)(() => ({
   position: "absolute",
   pointerEvents: "none",
   letterSpacing: "-0.96px",
+  "@media (max-width:834px)": {
+    top: convertVw(24),
+    left: convertVw(40),
+    width: convertVw(40),
+    letterSpacing: convertVw(-0.96),
+  },
 }));
 
 const NumberTopWrap = styled(Box)(() => {
@@ -283,5 +299,8 @@ const NumberTopWrap = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+    "@media (max-width:834px)": {
+      gap: convertVw(24),
+    },
   };
 });
