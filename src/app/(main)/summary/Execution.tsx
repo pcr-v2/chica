@@ -1,83 +1,104 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import { useEffect, useState } from "react";
 
+import LoadingAnimation from "@/app/_components/common/Loading";
+import { GetStatisticResponse } from "@/app/actions/statistic/getStatistic";
 import ArrowIcon from "@/assets/summary/execution-arrow.svg";
 import Icon from "@/assets/summary/execution-icon.svg";
 import Pattern from "@/assets/summary/execution-pattern.png";
+import { convertVw } from "@/utils/convertVw";
+
+type TExecution = {
+  myRate: number;
+  myRankInClass: string;
+  myRankInGrade: string;
+  myRankInSchool: string;
+
+  classPeopleCount: string;
+  gradePeopleCount: string;
+  schoolPeopleCount: string;
+};
 
 interface IProps {
-  myRate: number;
-  myRankInClass: number;
-  myRankInGrade: number;
-  myRankInSchool: number;
-
-  classPeopleCount: number;
-  gradePeopleCount: number;
-  schoolPeopleCount: number;
+  data: GetStatisticResponse["data"];
 }
 
 export default function Execution(props: IProps) {
-  const {
-    myRate,
-    myRankInClass,
-    myRankInGrade,
-    myRankInSchool,
-    classPeopleCount,
-    gradePeopleCount,
-    schoolPeopleCount,
-  } = props;
+  const { data } = props;
+
+  const defaultValue: TExecution = {
+    myRate: 0,
+    myRankInClass: "0등",
+    myRankInGrade: "0등",
+    myRankInSchool: "0등",
+    classPeopleCount: "0명",
+    gradePeopleCount: "0명",
+    schoolPeopleCount: "0명",
+  };
+
+  const [value, setValue] = useState<TExecution>(defaultValue);
+
+  useEffect(() => {
+    if (data == null) return;
+    setValue({
+      myRate: data.myRate ?? 0,
+      myRankInClass: `${data.myRankInClass ?? 1}등`,
+      myRankInGrade: `${data.myRankInGrade ?? 1}등`,
+      myRankInSchool: `${data.myRankInSchool ?? 1}등`,
+      classPeopleCount: `${data.classPeopleCount ?? 1}명`,
+      gradePeopleCount: `${data.gradePeopleCount ?? 1}명`,
+      schoolPeopleCount: `${data.schoolPeopleCount ?? 1}명`,
+    });
+  }, [data]);
+
+  const list = [
+    {
+      title: "우리 반에서",
+      rank: value?.myRankInClass,
+      total: value?.classPeopleCount,
+    },
+    {
+      title: "우리 학년에서",
+      rank: value?.myRankInGrade,
+      total: value?.gradePeopleCount,
+    },
+    {
+      title: "우리 학교에서",
+      rank: value?.myRankInSchool,
+      total: value?.schoolPeopleCount,
+    },
+  ];
 
   return (
     <Wrapper>
       <Title>
-        <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <TitleIconText>
           <IconImg />
           양치 실천율
-        </Box>
+        </TitleIconText>
 
-        <Box>{myRate}%</Box>
+        <Box>{value?.myRate}%</Box>
       </Title>
 
       <BottomWrap>
-        <RankRow>
-          <ArrowText>
-            <ArrowImg />
-            우리 반에서
-          </ArrowText>
+        {list.map((el) => {
+          return (
+            <RankRow key={el.title}>
+              <ArrowText>
+                <ArrowImg />
+                {el.title ?? ""}
+              </ArrowText>
 
-          <RankTextWrap>
-            <TextGreen>{myRankInClass}등</TextGreen>
-            <TextSlash>/</TextSlash>
-            <TextTotalCount>{classPeopleCount}명</TextTotalCount>
-          </RankTextWrap>
-        </RankRow>
-
-        <RankRow>
-          <ArrowText>
-            <ArrowImg />
-            우리 학년에서
-          </ArrowText>
-
-          <RankTextWrap>
-            <TextGreen>{myRankInGrade}등</TextGreen>
-            <TextSlash>/</TextSlash>
-            <TextTotalCount>{gradePeopleCount}명</TextTotalCount>
-          </RankTextWrap>
-        </RankRow>
-
-        <RankRow>
-          <ArrowText>
-            <ArrowImg />
-            우리 학교에서
-          </ArrowText>
-
-          <RankTextWrap>
-            <TextGreen>{myRankInSchool}등</TextGreen>
-            <TextSlash>/</TextSlash>
-            <TextTotalCount>{schoolPeopleCount}명</TextTotalCount>
-          </RankTextWrap>
-        </RankRow>
+              <RankTextWrap>
+                <TextGreen>{el.rank || ""}</TextGreen>
+                <TextSlash>/</TextSlash>
+                <TextTotalCount>{el.total ?? ""}</TextTotalCount>
+              </RankTextWrap>
+            </RankRow>
+          );
+        })}
       </BottomWrap>
     </Wrapper>
   );
@@ -94,6 +115,11 @@ const Wrapper = styled(Box)(() => {
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "#fafafa",
+    "@media (max-width:834px)": {
+      gap: convertVw(24),
+      padding: `${convertVw(40)}`,
+      borderRadius: convertVw(24),
+    },
   };
 });
 
@@ -111,15 +137,35 @@ const Title = styled(Box)(() => {
     letterSpacing: "-0.56px",
     justifyContent: "space-between",
     background: `url(${Pattern.src}) no-repeat #6EDBB5`,
+    "@media (max-width:834px)": {
+      fontSize: convertVw(28),
+      borderRadius: convertVw(12),
+      letterSpacing: convertVw(-0.56),
+      padding: `${convertVw(12)} ${convertVw(24)}`,
+    },
   };
 });
 
 const IconImg = styled(Icon)(() => {
-  return {};
+  return {
+    width: "42px",
+    height: "42px",
+    "@media (max-width:834px)": {
+      width: convertVw(42),
+      height: convertVw(42),
+    },
+  };
 });
 
 const ArrowImg = styled(ArrowIcon)(() => {
-  return {};
+  return {
+    width: "42px",
+    height: "42px",
+    "@media (max-width:834px)": {
+      width: convertVw(42),
+      height: convertVw(42),
+    },
+  };
 });
 
 const BottomWrap = styled(Box)(() => {
@@ -130,6 +176,9 @@ const BottomWrap = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+    "@media (max-width:834px)": {
+      gap: convertVw(12),
+    },
   };
 });
 
@@ -152,6 +201,11 @@ const ArrowText = styled(Box)(() => {
     lineHeight: "150%",
     alignItems: "center",
     letterSpacing: "-0.5px",
+    "@media (max-width:834px)": {
+      gap: convertVw(4),
+      fontSize: convertVw(25),
+      letterSpacing: convertVw(-0.5),
+    },
   };
 });
 
@@ -165,6 +219,11 @@ const RankTextWrap = styled(Box)(() => {
     lineHeight: "150%",
     alignItems: "center",
     letterSpacing: "-0.5px",
+    "@media (max-width:834px)": {
+      gap: convertVw(4),
+      fontSize: convertVw(25),
+      letterSpacing: convertVw(-0.5),
+    },
   };
 });
 
@@ -173,6 +232,9 @@ const TextGreen = styled(Box)(() => {
     minWidth: "90px",
     textAlign: "end",
     color: "#6EDBB5",
+    "@media (max-width:834px)": {
+      minWidth: convertVw(90),
+    },
   };
 });
 
@@ -186,5 +248,19 @@ const TextTotalCount = styled(Box)(() => {
   return {
     minWidth: "90px",
     textAlign: "end",
+    "@media (max-width:834px)": {
+      minWidth: convertVw(90),
+    },
+  };
+});
+
+const TitleIconText = styled(Box)(() => {
+  return {
+    gap: "10px",
+    display: "flex",
+    alignItems: "center",
+    "@media (max-width:834px)": {
+      gap: convertVw(10),
+    },
   };
 });

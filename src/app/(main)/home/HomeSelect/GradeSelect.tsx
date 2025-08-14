@@ -76,6 +76,7 @@ const GradeBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
       fontSize: convertVw(32),
       letterSpacing: convertVw(-0.64),
       padding: `${convertVw(24)} ${convertVw(40)}`,
+      outline: on ? `${convertVw(4)} solid #32C794` : "none",
     },
   };
 });

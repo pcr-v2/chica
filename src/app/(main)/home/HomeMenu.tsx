@@ -22,20 +22,20 @@ export default function HomeMenu(props: IProps) {
 
   return (
     <Wrapper>
-      <Box sx={{ width: "100%", maxWidth: "209px" }}>
+      <MenuImgBox>
         <MenuImg src={Video.src} alt="video" onClick={activate} />
-      </Box>
-      <Box sx={{ width: "100%", maxWidth: "209px" }}>
+      </MenuImgBox>
+      <MenuImgBox>
         <MenuImg
           src={Rank.src}
           alt="rank"
           onClick={() => router.push("/rank")}
         />
-      </Box>
+      </MenuImgBox>
 
-      <Box sx={{ width: "100%", maxWidth: "209px" }}>
+      <MenuImgBox>
         <MenuImg src={Meal.src} alt="meal" onClick={onClick} />
-      </Box>
+      </MenuImgBox>
     </Wrapper>
   );
 }
@@ -59,10 +59,12 @@ const MenuImg = styled("img")(() => {
   return {
     width: "100%",
     height: "100%",
-    // maxWidth: "209px",
-    // aspectRatio: "209 / 117",
-    // // height: "auto", // 비율 유지
-    // objectFit: "cover",
-    // display: "block",
+  };
+});
+
+const MenuImgBox = styled(Box)(() => {
+  return {
+    width: "100%",
+    maxWidth: "209px",
   };
 });

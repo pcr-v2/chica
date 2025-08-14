@@ -176,6 +176,7 @@ export default function HomeSelect(props: IProps) {
       {selectStep === "grade" && (
         <>
           <TitleImg src={Grade.src} alt="title1" />
+
           <GradeSelect
             onClick={(v) => {
               onClickInfo({ name: "grade", value: v });
@@ -191,6 +192,7 @@ export default function HomeSelect(props: IProps) {
       {selectStep === "class" && (
         <>
           <TitleImg src={Class.src} alt="title2" />
+
           <ClassSelect
             onClick={(v) => {
               onClickInfo({ name: "class", value: v });
@@ -206,7 +208,8 @@ export default function HomeSelect(props: IProps) {
         <>
           <NumberTopWrap>
             <TitleImg src={NumberImg.src} alt="title3" />
-            <Box sx={{ display: "flex", gap: "24px" }}>
+
+            <TeethBox>
               {[leftDigit, rightDigit].map((digit, idx) => (
                 <TeethWrapper key={idx}>
                   <SelectTeeth
@@ -229,8 +232,9 @@ export default function HomeSelect(props: IProps) {
                   )}
                 </TeethWrapper>
               ))}
-            </Box>
+            </TeethBox>
           </NumberTopWrap>
+
           <NumberSelect onClick={handleClick} activeOk={value.length >= 1} />
         </>
       )}
@@ -288,6 +292,7 @@ const DigitText = styled(motion.div)(() => ({
     top: convertVw(24),
     left: convertVw(40),
     width: convertVw(40),
+    fontSize: convertVw(48),
     letterSpacing: convertVw(-0.96),
   },
 }));
@@ -299,6 +304,16 @@ const NumberTopWrap = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+    "@media (max-width:834px)": {
+      gap: convertVw(24),
+    },
+  };
+});
+
+const TeethBox = styled(Box)(() => {
+  return {
+    gap: "24px",
+    display: "flex",
     "@media (max-width:834px)": {
       gap: convertVw(24),
     },

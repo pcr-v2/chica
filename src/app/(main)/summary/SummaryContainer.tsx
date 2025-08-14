@@ -1,11 +1,7 @@
 "use client";
 
-import { Box, Button, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
-import weekday from "dayjs/plugin/weekday";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -21,11 +17,8 @@ import SummaryHeader from "@/app/_components/layout/Headers/SummaryHeader";
 import { getStatistic } from "@/app/actions/statistic/getStatistic";
 import { GetStudentInfoResponse } from "@/app/actions/student/getStudentInfoAction";
 import { getUnCheckedResponse } from "@/app/actions/summary/getUnCheckedAction";
+import { convertVw } from "@/utils/convertVw";
 import { maskName } from "@/utils/maskName";
-
-dayjs.extend(weekday);
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 type TTab = "week" | "month" | "term";
 
@@ -55,23 +48,9 @@ export default function SummaryContainer(props: IProps) {
     staleTime: 0,
   });
 
-  // console.log("data", data);
-
-  // KST 기준 오늘
-  const today = dayjs();
-
-  // 이번 주 월요일 00:00
-  const startOfWeek = today.weekday(1).startOf("day");
-
-  // 이번 주 금요일 23:59:59
-  const endOfWeek = today.weekday(5).endOf("day");
-
-  // console.log("startOfWeek:", startOfWeek.format()); // 예: 2025-07-28T00:00:00+09:00
-  // console.log("endOfWeek:", endOfWeek.format()); // 예: 2025-08-01T23:59:59+09:00
-
   useEffect(() => {
     if (count <= 0) {
-      router.replace("/");
+      // router.replace("/");
       return;
     }
 
@@ -81,21 +60,6 @@ export default function SummaryContainer(props: IProps) {
 
     return () => clearInterval(timer);
   }, [count]);
-
-  // const test = async () => {
-  //   const res = await getStatistic({
-  //     // 1/1/1신예은
-  //     // studentId: "8370c9cb-0c8f-465f-808f-b231ff5d2804",
-  //     // 1/3/3조정석
-  //     studentId: "2828dff3-15db-46e6-8825-608f50cdccd3",
-  //     // 1/1/2정소민
-  //     // studentId: "b8aa8d38-cfcf-4d8c-b526-c3ef8a497e18",
-  //     // 1/2/1연시은
-  //     // studentId: "8e20b906-ae78-4d55-a6da-bb6cbc1970dc",
-  //     type: "month",
-  //   });
-  //   console.log("res", res);
-  // };
 
   return (
     <Wrapper onTouchStart={() => setCount(15)}>
@@ -112,9 +76,6 @@ export default function SummaryContainer(props: IProps) {
 
       <Content>
         <TopContent>
-          {/* <Button variant="contained" onClick={test}>
-            test
-          </Button> */}
           <TitleBadge
             text={`${student?.studentGrade}학년 ${student?.studentClass}반 ${student?.studentNumber}번 ${maskName(student?.studentName as string)}`}
           />
@@ -126,23 +87,9 @@ export default function SummaryContainer(props: IProps) {
         </TopContent>
 
         <ExecutionWrap>
-          <Execution
-            myRate={data?.data?.myRate ?? 0}
-            myRankInClass={data?.data?.myRankInClass ?? 0}
-            myRankInGrade={data?.data?.myRankInGrade ?? 0}
-            myRankInSchool={data?.data?.myRankInSchool ?? 0}
-            classPeopleCount={data?.data?.classPeopleCount ?? 0}
-            gradePeopleCount={data?.data?.gradePeopleCount ?? 0}
-            schoolPeopleCount={data?.data?.schoolPeopleCount ?? 0}
-          />
+          <Execution data={data?.data} />
 
-          <ExecutionMyClass
-            classRate={data?.data?.classRate ?? 0}
-            classRankInGrade={data?.data?.classRankInGrade ?? 0}
-            classRankInSchool={data?.data?.classRankInSchool ?? 0}
-            countClassInGrade={data?.data?.countClassInGrade ?? 0}
-            countClassInSchool={data?.data?.countClassInSchool ?? 0}
-          />
+          <ExecutionMyClass data={data?.data} />
 
           <ExecutionBoard
             allClassRateArray={data?.data?.allClassRateArray ?? []}
@@ -197,6 +144,10 @@ const Content = styled(Box)(() => {
     padding: "48px 64px",
     flexDirection: "column",
     justifyContent: "center",
+    "@media (max-width:834px)": {
+      gap: convertVw(64),
+      padding: `${convertVw(48)} ${convertVw(64)}`,
+    },
   };
 });
 
@@ -208,6 +159,9 @@ const TopContent = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+    "@media (max-width:834px)": {
+      gap: convertVw(40),
+    },
   };
 });
 
@@ -217,6 +171,9 @@ const ExecutionWrap = styled(Box)(() => {
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    "@media (max-width:834px)": {
+      gap: convertVw(24),
+    },
   };
 });
 
@@ -235,5 +192,12 @@ const Btn = styled(Box)(() => {
     letterSpacing: "-0.56px",
     backgroundColor: "#6EDBB5",
     border: "4px solid #32C794",
+    "@media (max-width:834px)": {
+      fontSize: convertVw(28),
+      maxWidth: convertVw(200),
+      letterSpacing: convertVw(-0.56),
+      padding: `${convertVw(16)} ${convertVw(24)}`,
+      border: `${convertVw(4)} solid #32C794`,
+    },
   };
 });

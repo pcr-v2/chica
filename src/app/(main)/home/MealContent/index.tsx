@@ -3,6 +3,7 @@
 import { Box, styled } from "@mui/material";
 
 import { Meal } from "@/app/actions/meal/getMeal";
+import { convertVw } from "@/utils/convertVw";
 import dayjs from "@/utils/customDayjs";
 
 interface IProps {
@@ -42,7 +43,6 @@ export default function MealContent(props: IProps) {
 
       <Contents>
         <Meals>
-          {/* Test용 계성초 4월1일식단 */}
           {meal.map((m, idx) => {
             return (
               <Box key={idx} sx={{ display: "flex", gap: "4px" }}>
@@ -87,6 +87,9 @@ const Wrapper = styled(Box)(() => {
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    // "@media (max-width:834px)": {
+    //   gap: convertVw(40),
+    // },
   };
 });
 
@@ -100,6 +103,10 @@ const Title = styled(Box)(() => {
     lineHeight: "150%",
     letterSpacing: "-0.56px",
     justifyContent: "center",
+    // "@media (max-width:834px)": {
+    //   fontSize: convertVw(28),
+    //   letterSpacing: convertVw(-0.56),
+    // },
   };
 });
 
@@ -111,6 +118,9 @@ const Contents = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+    // "@media (max-width:834px)": {
+    //   gap: convertVw(24),
+    // },
   };
 });
 
@@ -129,6 +139,12 @@ const Meals = styled(Box)(() => {
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "#fafafa",
+    // "@media (max-width:834px)": {
+    //   gap: convertVw(4),
+    //   fontSize: convertVw(16),
+    //   padding: `${convertVw(24)}`,
+    //   letterSpacing: convertVw(-0.32),
+    // },
   };
 });
 
@@ -142,6 +158,11 @@ const AllergyNums = styled(Box)(() => {
     lineHeight: "150%",
     alignItems: "start",
     letterSpacing: "-0.36px",
+    // "@media (max-width:834px)": {
+    //   height: convertVw(27),
+    //   fontSize: convertVw(12),
+    //   letterSpacing: convertVw(-0.36),
+    // },
   };
 });
 
@@ -161,6 +182,12 @@ const Allergy = styled(Box)(() => {
     flexDirection: "column",
     justifyContent: "center",
     backgroundColor: "rgba(255, 235, 238, 0.64)",
+    // "@media (max-width:834px)": {
+    //   gap: convertVw(12),
+    //   fontSize: convertVw(16),
+    //   padding: `${convertVw(24)}`,
+    //   letterSpacing: convertVw(-0.32),
+    // },
   };
 });
 
@@ -172,5 +199,9 @@ const AllergyDetail = styled(Box)(() => {
     columnGap: "8px",
     maxWidth: "400px",
     wordBreak: "keep-all",
+    // "@media (max-width:834px)": {
+    //   columnGap: convertVw(8),
+    //   maxWidth: convertVw(400),
+    // },
   };
 });

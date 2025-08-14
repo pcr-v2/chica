@@ -40,8 +40,9 @@ export default function RankHeader(props: IProps) {
           onClick={() => onChange("single")}
           isactive={(singleMulti === "single").toString()}
         >
-          <SingleSt isActive={singleMulti === "single"} />
-
+          <SvgWrap>
+            <SingleSvg isActive={singleMulti === "single"} />
+          </SvgWrap>
           <TextSpan>개인전</TextSpan>
         </SingleTab>
 
@@ -49,7 +50,9 @@ export default function RankHeader(props: IProps) {
           onClick={() => onChange("multi")}
           isactive={(singleMulti === "multi").toString()}
         >
-          <MultiSt isActive={singleMulti === "multi"} />
+          <SvgWrap>
+            <MultiSvg isActive={singleMulti === "multi"} />
+          </SvgWrap>
           <TextSpan>팀전</TextSpan>
         </MultiTab>
       </SelectWrap>
@@ -69,10 +72,6 @@ export default function RankHeader(props: IProps) {
           <TextSpan>{currentTerm}</TextSpan>
         </MultiTab>
       </SelectWrap>
-
-      {/* <MonthPicker />
-
-        <TermPicker /> */}
     </Wrapper>
   );
 }
@@ -118,15 +117,11 @@ const GoMainBtn = styled(Box)(() => {
 });
 
 const SvgWrap = styled("div")(() => ({
-  width: "28px",
   height: "28px",
+  minWidth: "28px",
   "@media (max-width:834px)": {
-    width: convertVw(28),
+    minWidth: convertVw(28),
     height: convertVw(28),
-  },
-  "& svg": {
-    width: "100%",
-    height: "100%",
   },
 }));
 
@@ -144,9 +139,9 @@ const ArrowImg = styled(LeftArrow)(() => {
 const TextSpan = styled("span")(() => {
   return {
     width: "100%",
+    lineHeight: "150%",
     textAlign: "center",
     whiteSpace: "nowrap",
-    lineHeight: "150%",
 
     "@media (max-width:834px)": {
       width: convertVw(50),
@@ -168,6 +163,7 @@ const SingleTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     fontSize: 21,
     fontWeight: 800,
     display: "flex",
+    minWidth: "92px",
     cursor: "pointer",
     lineHeight: "150%",
     alignItems: "center",
@@ -187,6 +183,7 @@ const SingleTab = styled(Box)<{ isactive: string }>(({ isactive }) => {
     "@media (max-width:834px)": {
       gap: convertVw(6),
       fontSize: convertVw(21),
+      minWidth: convertVw(92),
       letterSpacing: convertVw(-0.42),
       borderTop: `${convertVw(2)} solid`,
       borderLeft: `${convertVw(2)} solid`,
@@ -233,10 +230,6 @@ const SingleSt = styled(SingleSvg)(() => {
   return {
     width: "28px",
     height: "28px",
-    // "@media (max-width:834px)": {
-    //   width: convertVw(28),
-    //   height: convertVw(28),
-    // },
   };
 });
 
@@ -244,9 +237,5 @@ const MultiSt = styled(MultiSvg)(() => {
   return {
     width: "28px",
     height: "28px",
-    // "@media (max-width:834px)": {
-    //   width: convertVw(28),
-    //   height: convertVw(28),
-    // },
   };
 });

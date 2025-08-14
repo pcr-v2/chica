@@ -2,6 +2,8 @@
 
 import { styled } from "@mui/material";
 
+import { convertVw } from "@/utils/convertVw";
+
 interface IProps {
   rank: number;
 }
@@ -20,5 +22,9 @@ const Wrapper = styled("span")<{ rank: number }>(({ rank }) => {
     letterSpacing: "-0.36px",
     color:
       rank === 1 ? "#fff" : rank === 2 || rank === 3 ? "#FFCA28" : "#ACB3BC",
+    "@media (max-width:834px)": {
+      fontSize: convertVw(18),
+      letterSpacing: convertVw(-0.36),
+    },
   };
 });

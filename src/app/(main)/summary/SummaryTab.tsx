@@ -1,6 +1,8 @@
 import { Box, styled, Tab, Tabs } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
+import { convertVw } from "@/utils/convertVw";
+
 type TProps = {
   onClickTab: (value: "week" | "month" | "term") => void;
   selectedTab: string;
@@ -77,8 +79,12 @@ const TabsST = styled(Tabs)(() => {
       fontWeight: 700,
       color: "#747D8A",
       lineHeight: "150%",
-      letterSpacing: "-0.5",
+      letterSpacing: "-0.5px",
       fontFamily: "NanumSquareRound",
+      "@media (max-width:834px)": {
+        fontSize: convertVw(25),
+        letterSpacing: convertVw(-0.5),
+      },
       "&.Mui-selected": {
         color: "#080808",
       },
@@ -91,8 +97,11 @@ const TabsST = styled(Tabs)(() => {
   };
 });
 
-const TabST = styled(Tab)(({ theme }) => {
+const TabST = styled(Tab)(() => {
   return {
     padding: "20px",
+    "@media (max-width:834px)": {
+      padding: convertVw(20),
+    },
   };
 });

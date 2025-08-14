@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
-import React from "react";
 
 import LeftArrow from "@/assets/home/numberpad-arrow.svg";
 import { convertVw } from "@/utils/convertVw";
@@ -43,7 +42,7 @@ export default function NumberSelect(props: IProps) {
               onClick(pad);
             }}
           >
-            {isIcon ? <LeftArrow /> : pad}
+            {isIcon ? <Arrow /> : pad}
           </NumberBtn>
         );
       })}
@@ -60,6 +59,7 @@ const Wrapper = styled(Box)(() => {
     gridTemplateColumns: "1fr 1fr 1fr",
     "@media (max-width:834px)": {
       gap: convertVw(24),
+      maxWidth: convertVw(417),
     },
   };
 });
@@ -79,10 +79,20 @@ const NumberBtn = styled(Box)(() => {
     justifyContent: "center",
     backgroundColor: "#F1F2F3",
     "@media (max-width:834px)": {
-      gap: convertVw(24),
       fontSize: convertVw(40),
       letterSpacing: convertVw(-0.8),
       padding: `${convertVw(32)} ${convertVw(34)}`,
+    },
+  };
+});
+
+const Arrow = styled(LeftArrow)(() => {
+  return {
+    width: "56px",
+    height: "60px",
+    "@media (max-width:834px)": {
+      width: convertVw(56),
+      height: convertVw(60),
     },
   };
 });

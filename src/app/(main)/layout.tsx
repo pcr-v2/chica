@@ -71,7 +71,7 @@ export default function MainLayout(props: IProps) {
       }
     }
   }, [easterEgg]);
-
+  // console.log("easterEgg", easterEgg);
   return (
     <Wrapper>
       <BackgroundLayer>
@@ -165,10 +165,11 @@ const LogoutEasterEgg = styled(Box)(() => {
   return {
     bottom: 0,
     right: "0%",
-    zIndex: 999999,
+    zIndex: 10,
     width: "120px",
     height: "120px",
     position: "absolute",
     pointerEvents: "auto",
+    // border: "2px solid red",
   };
 });

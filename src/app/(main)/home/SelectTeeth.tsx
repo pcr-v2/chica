@@ -1,3 +1,4 @@
+import { styled } from "@mui/material";
 import { motion } from "framer-motion";
 import * as React from "react";
 
@@ -11,9 +12,7 @@ export default function SelectTeeth({
   strokeColor = "#D5D7DB",
 }: Props) {
   return (
-    <motion.svg
-      width="120"
-      height="120"
+    <Wrapper
       viewBox="0 0 120 120"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +33,13 @@ export default function SelectTeeth({
         animate={{ stroke: strokeColor }}
         transition={{ duration: 0.3, ease: "linear" }}
       />
-    </motion.svg>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled(motion.svg)(() => {
+  return {
+    width: "100%",
+    height: "100%",
+  };
+});

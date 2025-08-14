@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import ReasonPicker from "@/app/(main)/summary/ReasonPicker";
 import { getUnCheckedResponse } from "@/app/actions/summary/getUnCheckedAction";
 import { updateUnChecked } from "@/app/actions/summary/updateUnCheckedAction";
+import { convertVw } from "@/utils/convertVw";
 import customDayjs from "@/utils/customDayjs";
 
 type TReason = {
@@ -120,6 +121,9 @@ const Wrapper = styled(Box)(() => {
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "center",
+    // "@media (max-width:834px)": {
+    //   gap: convertVw(40),
+    // },
   };
 });
 
@@ -131,6 +135,10 @@ const Title = styled(Box)(() => {
     lineHeight: "150%",
     textAlign: "center",
     letterSpacing: "-0.56px",
+    // "@media (max-width:834px)": {
+    //   fontSize: convertVw(28),
+    //   letterSpacing: convertVw(-0.56),
+    // },
   };
 });
 
@@ -140,6 +148,9 @@ const ListWrap = styled(Box)(() => {
     width: "100%",
     display: "flex",
     flexDirection: "column",
+    // "@media (max-width:834px)": {
+    //   gap: convertVw(24),
+    // },
   };
 });
 
@@ -155,17 +166,28 @@ const ListRow = styled(Box)(() => {
     alignItems: "center",
     letterSpacing: "-0.5px",
     justifyContent: "space-between",
+    // "@media (max-width:834px)": {
+    //   fontSize: convertVw(25),
+    //   minHeight: convertVw(52),
+    //   letterSpacing: convertVw(-0.5),
+    // },
   };
 });
 
 const NoticeBox = styled(Box)(() => {
   return {
     gap: "4px",
+    width: "100%",
     display: "flex",
     padding: "24px",
     borderRadius: "16px",
     flexDirection: "column",
     backgroundColor: "#F1F2F3",
+    // "@media (max-width:834px)": {
+    //   gap: convertVw(4),
+    //   padding: convertVw(24),
+    //   borderRadius: convertVw(16),
+    // },
   };
 });
 
@@ -175,7 +197,12 @@ const NoticeSpan = styled("span")(() => {
     fontWeight: 700,
     lineHeight: "150%",
     color: "#464B53",
+    wordBreak: "keep-all",
     letterSpacing: "-0.32px",
+    // "@media (max-width:834px)": {
+    //   fontSize: convertVw(16),
+    //   letterSpacing: convertVw(-0.32),
+    // },
   };
 });
 
@@ -185,6 +212,10 @@ const Divider = styled(Box)(() => {
     height: "16px",
     borderRadius: "10px",
     backgroundColor: "#D5D7DB",
+    // "@media (max-width:834px)": {
+    //   width: convertVw(2),
+    //   height: convertVw(16),
+    // },
   };
 });
 
@@ -202,5 +233,11 @@ const Btn = styled(Box)(() => {
     letterSpacing: "-0.56px",
     backgroundColor: "#6EDBB5",
     border: "4px solid #32C794",
+    // "@media (max-width:834px)": {
+    //   fontSize: convertVw(28),
+    //   letterSpacing: convertVw(-0.56),
+    //   border: `${convertVw(4)} solide #32C794`,
+    //   padding: `${convertVw(16)} ${convertVw(24)}`,
+    // },
   };
 });

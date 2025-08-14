@@ -1,5 +1,6 @@
 "use client";
 
+import { styled } from "@mui/material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -33,9 +34,7 @@ export default function MultiSvg(props: IProps) {
   }, [isActive]);
 
   return (
-    <motion.svg
-      width="28"
-      height="28"
+    <Wrapper
       viewBox="0 0 28 28"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -60,6 +59,13 @@ export default function MultiSvg(props: IProps) {
         animate={{ fill: active.fill3 }}
         transition={{ duration: 0.3, ease: "linear" }}
       />
-    </motion.svg>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled(motion.svg)(() => {
+  return {
+    width: "100%",
+    height: "100%",
+  };
+});

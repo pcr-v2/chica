@@ -39,7 +39,7 @@ export const getMeal = async (request: GetMealRequest) => {
     };
   }
 
-  const key = process.env.NEIS_API_KEY; // .env.local에 저장된 인증키
+  const key = process.env.NEXT_PUBLIC_NEIS_API_KEY; // .env.local에 저장된 인증키
   const baseUrl = "https://open.neis.go.kr/hub/mealServiceDietInfo";
 
   const params = new URLSearchParams({
@@ -47,18 +47,29 @@ export const getMeal = async (request: GetMealRequest) => {
     Type: "json",
     ATPT_OFCDC_SC_CODE: result?.officeCode, // 경기도교육청 예시
     SD_SCHUL_CODE: result?.schoolCode, // 학교 코드
-
-    // 투두
     MLSV_FROM_YMD: customDayjs().format("YYYYMMDD"), // 시작일
     MLSV_TO_YMD: customDayjs().format("YYYYMMDD"), // 종료일
     MMEAL_SC_CODE: "2", // 중식
   });
 
-  const res = await fetch(`${baseUrl}?${params.toString()}`);
+  const testParams = new URLSearchParams({
+    KEY: key ?? "",
+    Type: "json",
+    ATPT_OFCDC_SC_CODE: "J10", // 경기도교육청 예시
+    SD_SCHUL_CODE: "7781173", // 학교 코드
+    MLSV_FROM_YMD: customDayjs("2025-08-14").format("YYYYMMDD"), // 시작일
+    MLSV_TO_YMD: customDayjs("2025-08-14").format("YYYYMMDD"), // 종료일
+    MMEAL_SC_CODE: "2", // 중식
+  });
+
+  // console.log("params", params);
+
+  const res = await fetch(`${baseUrl}?${testParams.toString()}`);
   const data = await res.json();
 
-  console.log("오늘", customDayjs().format("YYYYMMDD"));
-  console.log("data", data);
+  // console.log("오늘", customDayjs().add(1, "day").format("YYYYMMDD"));
+  // console.log("오늘", customDayjs().add(1, "days").format("YYYYMMDD"));
+  // console.log("data", data);
 
   if (data.mealServiceDietInfo?.[1].row?.[0] == null) {
     return {

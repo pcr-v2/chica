@@ -82,6 +82,7 @@ const Content = styled(motion.div)(() => {
     width: "100%",
     display: "flex",
     maxWidth: "560px",
+    margin: "0px 24px",
     borderRadius: "24px",
     position: "relative",
     alignItems: "center",

@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { getUnCheckedResponse } from "@/app/actions/summary/getUnCheckedAction";
 import Arrow from "@/assets/icon/select-arrow.svg";
 import { $Enums } from "@/prisma/generated";
+import { convertVw } from "@/utils/convertVw";
 
 const reasonList: TReason[] = [
   { label: "안함", value: "No" },
@@ -67,9 +68,7 @@ export default function ReasonPicker(props: IProps) {
     <Container ref={containerRef} sx={{ zIndex: isOpen ? 999 : 0 }}>
       {/* 버튼 */}
       <Btn onClick={toggleOpen}>
-        <span style={{ minWidth: "76px", textAlign: "center" }}>
-          {selectedReason.label}
-        </span>
+        <ReasonLabel>{selectedReason.label}</ReasonLabel>
         <ArrowImg isopen={isOpen.toString()} />
       </Btn>
 
@@ -111,6 +110,11 @@ const Container = styled("div")({
   backdropFilter: "blur(4px)",
   border: "2px solid #D5D7DB",
   padding: "10px 10px 10px 16px",
+  // "@media (max-width:834px)": {
+  //   width: convertVw(135),
+  //   borderRadius: convertVw(8),
+  //   padding: `${convertVw(10)} ${convertVw(10)} ${convertVw(10)} ${convertVw(16)}`,
+  // },
 });
 
 const Btn = styled(Box)({
@@ -163,4 +167,18 @@ const Item = styled("li")<{ selected: boolean }>(({ selected }) => ({
   "&:hover": {
     backgroundColor: "#EDFCF7",
   },
+  // "@media (max-width:834px)": {
+  //   minWidth: convertVw(104),
+  //   borderRadius: convertVw(8),
+  // },
 }));
+
+const ReasonLabel = styled("span")(() => {
+  return {
+    minWidth: "76px",
+    textAlign: "center",
+    // "@media (max-width:834px)": {
+    //   minWidth: convertVw(76),
+    // },
+  };
+});

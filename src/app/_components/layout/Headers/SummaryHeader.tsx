@@ -2,9 +2,9 @@
 
 import { Box, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import Calendar from "@/assets/summary/calendar.svg";
+import { convertVw } from "@/utils/convertVw";
 
 interface IProps {
   count: number;
@@ -39,6 +39,9 @@ const Wrapper = styled(Box)(() => {
     alignItems: "center",
     padding: "105px 64px 24px",
     justifyContent: "space-between",
+    "@media (max-width:834px)": {
+      padding: `${convertVw(105)} ${convertVw(64)} ${convertVw(24)}`,
+    },
   };
 });
 
@@ -48,6 +51,10 @@ const CountDownText = styled("span")(() => ({
   lineHeight: "150%",
   color: "#747D8A",
   letterSpacing: "-0.42px",
+  "@media (max-width:834px)": {
+    fontSize: convertVw(21),
+    letterSpacing: convertVw(-0.42),
+  },
 }));
 
 const CalendarBtn = styled(Box)(() => {
@@ -66,13 +73,23 @@ const CalendarBtn = styled(Box)(() => {
     backgroundColor: "#fff",
     backdropFilter: "blur(4px)",
     border: "2px solid #D5D7DB",
+    "@media (max-width:834px)": {
+      fontSize: convertVw(21),
+      letterSpacing: convertVw(-0.42),
+      border: `${convertVw(2)} solid #D5D7DB`,
+      padding: `${convertVw(12)} ${convertVw(20)}`,
+    },
   };
 });
 
 const CalendarIcon = styled(Calendar)(() => {
   return {
-    width: "28px",
     height: "28px",
+    minWidth: "28px",
+    "@media (max-width:834px)": {
+      height: convertVw(28),
+      minWidth: convertVw(28),
+    },
   };
 });
 
@@ -93,5 +110,12 @@ const DoneBtn = styled(Box)(() => {
     backgroundColor: "#fff",
     backdropFilter: "blur(4px)",
     border: "2px solid #D5D7DB",
+    "@media (max-width:834px)": {
+      width: convertVw(100),
+      fontSize: convertVw(21),
+      letterSpacing: convertVw(-0.42),
+      border: `${convertVw(2)} solid #D5D7DB`,
+      padding: `${convertVw(12)} ${convertVw(20)}`,
+    },
   };
 });

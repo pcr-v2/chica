@@ -32,7 +32,7 @@ export default function ClientLayout(props: IProps) {
 
   return (
     <QueryClientProviders>
-      <ReactQueryDevtools position="bottom" />
+      {/* <ReactQueryDevtools position="bottom" /> */}
 
       <AppRouterCacheProvider
         options={{ enableCssLayer: false, prepend: false }}

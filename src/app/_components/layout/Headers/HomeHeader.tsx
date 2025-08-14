@@ -4,6 +4,7 @@ import { Box, styled } from "@mui/material";
 
 import LeftArrow from "@/assets/icon/left-arrow.svg";
 import Logo from "@/assets/logo/page-logo.png";
+import { convertVw } from "@/utils/convertVw";
 
 interface IProps {
   grade: string | null;
@@ -42,6 +43,10 @@ const Wrapper = styled(Box)(() => {
     display: "flex",
     alignItems: "center",
     padding: "105px 64px 24px",
+    "@media (max-width:834px)": {
+      gap: convertVw(40),
+      padding: `${convertVw(105)} ${convertVw(64)} ${convertVw(24)}`,
+    },
   };
 });
 
@@ -49,6 +54,10 @@ const LogoImg = styled("img")(() => {
   return {
     width: "192px",
     height: "64px",
+    "@media (max-width:834px)": {
+      width: convertVw(192),
+      height: convertVw(64),
+    },
   };
 });
 
@@ -61,6 +70,7 @@ const GoMainBtn = styled(Box)(() => {
     cursor: "pointer",
     color: "#747d8a",
     lineHeight: "150%",
+    whiteSpace: "nowrap",
     alignItems: "center",
     padding: "12px 20px",
     borderRadius: "100px",
@@ -69,6 +79,13 @@ const GoMainBtn = styled(Box)(() => {
     backgroundColor: "#fff",
     backdropFilter: "blur(4px)",
     border: "2px solid #D5D7DB",
+    "@media (max-width:834px)": {
+      gap: convertVw(6),
+      fontSize: convertVw(21),
+      letterSpacing: convertVw(-0.42),
+      border: `${convertVw(2)} solid #D5D7DB`,
+      padding: `${convertVw(12)} ${convertVw(20)}`,
+    },
   };
 });
 
@@ -76,6 +93,10 @@ const ArrowImg = styled(LeftArrow)(() => {
   return {
     width: "28px",
     height: "28px",
+    "@media (max-width:834px)": {
+      width: convertVw(28),
+      height: convertVw(28),
+    },
   };
 });
 
@@ -91,5 +112,10 @@ const InfoBox = styled(Box)(() => {
     textAlign: "center",
     justifyContent: "center",
     letterSpacing: "-0.64px",
+    "@media (max-width:834px)": {
+      fontSize: convertVw(32),
+      maxWidth: convertVw(340),
+      letterSpacing: convertVw(-0.42),
+    },
   };
 });
