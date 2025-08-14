@@ -21,53 +21,60 @@ export async function getMe() {
     };
   }
 
-  const verified = await jwtVerify(accessToken, secretKey);
+  try {
+    const verified = await jwtVerify(accessToken, secretKey);
 
-  const admin = await mysqlPrisma.school.findFirst({
-    where: {
-      loginId: verified.payload.id!,
-    },
-  });
+    const admin = await mysqlPrisma.school.findFirst({
+      where: {
+        loginId: verified.payload.id!,
+      },
+    });
 
-  if (admin == null) {
+    if (admin == null) {
+      return {
+        code: "NOT_FOUND",
+        message: "존재하지 않는 유저입니다.",
+      };
+    }
+
+    const list = await mysqlPrisma.$queryRawUnsafe<
+      {
+        studentGrade: number;
+        studentClass: string;
+      }[]
+    >(
+      `
+        SELECT
+          student_grade,
+          GROUP_CONCAT(DISTINCT student_class ORDER BY student_class) AS class_list
+        FROM Student
+        WHERE school_id = ? AND student_status = 1
+        GROUP BY student_grade
+        ORDER BY student_grade;
+      `,
+      admin.schoolId,
+    );
+
+    const classList = list.map(({ student_grade, class_list }: any) => ({
+      grade: student_grade.toString(),
+      class: class_list.split(","),
+    }));
+
     return {
-      code: "NOT_FOUND",
-      message: "존재하지 않는 유저입니다.",
+      code: "SUCCESS",
+      data: {
+        type: admin.schoolType,
+        loginId: admin.loginId,
+        schoolId: admin.schoolId,
+        schoolLevel: admin.schoolLevel,
+        name: admin.teacherName,
+        classList,
+      },
+    };
+  } catch (error) {
+    return {
+      code: "FAIL" as const,
+      message: "getMe 호출에러",
     };
   }
-
-  const list = await mysqlPrisma.$queryRawUnsafe<
-    {
-      studentGrade: number;
-      studentClass: string;
-    }[]
-  >(
-    `
-      SELECT
-        student_grade,
-        GROUP_CONCAT(DISTINCT student_class ORDER BY student_class) AS class_list
-      FROM Student
-      WHERE school_id = ? AND student_status = 1
-      GROUP BY student_grade
-      ORDER BY student_grade;
-    `,
-    admin.schoolId,
-  );
-
-  const classList = list.map(({ student_grade, class_list }: any) => ({
-    grade: student_grade.toString(),
-    class: class_list.split(","),
-  }));
-
-  return {
-    code: "SUCCESS",
-    data: {
-      type: admin.schoolType,
-      loginId: admin.loginId,
-      schoolId: admin.schoolId,
-      schoolLevel: admin.schoolLevel,
-      name: admin.teacherName,
-      classList,
-    },
-  };
 }

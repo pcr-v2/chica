@@ -44,10 +44,10 @@ async function refresh(req: NextRequest) {
     });
 
     res.cookies.set("CHICA_USER_ACCESS_TOKEN", newAccessToken, {
-      maxAge: 99999999999,
+      maxAge: 60 * 60 * 24 * 399,
     });
     res.cookies.set("CHICA_USER_REFRESH_TOKEN", newRefreshToken, {
-      maxAge: 99999999999,
+      maxAge: 60 * 60 * 24 * 399,
     });
     return res;
   } catch (error) {

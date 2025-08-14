@@ -21,13 +21,13 @@ export async function refreshToken() {
     const newAccessToken = await new SignJWT({ id, type })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("1d") // 액세스 토큰 1일 유효
+      .setExpirationTime("100000d") // 액세스 토큰 1일 유효
       .sign(secretKey);
 
     const newRefreshToken = await new SignJWT({ id, type })
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
-      .setExpirationTime("400d") // 리프레시 토큰 400일 유효
+      .setExpirationTime("100000d") // 리프레시 토큰 400일 유효
       .sign(secretKey);
 
     // 쿠키 재설정
