@@ -50,7 +50,7 @@ export default function SummaryContainer(props: IProps) {
 
   useEffect(() => {
     if (count <= 0) {
-      // router.replace("/");
+      router.replace("/");
       return;
     }
 

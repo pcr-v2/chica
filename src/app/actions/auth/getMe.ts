@@ -1,7 +1,9 @@
 "use server";
 
 import { jwtVerify } from "jose";
+import next from "next";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 import { mysqlPrisma } from "@/libs/prisma";
 
@@ -16,7 +18,7 @@ export async function getMe() {
 
   if (accessToken == null) {
     return {
-      code: "UNAUTHORIZED",
+      code: "UNAUTHORIZED" as const,
       message: "인증이 필요합니다.",
     };
   }
@@ -32,7 +34,7 @@ export async function getMe() {
 
     if (admin == null) {
       return {
-        code: "NOT_FOUND",
+        code: "NOT_FOUND" as const,
         message: "존재하지 않는 유저입니다.",
       };
     }
@@ -61,7 +63,7 @@ export async function getMe() {
     }));
 
     return {
-      code: "SUCCESS",
+      code: "SUCCESS" as const,
       data: {
         type: admin.schoolType,
         loginId: admin.loginId,
@@ -72,6 +74,7 @@ export async function getMe() {
       },
     };
   } catch (error) {
+    // return NextResponse.redirect(new URL("/signin", process.env.NEXT_PUBLIC_DOMAIN_URL));
     return {
       code: "FAIL" as const,
       message: "getMe 호출에러",
