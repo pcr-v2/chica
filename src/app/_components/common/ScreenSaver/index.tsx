@@ -132,7 +132,7 @@ export default function ScreenSaver() {
       {items.length <= 0 ? (
         <SlideST
           style={{
-            backgroundColor: "rgba(255,255,255,0.5)",
+            backgroundColor: "rgba(255,255,255,0.75)",
             flexDirection: "column",
           }}
         >

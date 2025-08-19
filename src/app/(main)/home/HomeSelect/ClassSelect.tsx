@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, styled } from "@mui/material";
+import { useEffect } from "react";
 
 import { convertVw } from "@/utils/convertVw";
 
@@ -12,6 +13,12 @@ interface IProps {
 
 export default function ClassSelect(props: IProps) {
   const { selected, classList, onClick } = props;
+
+  useEffect(() => {
+    if (classList && classList.length === 1) {
+      onClick(classList[0]);
+    }
+  }, [classList]);
 
   return (
     <Wrapper>
