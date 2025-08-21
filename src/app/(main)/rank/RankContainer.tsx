@@ -16,8 +16,10 @@ import { convertVw } from "@/utils/convertVw";
 import { maskName } from "@/utils/maskName";
 
 type DisplayRank = {
+  student_id: string;
   displayName: string;
   percentage: number;
+  student_rank: number;
 };
 
 type SingleRank = {
@@ -26,12 +28,14 @@ type SingleRank = {
   student_grade: number;
   student_class: string;
   percentage: number;
+  student_rank: number;
 };
 
 type MultiRank = {
   student_grade: number;
   student_class: string;
   percentage: number;
+  student_rank: number;
 };
 
 interface IProps {
@@ -45,22 +49,16 @@ export default function RankContainer(props: IProps) {
   const term = month >= 3 && month <= 7 ? 1 : 2;
 
   const [singleMulti, setSingleMulti] = useState<"single" | "multi">("single");
-  const [monthTerm, setMonthTerm] = useState<"month" | "term">("month");
 
-  // 상태 분리
-  const [singleRanks, setSingleRanks] = useState<SingleRank[]>([]);
-  const [multiRanks, setMultiRanks] = useState<MultiRank[]>([]);
-
-  const [topThree, setTopThree] = useState<DisplayRank[]>([]);
-  const [restRanks, setRestRanks] = useState<DisplayRank[]>([]);
+  const [ranks, setRanks] = useState<DisplayRank[]>([]);
 
   // React Query 데이터 fetch
   const { data, isLoading } = useQuery({
-    queryKey: ["get-rank", me.data?.schoolId, monthTerm],
+    queryKey: ["get-rank", me.data?.schoolId, singleMulti],
     queryFn: () =>
       getRankPageStatistic({
         schoolId: me.data?.schoolId as string,
-        type: monthTerm,
+        type: "month",
       }),
     enabled: !!me.data,
   });
@@ -73,56 +71,25 @@ export default function RankContainer(props: IProps) {
         ? data.data.studentRankArray
         : data.data.classRankArray;
 
-    const mapped = sourceArray.map((item: any) => {
-      if (singleMulti === "single") {
-        return {
-          displayName: `${item.student_grade}학년 ${item.student_class}반 ${maskName(
-            item.student_name ?? "",
-          )}`,
-          percentage: item.percentage ?? 0,
-        };
-      } else {
-        return {
-          displayName: `${item.student_grade}학년 ${item.student_class}반`,
-          percentage: item.percentage ?? 0,
-        };
-      }
-    });
+    const mapped: DisplayRank[] = sourceArray.map((item: any) => ({
+      student_id:
+        item.student_id ?? `${item.student_grade}-${item.student_class}`,
+      displayName:
+        singleMulti === "single"
+          ? `${item.student_grade}학년 ${item.student_class}반 ${maskName(
+              item.student_name ?? "",
+            )}`
+          : `${item.student_grade}학년 ${item.student_class}반`,
+      percentage: item.percentage ?? 0,
+      student_rank: item.student_rank, // 서버에서 내려주는 순위 그대로
+    }));
 
-    setTopThree(mapped.slice(0, 3));
-    setRestRanks(mapped.slice(3));
-  }, [data, singleMulti, monthTerm]);
+    setRanks(mapped);
+  }, [data, singleMulti]);
 
-  // 데이터가 바뀔 때마다 상태 업데이트
-  useEffect(() => {
-    if (!data || data.code !== "SUCCESS") return;
-
-    if (singleMulti === "single") {
-      // 학생별 랭킹은 studentRankArray, 이름 포함
-      setSingleRanks(data.data.studentRankArray);
-    } else {
-      // 반별 랭킹은 classRankArray, 이름 없음
-      setMultiRanks(data.data.classRankArray);
-    }
-  }, [data, singleMulti, monthTerm]);
-
-  // 1~3등, 나머지 분리 함수 (학생용, 반용 둘 다 동일 구조)
-  const getTopThreeAndRest = <T,>(arr: T[] = []) => {
-    const safeArr = Array.isArray(arr) ? arr : [];
-    return {
-      first: safeArr[0],
-      second: safeArr[1],
-      third: safeArr[2],
-      rest: safeArr.slice(3),
-    };
-  };
-
-  // onChange 핸들러
   const handleValue = (value: "single" | "multi" | "month" | "term") => {
     if (value === "single" || value === "multi") {
       setSingleMulti(value);
-    } else {
-      setMonthTerm(value);
     }
   };
 
@@ -130,74 +97,51 @@ export default function RankContainer(props: IProps) {
     return <LoadingAnimation />;
   }
 
+  const topThree = ranks.filter((r) => r.student_rank <= 3);
+  const restRanks = ranks.filter((r) => r.student_rank > 3);
+
   return (
     <Wrapper>
       <RankHeader
         singleMulti={singleMulti}
-        monthTerm={monthTerm}
+        monthTerm="month"
         onChange={handleValue}
         currentMonth={`${month}월`}
         currentTerm={`${term}학기`}
       />
 
       <Content>
-        <TitleBadge
-          text={
-            monthTerm === "month" ? `${month}월 양치왕` : `${term}학기 양치왕`
-          }
-        />
+        <TitleBadge text={`${month}월 양치왕`} />
 
         <RankWrap>
-          {/* 1등 */}
-          <RankBox
-            rank={1}
-            style={{
-              background: `url(${Rank1_Pattern.src}) no-repeat #FFCA28`,
-            }}
-          >
-            <RankNameWrap>
-              <RankSpan rank={1} />
-              {topThree[0]?.displayName}
-            </RankNameWrap>
-            <PercentText sx={{ color: "#fff" }}>
-              {`${topThree[0]?.percentage}%`}
-            </PercentText>
-          </RankBox>
-
-          {/* 2등 */}
-          <RankBox rank={2} style={{ backgroundColor: "#FFF8E1" }}>
-            <RankNameWrap>
-              <RankSpan rank={2} />
-              {topThree[1]?.displayName}
-            </RankNameWrap>
-            <PercentText sx={{ color: "#FFA000" }}>
-              {`${topThree[1]?.percentage}%`}
-            </PercentText>
-          </RankBox>
-
-          {/* 3등 */}
-          <RankBox rank={3} style={{ backgroundColor: "#FFF8E1" }}>
-            <RankNameWrap>
-              <RankSpan rank={3} />
-              {topThree[2]?.displayName}
-            </RankNameWrap>
-            <PercentText sx={{ color: "#FFA000" }}>
-              {`${topThree[2]?.percentage}%`}
-            </PercentText>
-          </RankBox>
-
-          {/* 나머지 */}
-          {restRanks.map((item, idx) => (
+          {ranks.map((item) => (
             <RankBox
-              key={idx}
-              rank={idx + 4}
-              style={{ backgroundColor: "#F1F2F3" }}
+              key={item.student_id}
+              rank={item.student_rank}
+              style={
+                item.student_rank === 1
+                  ? {
+                      background: `url(${Rank1_Pattern.src}) no-repeat #FFCA28`,
+                    }
+                  : item.student_rank <= 3
+                    ? { backgroundColor: "#FFF8E1" }
+                    : { backgroundColor: "#F1F2F3" }
+              }
             >
               <RankNameWrap>
-                <RankSpan rank={idx + 4} />
+                <RankSpan rank={item.student_rank} />
                 {item.displayName}
               </RankNameWrap>
-              <PercentText sx={{ color: "#747D8A" }}>
+              <PercentText
+                sx={{
+                  color:
+                    item.student_rank === 1
+                      ? "#fff"
+                      : item.student_rank <= 3
+                        ? "#FFA000"
+                        : "#747D8A",
+                }}
+              >
                 {`${item.percentage}%`}
               </PercentText>
             </RankBox>

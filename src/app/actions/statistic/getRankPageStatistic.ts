@@ -120,7 +120,7 @@ export async function getRankPageStatistic(
       student_grade,
       student_class,
       percentage,
-      ROW_NUMBER() OVER (ORDER BY percentage DESC) AS student_rank
+      DENSE_RANK() OVER (ORDER BY percentage DESC) AS student_rank
     FROM StudentStats
   )
   SELECT *
@@ -136,6 +136,7 @@ export async function getRankPageStatistic(
   const studentRankArray = studentRankArrayRaw.map((item) => ({
     ...item,
     percentage: Number(item.percentage),
+    student_rank: Number(item.student_rank), // <- BigInt -> Number 변환
   }));
 
   // 2. 학교 모든 반 양치율 순위 리스트
@@ -144,45 +145,54 @@ export async function getRankPageStatistic(
       student_grade: number;
       student_class: string;
       percentage: number;
+      student_rank: number;
     }[]
   >(
     `
     WITH SchoolLevel AS (
-    SELECT school_level
-    FROM School
-    WHERE school_id = ?
+      SELECT school_level
+      FROM School
+      WHERE school_id = ?
     ),
     GradeRange AS (
-    SELECT
-        CASE
-        WHEN school_level = 'elementary' THEN '1,2,3,4,5,6'
-        WHEN school_level IN ('middle', 'high') THEN '1,2,3'
-        ELSE ''
-        END AS grades
-    FROM SchoolLevel
+      SELECT
+          CASE
+          WHEN school_level = 'elementary' THEN '1,2,3,4,5,6'
+          WHEN school_level IN ('middle', 'high') THEN '1,2,3'
+          ELSE ''
+          END AS grades
+      FROM SchoolLevel
     ),
     ClassStats AS (
-    SELECT
-        s.student_grade,
-        s.student_class,
-        ROUND(
-        IF(
-            COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 END) = 0,
-            0,
-            SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) / COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 END) * 100
-        ),
-        1
-        ) AS percentage
-    FROM Student s
-    JOIN Brushed b ON s.student_id = b.student_id
-        AND b.brushed_at BETWEEN ? AND ?
-    WHERE s.school_id = ?
-        AND FIND_IN_SET(s.student_grade, (SELECT grades FROM GradeRange)) > 0
-    GROUP BY s.student_grade, s.student_class
+      SELECT
+          s.student_grade,
+          s.student_class,
+          ROUND(
+            IF(
+              COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 END) = 0,
+              0,
+              SUM(CASE WHEN b.brushed_status = 'Ok' THEN 1 ELSE 0 END) / COUNT(CASE WHEN b.brushed_status IN ('Ok', 'No') THEN 1 END) * 100
+            ),
+            1
+          ) AS percentage
+      FROM Student s
+      JOIN Brushed b ON s.student_id = b.student_id
+          AND b.brushed_at BETWEEN ? AND ?
+      WHERE s.school_id = ?
+          AND FIND_IN_SET(s.student_grade, (SELECT grades FROM GradeRange)) > 0
+      GROUP BY s.student_grade, s.student_class
+    ),
+    RankedClasses AS (
+      SELECT
+        student_grade,
+        student_class,
+        percentage,
+        DENSE_RANK() OVER (ORDER BY percentage DESC) AS student_rank
+      FROM ClassStats
     )
-    SELECT student_grade, student_class, percentage
-    FROM ClassStats
-    ORDER BY percentage DESC, student_grade, student_class;
+    SELECT *
+    FROM RankedClasses
+    ORDER BY student_rank, student_grade, student_class;
   `,
     schoolId,
     gteDate,
@@ -191,10 +201,11 @@ export async function getRankPageStatistic(
   );
 
   const classRankArray = classRankArrayRaw.map(
-    ({ student_grade, student_class, percentage }) => ({
+    ({ student_grade, student_class, percentage, student_rank }) => ({
       student_grade,
       student_class,
       percentage: Number(percentage),
+      student_rank: Number(student_rank),
     }),
   );
 
