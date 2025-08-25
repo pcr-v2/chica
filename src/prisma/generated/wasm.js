@@ -163,7 +163,8 @@ exports.Prisma.SchedulesScalarFieldEnum = {
   scheduleName: 'scheduleName',
   scheduleTarget: 'scheduleTarget',
   scheduleAt: 'scheduleAt',
-  scheduleStatus: 'scheduleStatus'
+  scheduleStatus: 'scheduleStatus',
+  scheduleSetId: 'scheduleSetId'
 };
 
 exports.Prisma.SchoolScalarFieldEnum = {
@@ -235,7 +236,8 @@ exports.Prisma.HolidayOrderByRelevanceFieldEnum = {
 exports.Prisma.SchedulesOrderByRelevanceFieldEnum = {
   schoolId: 'schoolId',
   scheduleName: 'scheduleName',
-  scheduleTarget: 'scheduleTarget'
+  scheduleTarget: 'scheduleTarget',
+  scheduleSetId: 'scheduleSetId'
 };
 
 exports.Prisma.SchoolOrderByRelevanceFieldEnum = {
