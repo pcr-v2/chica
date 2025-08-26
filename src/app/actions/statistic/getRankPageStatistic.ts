@@ -90,6 +90,7 @@ export async function getRankPageStatistic(
       student_class: string;
       percentage: number;
       student_rank: number;
+      student_number: number;
     }[]
   >(
     `
@@ -97,6 +98,7 @@ export async function getRankPageStatistic(
     SELECT 
       s.student_id,
       s.student_name,
+      student_number,
       s.student_grade,
       s.student_class,
       ROUND(
@@ -119,6 +121,7 @@ export async function getRankPageStatistic(
       student_name,
       student_grade,
       student_class,
+      student_number,
       percentage,
       DENSE_RANK() OVER (ORDER BY percentage DESC) AS student_rank
     FROM StudentStats
