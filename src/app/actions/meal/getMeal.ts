@@ -64,7 +64,7 @@ export const getMeal = async (request: GetMealRequest) => {
 
   // console.log("params", params);
 
-  const res = await fetch(`${baseUrl}?${testParams.toString()}`);
+  const res = await fetch(`${baseUrl}?${params.toString()}`);
   const data = await res.json();
 
   // console.log("오늘", customDayjs().add(1, "day").format("YYYYMMDD"));
