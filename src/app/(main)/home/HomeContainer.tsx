@@ -15,7 +15,6 @@ import Modal from "@/app/_components/common/Modal";
 import HomeHeader from "@/app/_components/layout/Headers/HomeHeader";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { getMeal, Meal } from "@/app/actions/meal/getMeal";
-import testAction from "@/app/actions/testAction";
 import { useScreenSaverStore } from "@/store/useScreenSaverStore";
 
 dayjs.extend(utc);
@@ -70,16 +69,6 @@ export default function HomeContainer(props: IProps) {
   // console.log("isActive", isActive);
   return (
     <Wrapper>
-      {/* 
-      // 배치 테스트 용
-      <Button
-        variant="contained"
-        onClick={async () => {
-          await testAction();
-        }}
-      >
-        TEST
-      </Button> */}
       <HomeHeader
         grade={userValue.grade}
         classNum={userValue.class}

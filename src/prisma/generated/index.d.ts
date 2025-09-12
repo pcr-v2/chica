@@ -2550,6 +2550,7 @@ export namespace Prisma {
     studentId: string | null
     brushedAt: Date | null
     brushedStatus: $Enums.BrushedBrushedStatus | null
+    updatedAt: Date | null
   }
 
   export type BrushedMaxAggregateOutputType = {
@@ -2557,6 +2558,7 @@ export namespace Prisma {
     studentId: string | null
     brushedAt: Date | null
     brushedStatus: $Enums.BrushedBrushedStatus | null
+    updatedAt: Date | null
   }
 
   export type BrushedCountAggregateOutputType = {
@@ -2564,6 +2566,7 @@ export namespace Prisma {
     studentId: number
     brushedAt: number
     brushedStatus: number
+    updatedAt: number
     _all: number
   }
 
@@ -2581,6 +2584,7 @@ export namespace Prisma {
     studentId?: true
     brushedAt?: true
     brushedStatus?: true
+    updatedAt?: true
   }
 
   export type BrushedMaxAggregateInputType = {
@@ -2588,6 +2592,7 @@ export namespace Prisma {
     studentId?: true
     brushedAt?: true
     brushedStatus?: true
+    updatedAt?: true
   }
 
   export type BrushedCountAggregateInputType = {
@@ -2595,6 +2600,7 @@ export namespace Prisma {
     studentId?: true
     brushedAt?: true
     brushedStatus?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -2689,6 +2695,7 @@ export namespace Prisma {
     studentId: string
     brushedAt: Date
     brushedStatus: $Enums.BrushedBrushedStatus
+    updatedAt: Date | null
     _count: BrushedCountAggregateOutputType | null
     _avg: BrushedAvgAggregateOutputType | null
     _sum: BrushedSumAggregateOutputType | null
@@ -2715,6 +2722,7 @@ export namespace Prisma {
     studentId?: boolean
     brushedAt?: boolean
     brushedStatus?: boolean
+    updatedAt?: boolean
     student?: boolean | StudentDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["brushed"]>
 
@@ -2725,9 +2733,10 @@ export namespace Prisma {
     studentId?: boolean
     brushedAt?: boolean
     brushedStatus?: boolean
+    updatedAt?: boolean
   }
 
-  export type BrushedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "brushedAt" | "brushedStatus", ExtArgs["result"]["brushed"]>
+  export type BrushedOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentId" | "brushedAt" | "brushedStatus" | "updatedAt", ExtArgs["result"]["brushed"]>
   export type BrushedInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     student?: boolean | StudentDefaultArgs<ExtArgs>
   }
@@ -2742,6 +2751,7 @@ export namespace Prisma {
       studentId: string
       brushedAt: Date
       brushedStatus: $Enums.BrushedBrushedStatus
+      updatedAt: Date | null
     }, ExtArgs["result"]["brushed"]>
     composites: {}
   }
@@ -3116,6 +3126,7 @@ export namespace Prisma {
     readonly studentId: FieldRef<"Brushed", 'String'>
     readonly brushedAt: FieldRef<"Brushed", 'DateTime'>
     readonly brushedStatus: FieldRef<"Brushed", 'BrushedBrushedStatus'>
+    readonly updatedAt: FieldRef<"Brushed", 'DateTime'>
   }
     
 
@@ -8676,7 +8687,8 @@ export namespace Prisma {
     id: 'id',
     studentId: 'studentId',
     brushedAt: 'brushedAt',
-    brushedStatus: 'brushedStatus'
+    brushedStatus: 'brushedStatus',
+    updatedAt: 'updatedAt'
   };
 
   export type BrushedScalarFieldEnum = (typeof BrushedScalarFieldEnum)[keyof typeof BrushedScalarFieldEnum]
@@ -9010,6 +9022,7 @@ export namespace Prisma {
     studentId?: StringFilter<"Brushed"> | string
     brushedAt?: DateTimeFilter<"Brushed"> | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFilter<"Brushed"> | $Enums.BrushedBrushedStatus
+    updatedAt?: DateTimeNullableFilter<"Brushed"> | Date | string | null
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
   }
 
@@ -9018,6 +9031,7 @@ export namespace Prisma {
     studentId?: SortOrder
     brushedAt?: SortOrder
     brushedStatus?: SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     student?: StudentOrderByWithRelationInput
     _relevance?: BrushedOrderByRelevanceInput
   }
@@ -9030,6 +9044,7 @@ export namespace Prisma {
     studentId?: StringFilter<"Brushed"> | string
     brushedAt?: DateTimeFilter<"Brushed"> | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFilter<"Brushed"> | $Enums.BrushedBrushedStatus
+    updatedAt?: DateTimeNullableFilter<"Brushed"> | Date | string | null
     student?: XOR<StudentScalarRelationFilter, StudentWhereInput>
   }, "id">
 
@@ -9038,6 +9053,7 @@ export namespace Prisma {
     studentId?: SortOrder
     brushedAt?: SortOrder
     brushedStatus?: SortOrder
+    updatedAt?: SortOrderInput | SortOrder
     _count?: BrushedCountOrderByAggregateInput
     _avg?: BrushedAvgOrderByAggregateInput
     _max?: BrushedMaxOrderByAggregateInput
@@ -9053,6 +9069,7 @@ export namespace Prisma {
     studentId?: StringWithAggregatesFilter<"Brushed"> | string
     brushedAt?: DateTimeWithAggregatesFilter<"Brushed"> | Date | string
     brushedStatus?: EnumBrushedBrushedStatusWithAggregatesFilter<"Brushed"> | $Enums.BrushedBrushedStatus
+    updatedAt?: DateTimeNullableWithAggregatesFilter<"Brushed"> | Date | string | null
   }
 
   export type ContentsWhereInput = {
@@ -9547,6 +9564,7 @@ export namespace Prisma {
   export type BrushedCreateInput = {
     brushedAt?: Date | string
     brushedStatus: $Enums.BrushedBrushedStatus
+    updatedAt?: Date | string | null
     student: StudentCreateNestedOneWithoutBrushedInput
   }
 
@@ -9555,11 +9573,13 @@ export namespace Prisma {
     studentId: string
     brushedAt?: Date | string
     brushedStatus: $Enums.BrushedBrushedStatus
+    updatedAt?: Date | string | null
   }
 
   export type BrushedUpdateInput = {
     brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     student?: StudentUpdateOneRequiredWithoutBrushedNestedInput
   }
 
@@ -9568,6 +9588,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BrushedCreateManyInput = {
@@ -9575,11 +9596,13 @@ export namespace Prisma {
     studentId: string
     brushedAt?: Date | string
     brushedStatus: $Enums.BrushedBrushedStatus
+    updatedAt?: Date | string | null
   }
 
   export type BrushedUpdateManyMutationInput = {
     brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BrushedUncheckedUpdateManyInput = {
@@ -9587,6 +9610,7 @@ export namespace Prisma {
     studentId?: StringFieldUpdateOperationsInput | string
     brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ContentsCreateInput = {
@@ -10256,6 +10280,7 @@ export namespace Prisma {
     studentId?: SortOrder
     brushedAt?: SortOrder
     brushedStatus?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type BrushedAvgOrderByAggregateInput = {
@@ -10267,6 +10292,7 @@ export namespace Prisma {
     studentId?: SortOrder
     brushedAt?: SortOrder
     brushedStatus?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type BrushedMinOrderByAggregateInput = {
@@ -10274,6 +10300,7 @@ export namespace Prisma {
     studentId?: SortOrder
     brushedAt?: SortOrder
     brushedStatus?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type BrushedSumOrderByAggregateInput = {
@@ -11983,12 +12010,14 @@ export namespace Prisma {
   export type BrushedCreateWithoutStudentInput = {
     brushedAt?: Date | string
     brushedStatus: $Enums.BrushedBrushedStatus
+    updatedAt?: Date | string | null
   }
 
   export type BrushedUncheckedCreateWithoutStudentInput = {
     id?: number
     brushedAt?: Date | string
     brushedStatus: $Enums.BrushedBrushedStatus
+    updatedAt?: Date | string | null
   }
 
   export type BrushedCreateOrConnectWithoutStudentInput = {
@@ -12078,6 +12107,7 @@ export namespace Prisma {
     studentId?: StringFilter<"Brushed"> | string
     brushedAt?: DateTimeFilter<"Brushed"> | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFilter<"Brushed"> | $Enums.BrushedBrushedStatus
+    updatedAt?: DateTimeNullableFilter<"Brushed"> | Date | string | null
   }
 
   export type SchoolUpsertWithoutStudentInput = {
@@ -12308,23 +12338,27 @@ export namespace Prisma {
     id?: number
     brushedAt?: Date | string
     brushedStatus: $Enums.BrushedBrushedStatus
+    updatedAt?: Date | string | null
   }
 
   export type BrushedUpdateWithoutStudentInput = {
     brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BrushedUncheckedUpdateWithoutStudentInput = {
     id?: IntFieldUpdateOperationsInput | number
     brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type BrushedUncheckedUpdateManyWithoutStudentInput = {
     id?: IntFieldUpdateOperationsInput | number
     brushedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     brushedStatus?: EnumBrushedBrushedStatusFieldUpdateOperationsInput | $Enums.BrushedBrushedStatus
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

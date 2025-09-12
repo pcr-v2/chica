@@ -33,6 +33,7 @@ export async function updateUnChecked(request: UpdateUnCheckedRequest) {
         },
         data: {
           brushedStatus: data.newStatus,
+          updatedAt: new Date().toISOString(),
         },
       }),
     );

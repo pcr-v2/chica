@@ -107,6 +107,7 @@ export async function checkBrush(
         where: { id: toUpdate.id },
         data: {
           brushedStatus: "Ok",
+          updatedAt: new Date().toISOString(),
           // brushedAt: dayjs().toDate(),
         },
       });

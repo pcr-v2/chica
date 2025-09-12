@@ -115,6 +115,7 @@ async function main() {
         | "Workshop"
         | "Absence",
       brushedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     }));
     await mysqlPrisma.brushed.createMany({
       data: insertData,

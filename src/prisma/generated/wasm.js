@@ -136,7 +136,8 @@ exports.Prisma.BrushedScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
   brushedAt: 'brushedAt',
-  brushedStatus: 'brushedStatus'
+  brushedStatus: 'brushedStatus',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ContentsScalarFieldEnum = {
