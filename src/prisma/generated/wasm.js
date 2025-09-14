@@ -202,6 +202,11 @@ exports.Prisma.StudentScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.LogsScalarFieldEnum = {
+  id: 'id',
+  content: 'content'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -261,6 +266,10 @@ exports.Prisma.StudentOrderByRelevanceFieldEnum = {
   studentClass: 'studentClass',
   studentName: 'studentName'
 };
+
+exports.Prisma.LogsOrderByRelevanceFieldEnum = {
+  content: 'content'
+};
 exports.BoardStatus = exports.$Enums.BoardStatus = {
   UNANSWERED: 'UNANSWERED',
   ANSWERED: 'ANSWERED',
@@ -299,7 +308,8 @@ exports.Prisma.ModelName = {
   Holiday: 'Holiday',
   Schedules: 'Schedules',
   School: 'School',
-  Student: 'Student'
+  Student: 'Student',
+  Logs: 'Logs'
 };
 
 /**

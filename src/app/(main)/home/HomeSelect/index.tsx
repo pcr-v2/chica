@@ -4,8 +4,8 @@ import { Box, styled } from "@mui/material";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { motion, AnimatePresence } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -18,7 +18,6 @@ import SuccessAnimation from "@/app/_components/common/SuccessAnimation";
 import { GetMeResponse } from "@/app/actions/auth/getMe";
 import { checkBrush } from "@/app/actions/brush/checkBrushAction";
 import { getStudentLatestSummary } from "@/app/actions/student/getStudentLatestAction";
-// import { getTest } from "@/app/actions/brush/testAction";
 import Class from "@/assets/home/class.png";
 import Grade from "@/assets/home/grade.png";
 import NumberImg from "@/assets/home/number.png";

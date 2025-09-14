@@ -111,6 +111,11 @@ model Student {
   @@index([schoolId], map: "fk_student_school")
 }
 
+model Logs {
+  id      Int     @id @default(autoincrement())
+  content String? @db.VarChar(255)
+}
+
 enum BrushedBrushedStatus {
   No
   Ok

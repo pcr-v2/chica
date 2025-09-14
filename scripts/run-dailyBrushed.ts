@@ -121,8 +121,18 @@ async function main() {
       data: insertData,
       //   skipDuplicates: true,
     });
+    await mysqlPrisma.logs.create({
+      data: {
+        content: `[Batch] ${insertData.length} rows inserted at ${today}`,
+      },
+    });
     console.log(`[Batch] ${insertData.length} rows inserted at ${today}`);
   } catch (err) {
+    await mysqlPrisma.logs.create({
+      data: {
+        content: `[Batch Error] brushed insert failed:", err`,
+      },
+    });
     console.error("[Batch Error] brushed insert failed:", err);
   }
 }
