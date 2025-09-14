@@ -1515,6 +1515,7 @@ export namespace Prisma {
   export type SchoolCountOutputType = {
     board: number
     contents: number
+    logs: number
     schedules: number
     student: number
   }
@@ -1522,6 +1523,7 @@ export namespace Prisma {
   export type SchoolCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     board?: boolean | SchoolCountOutputTypeCountBoardArgs
     contents?: boolean | SchoolCountOutputTypeCountContentsArgs
+    logs?: boolean | SchoolCountOutputTypeCountLogsArgs
     schedules?: boolean | SchoolCountOutputTypeCountSchedulesArgs
     student?: boolean | SchoolCountOutputTypeCountStudentArgs
   }
@@ -1549,6 +1551,13 @@ export namespace Prisma {
    */
   export type SchoolCountOutputTypeCountContentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContentsWhereInput
+  }
+
+  /**
+   * SchoolCountOutputType without action
+   */
+  export type SchoolCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LogsWhereInput
   }
 
   /**
@@ -6769,6 +6778,7 @@ export namespace Prisma {
     address?: boolean
     board?: boolean | School$boardArgs<ExtArgs>
     contents?: boolean | School$contentsArgs<ExtArgs>
+    logs?: boolean | School$logsArgs<ExtArgs>
     schedules?: boolean | School$schedulesArgs<ExtArgs>
     student?: boolean | School$studentArgs<ExtArgs>
     _count?: boolean | SchoolCountOutputTypeDefaultArgs<ExtArgs>
@@ -6801,6 +6811,7 @@ export namespace Prisma {
   export type SchoolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     board?: boolean | School$boardArgs<ExtArgs>
     contents?: boolean | School$contentsArgs<ExtArgs>
+    logs?: boolean | School$logsArgs<ExtArgs>
     schedules?: boolean | School$schedulesArgs<ExtArgs>
     student?: boolean | School$studentArgs<ExtArgs>
     _count?: boolean | SchoolCountOutputTypeDefaultArgs<ExtArgs>
@@ -6811,6 +6822,7 @@ export namespace Prisma {
     objects: {
       board: Prisma.$BoardPayload<ExtArgs>[]
       contents: Prisma.$ContentsPayload<ExtArgs>[]
+      logs: Prisma.$LogsPayload<ExtArgs>[]
       schedules: Prisma.$SchedulesPayload<ExtArgs>[]
       student: Prisma.$StudentPayload<ExtArgs>[]
     }
@@ -7175,6 +7187,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     board<T extends School$boardArgs<ExtArgs> = {}>(args?: Subset<T, School$boardArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     contents<T extends School$contentsArgs<ExtArgs> = {}>(args?: Subset<T, School$contentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    logs<T extends School$logsArgs<ExtArgs> = {}>(args?: Subset<T, School$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     schedules<T extends School$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, School$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     student<T extends School$studentArgs<ExtArgs> = {}>(args?: Subset<T, School$studentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -7612,6 +7625,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ContentsScalarFieldEnum | ContentsScalarFieldEnum[]
+  }
+
+  /**
+   * School.logs
+   */
+  export type School$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Logs
+     */
+    select?: LogsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Logs
+     */
+    omit?: LogsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
+    where?: LogsWhereInput
+    orderBy?: LogsOrderByWithRelationInput | LogsOrderByWithRelationInput[]
+    cursor?: LogsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LogsScalarFieldEnum | LogsScalarFieldEnum[]
   }
 
   /**
@@ -8760,16 +8797,22 @@ export namespace Prisma {
   export type LogsMinAggregateOutputType = {
     id: number | null
     content: string | null
+    createdAt: Date | null
+    schoolId: string | null
   }
 
   export type LogsMaxAggregateOutputType = {
     id: number | null
     content: string | null
+    createdAt: Date | null
+    schoolId: string | null
   }
 
   export type LogsCountAggregateOutputType = {
     id: number
     content: number
+    createdAt: number
+    schoolId: number
     _all: number
   }
 
@@ -8785,16 +8828,22 @@ export namespace Prisma {
   export type LogsMinAggregateInputType = {
     id?: true
     content?: true
+    createdAt?: true
+    schoolId?: true
   }
 
   export type LogsMaxAggregateInputType = {
     id?: true
     content?: true
+    createdAt?: true
+    schoolId?: true
   }
 
   export type LogsCountAggregateInputType = {
     id?: true
     content?: true
+    createdAt?: true
+    schoolId?: true
     _all?: true
   }
 
@@ -8887,6 +8936,8 @@ export namespace Prisma {
   export type LogsGroupByOutputType = {
     id: number
     content: string | null
+    createdAt: Date
+    schoolId: string | null
     _count: LogsCountAggregateOutputType | null
     _avg: LogsAvgAggregateOutputType | null
     _sum: LogsSumAggregateOutputType | null
@@ -8911,6 +8962,9 @@ export namespace Prisma {
   export type LogsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     content?: boolean
+    createdAt?: boolean
+    schoolId?: boolean
+    school?: boolean | Logs$schoolArgs<ExtArgs>
   }, ExtArgs["result"]["logs"]>
 
 
@@ -8918,16 +8972,25 @@ export namespace Prisma {
   export type LogsSelectScalar = {
     id?: boolean
     content?: boolean
+    createdAt?: boolean
+    schoolId?: boolean
   }
 
-  export type LogsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content", ExtArgs["result"]["logs"]>
+  export type LogsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "schoolId", ExtArgs["result"]["logs"]>
+  export type LogsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    school?: boolean | Logs$schoolArgs<ExtArgs>
+  }
 
   export type $LogsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Logs"
-    objects: {}
+    objects: {
+      school: Prisma.$SchoolPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       content: string | null
+      createdAt: Date
+      schoolId: string | null
     }, ExtArgs["result"]["logs"]>
     composites: {}
   }
@@ -9268,6 +9331,7 @@ export namespace Prisma {
    */
   export interface Prisma__LogsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    school<T extends Logs$schoolArgs<ExtArgs> = {}>(args?: Subset<T, Logs$schoolArgs<ExtArgs>>): Prisma__SchoolClient<$Result.GetResult<Prisma.$SchoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9299,6 +9363,8 @@ export namespace Prisma {
   interface LogsFieldRefs {
     readonly id: FieldRef<"Logs", 'Int'>
     readonly content: FieldRef<"Logs", 'String'>
+    readonly createdAt: FieldRef<"Logs", 'DateTime'>
+    readonly schoolId: FieldRef<"Logs", 'String'>
   }
     
 
@@ -9315,6 +9381,10 @@ export namespace Prisma {
      * Omit specific fields from the Logs
      */
     omit?: LogsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
     /**
      * Filter, which Logs to fetch.
      */
@@ -9334,6 +9404,10 @@ export namespace Prisma {
      */
     omit?: LogsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
+    /**
      * Filter, which Logs to fetch.
      */
     where: LogsWhereUniqueInput
@@ -9351,6 +9425,10 @@ export namespace Prisma {
      * Omit specific fields from the Logs
      */
     omit?: LogsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
     /**
      * Filter, which Logs to fetch.
      */
@@ -9400,6 +9478,10 @@ export namespace Prisma {
      */
     omit?: LogsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
+    /**
      * Filter, which Logs to fetch.
      */
     where?: LogsWhereInput
@@ -9448,6 +9530,10 @@ export namespace Prisma {
      */
     omit?: LogsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
+    /**
      * Filter, which Logs to fetch.
      */
     where?: LogsWhereInput
@@ -9491,6 +9577,10 @@ export namespace Prisma {
      */
     omit?: LogsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
+    /**
      * The data needed to create a Logs.
      */
     data?: XOR<LogsCreateInput, LogsUncheckedCreateInput>
@@ -9519,6 +9609,10 @@ export namespace Prisma {
      * Omit specific fields from the Logs
      */
     omit?: LogsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
     /**
      * The data needed to update a Logs.
      */
@@ -9560,6 +9654,10 @@ export namespace Prisma {
      */
     omit?: LogsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
+    /**
      * The filter to search for the Logs to update in case it exists.
      */
     where: LogsWhereUniqueInput
@@ -9586,6 +9684,10 @@ export namespace Prisma {
      */
     omit?: LogsOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
+    /**
      * Filter which Logs to delete.
      */
     where: LogsWhereUniqueInput
@@ -9606,6 +9708,25 @@ export namespace Prisma {
   }
 
   /**
+   * Logs.school
+   */
+  export type Logs$schoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the School
+     */
+    select?: SchoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the School
+     */
+    omit?: SchoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SchoolInclude<ExtArgs> | null
+    where?: SchoolWhereInput
+  }
+
+  /**
    * Logs without action
    */
   export type LogsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9617,6 +9738,10 @@ export namespace Prisma {
      * Omit specific fields from the Logs
      */
     omit?: LogsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogsInclude<ExtArgs> | null
   }
 
 
@@ -9739,7 +9864,9 @@ export namespace Prisma {
 
   export const LogsScalarFieldEnum: {
     id: 'id',
-    content: 'content'
+    content: 'content',
+    createdAt: 'createdAt',
+    schoolId: 'schoolId'
   };
 
   export type LogsScalarFieldEnum = (typeof LogsScalarFieldEnum)[keyof typeof LogsScalarFieldEnum]
@@ -9833,7 +9960,8 @@ export namespace Prisma {
 
 
   export const LogsOrderByRelevanceFieldEnum: {
-    content: 'content'
+    content: 'content',
+    schoolId: 'schoolId'
   };
 
   export type LogsOrderByRelevanceFieldEnum = (typeof LogsOrderByRelevanceFieldEnum)[keyof typeof LogsOrderByRelevanceFieldEnum]
@@ -10268,6 +10396,7 @@ export namespace Prisma {
     address?: StringFilter<"School"> | string
     board?: BoardListRelationFilter
     contents?: ContentsListRelationFilter
+    logs?: LogsListRelationFilter
     schedules?: SchedulesListRelationFilter
     student?: StudentListRelationFilter
   }
@@ -10293,6 +10422,7 @@ export namespace Prisma {
     address?: SortOrder
     board?: BoardOrderByRelationAggregateInput
     contents?: ContentsOrderByRelationAggregateInput
+    logs?: LogsOrderByRelationAggregateInput
     schedules?: SchedulesOrderByRelationAggregateInput
     student?: StudentOrderByRelationAggregateInput
     _relevance?: SchoolOrderByRelevanceInput
@@ -10322,6 +10452,7 @@ export namespace Prisma {
     address?: StringFilter<"School"> | string
     board?: BoardListRelationFilter
     contents?: ContentsListRelationFilter
+    logs?: LogsListRelationFilter
     schedules?: SchedulesListRelationFilter
     student?: StudentListRelationFilter
   }, "schoolId" | "id" | "schoolId">
@@ -10468,11 +10599,17 @@ export namespace Prisma {
     NOT?: LogsWhereInput | LogsWhereInput[]
     id?: IntFilter<"Logs"> | number
     content?: StringNullableFilter<"Logs"> | string | null
+    createdAt?: DateTimeFilter<"Logs"> | Date | string
+    schoolId?: StringNullableFilter<"Logs"> | string | null
+    school?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
   }
 
   export type LogsOrderByWithRelationInput = {
     id?: SortOrder
     content?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrderInput | SortOrder
+    school?: SchoolOrderByWithRelationInput
     _relevance?: LogsOrderByRelevanceInput
   }
 
@@ -10482,11 +10619,16 @@ export namespace Prisma {
     OR?: LogsWhereInput[]
     NOT?: LogsWhereInput | LogsWhereInput[]
     content?: StringNullableFilter<"Logs"> | string | null
+    createdAt?: DateTimeFilter<"Logs"> | Date | string
+    schoolId?: StringNullableFilter<"Logs"> | string | null
+    school?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
   }, "id">
 
   export type LogsOrderByWithAggregationInput = {
     id?: SortOrder
     content?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrderInput | SortOrder
     _count?: LogsCountOrderByAggregateInput
     _avg?: LogsAvgOrderByAggregateInput
     _max?: LogsMaxOrderByAggregateInput
@@ -10500,6 +10642,8 @@ export namespace Prisma {
     NOT?: LogsScalarWhereWithAggregatesInput | LogsScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Logs"> | number
     content?: StringNullableWithAggregatesFilter<"Logs"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Logs"> | Date | string
+    schoolId?: StringNullableWithAggregatesFilter<"Logs"> | string | null
   }
 
   export type BoardCreateInput = {
@@ -10840,6 +10984,7 @@ export namespace Prisma {
     address: string
     board?: BoardCreateNestedManyWithoutSchoolInput
     contents?: ContentsCreateNestedManyWithoutSchoolInput
+    logs?: LogsCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesCreateNestedManyWithoutSchoolInput
     student?: StudentCreateNestedManyWithoutSchoolInput
   }
@@ -10865,6 +11010,7 @@ export namespace Prisma {
     address: string
     board?: BoardUncheckedCreateNestedManyWithoutSchoolInput
     contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    logs?: LogsUncheckedCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
     student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -10889,6 +11035,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUpdateManyWithoutSchoolNestedInput
     contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
     student?: StudentUpdateManyWithoutSchoolNestedInput
   }
@@ -10914,6 +11061,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUncheckedUpdateManyWithoutSchoolNestedInput
     contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUncheckedUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
     student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
@@ -11074,34 +11222,47 @@ export namespace Prisma {
 
   export type LogsCreateInput = {
     content?: string | null
+    createdAt?: Date | string
+    school?: SchoolCreateNestedOneWithoutLogsInput
   }
 
   export type LogsUncheckedCreateInput = {
     id?: number
     content?: string | null
+    createdAt?: Date | string
+    schoolId?: string | null
   }
 
   export type LogsUpdateInput = {
     content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    school?: SchoolUpdateOneWithoutLogsNestedInput
   }
 
   export type LogsUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type LogsCreateManyInput = {
     id?: number
     content?: string | null
+    createdAt?: Date | string
+    schoolId?: string | null
   }
 
   export type LogsUpdateManyMutationInput = {
     content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LogsUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -11580,6 +11741,12 @@ export namespace Prisma {
     none?: ContentsWhereInput
   }
 
+  export type LogsListRelationFilter = {
+    every?: LogsWhereInput
+    some?: LogsWhereInput
+    none?: LogsWhereInput
+  }
+
   export type SchedulesListRelationFilter = {
     every?: SchedulesWhereInput
     some?: SchedulesWhereInput
@@ -11597,6 +11764,10 @@ export namespace Prisma {
   }
 
   export type ContentsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LogsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11789,6 +11960,11 @@ export namespace Prisma {
     _max?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
   }
 
+  export type SchoolNullableScalarRelationFilter = {
+    is?: SchoolWhereInput | null
+    isNot?: SchoolWhereInput | null
+  }
+
   export type LogsOrderByRelevanceInput = {
     fields: LogsOrderByRelevanceFieldEnum | LogsOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -11798,6 +11974,8 @@ export namespace Prisma {
   export type LogsCountOrderByAggregateInput = {
     id?: SortOrder
     content?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
   }
 
   export type LogsAvgOrderByAggregateInput = {
@@ -11807,11 +11985,15 @@ export namespace Prisma {
   export type LogsMaxOrderByAggregateInput = {
     id?: SortOrder
     content?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
   }
 
   export type LogsMinOrderByAggregateInput = {
     id?: SortOrder
     content?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
   }
 
   export type LogsSumOrderByAggregateInput = {
@@ -11932,6 +12114,13 @@ export namespace Prisma {
     connect?: ContentsWhereUniqueInput | ContentsWhereUniqueInput[]
   }
 
+  export type LogsCreateNestedManyWithoutSchoolInput = {
+    create?: XOR<LogsCreateWithoutSchoolInput, LogsUncheckedCreateWithoutSchoolInput> | LogsCreateWithoutSchoolInput[] | LogsUncheckedCreateWithoutSchoolInput[]
+    connectOrCreate?: LogsCreateOrConnectWithoutSchoolInput | LogsCreateOrConnectWithoutSchoolInput[]
+    createMany?: LogsCreateManySchoolInputEnvelope
+    connect?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+  }
+
   export type SchedulesCreateNestedManyWithoutSchoolInput = {
     create?: XOR<SchedulesCreateWithoutSchoolInput, SchedulesUncheckedCreateWithoutSchoolInput> | SchedulesCreateWithoutSchoolInput[] | SchedulesUncheckedCreateWithoutSchoolInput[]
     connectOrCreate?: SchedulesCreateOrConnectWithoutSchoolInput | SchedulesCreateOrConnectWithoutSchoolInput[]
@@ -11958,6 +12147,13 @@ export namespace Prisma {
     connectOrCreate?: ContentsCreateOrConnectWithoutSchoolInput | ContentsCreateOrConnectWithoutSchoolInput[]
     createMany?: ContentsCreateManySchoolInputEnvelope
     connect?: ContentsWhereUniqueInput | ContentsWhereUniqueInput[]
+  }
+
+  export type LogsUncheckedCreateNestedManyWithoutSchoolInput = {
+    create?: XOR<LogsCreateWithoutSchoolInput, LogsUncheckedCreateWithoutSchoolInput> | LogsCreateWithoutSchoolInput[] | LogsUncheckedCreateWithoutSchoolInput[]
+    connectOrCreate?: LogsCreateOrConnectWithoutSchoolInput | LogsCreateOrConnectWithoutSchoolInput[]
+    createMany?: LogsCreateManySchoolInputEnvelope
+    connect?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
   }
 
   export type SchedulesUncheckedCreateNestedManyWithoutSchoolInput = {
@@ -12008,6 +12204,20 @@ export namespace Prisma {
     update?: ContentsUpdateWithWhereUniqueWithoutSchoolInput | ContentsUpdateWithWhereUniqueWithoutSchoolInput[]
     updateMany?: ContentsUpdateManyWithWhereWithoutSchoolInput | ContentsUpdateManyWithWhereWithoutSchoolInput[]
     deleteMany?: ContentsScalarWhereInput | ContentsScalarWhereInput[]
+  }
+
+  export type LogsUpdateManyWithoutSchoolNestedInput = {
+    create?: XOR<LogsCreateWithoutSchoolInput, LogsUncheckedCreateWithoutSchoolInput> | LogsCreateWithoutSchoolInput[] | LogsUncheckedCreateWithoutSchoolInput[]
+    connectOrCreate?: LogsCreateOrConnectWithoutSchoolInput | LogsCreateOrConnectWithoutSchoolInput[]
+    upsert?: LogsUpsertWithWhereUniqueWithoutSchoolInput | LogsUpsertWithWhereUniqueWithoutSchoolInput[]
+    createMany?: LogsCreateManySchoolInputEnvelope
+    set?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    disconnect?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    delete?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    connect?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    update?: LogsUpdateWithWhereUniqueWithoutSchoolInput | LogsUpdateWithWhereUniqueWithoutSchoolInput[]
+    updateMany?: LogsUpdateManyWithWhereWithoutSchoolInput | LogsUpdateManyWithWhereWithoutSchoolInput[]
+    deleteMany?: LogsScalarWhereInput | LogsScalarWhereInput[]
   }
 
   export type SchedulesUpdateManyWithoutSchoolNestedInput = {
@@ -12064,6 +12274,20 @@ export namespace Prisma {
     update?: ContentsUpdateWithWhereUniqueWithoutSchoolInput | ContentsUpdateWithWhereUniqueWithoutSchoolInput[]
     updateMany?: ContentsUpdateManyWithWhereWithoutSchoolInput | ContentsUpdateManyWithWhereWithoutSchoolInput[]
     deleteMany?: ContentsScalarWhereInput | ContentsScalarWhereInput[]
+  }
+
+  export type LogsUncheckedUpdateManyWithoutSchoolNestedInput = {
+    create?: XOR<LogsCreateWithoutSchoolInput, LogsUncheckedCreateWithoutSchoolInput> | LogsCreateWithoutSchoolInput[] | LogsUncheckedCreateWithoutSchoolInput[]
+    connectOrCreate?: LogsCreateOrConnectWithoutSchoolInput | LogsCreateOrConnectWithoutSchoolInput[]
+    upsert?: LogsUpsertWithWhereUniqueWithoutSchoolInput | LogsUpsertWithWhereUniqueWithoutSchoolInput[]
+    createMany?: LogsCreateManySchoolInputEnvelope
+    set?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    disconnect?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    delete?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    connect?: LogsWhereUniqueInput | LogsWhereUniqueInput[]
+    update?: LogsUpdateWithWhereUniqueWithoutSchoolInput | LogsUpdateWithWhereUniqueWithoutSchoolInput[]
+    updateMany?: LogsUpdateManyWithWhereWithoutSchoolInput | LogsUpdateManyWithWhereWithoutSchoolInput[]
+    deleteMany?: LogsScalarWhereInput | LogsScalarWhereInput[]
   }
 
   export type SchedulesUncheckedUpdateManyWithoutSchoolNestedInput = {
@@ -12152,6 +12376,22 @@ export namespace Prisma {
     update?: BrushedUpdateWithWhereUniqueWithoutStudentInput | BrushedUpdateWithWhereUniqueWithoutStudentInput[]
     updateMany?: BrushedUpdateManyWithWhereWithoutStudentInput | BrushedUpdateManyWithWhereWithoutStudentInput[]
     deleteMany?: BrushedScalarWhereInput | BrushedScalarWhereInput[]
+  }
+
+  export type SchoolCreateNestedOneWithoutLogsInput = {
+    create?: XOR<SchoolCreateWithoutLogsInput, SchoolUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: SchoolCreateOrConnectWithoutLogsInput
+    connect?: SchoolWhereUniqueInput
+  }
+
+  export type SchoolUpdateOneWithoutLogsNestedInput = {
+    create?: XOR<SchoolCreateWithoutLogsInput, SchoolUncheckedCreateWithoutLogsInput>
+    connectOrCreate?: SchoolCreateOrConnectWithoutLogsInput
+    upsert?: SchoolUpsertWithoutLogsInput
+    disconnect?: SchoolWhereInput | boolean
+    delete?: SchoolWhereInput | boolean
+    connect?: SchoolWhereUniqueInput
+    update?: XOR<XOR<SchoolUpdateToOneWithWhereWithoutLogsInput, SchoolUpdateWithoutLogsInput>, SchoolUncheckedUpdateWithoutLogsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -12464,6 +12704,7 @@ export namespace Prisma {
     schoolCode: string
     address: string
     contents?: ContentsCreateNestedManyWithoutSchoolInput
+    logs?: LogsCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesCreateNestedManyWithoutSchoolInput
     student?: StudentCreateNestedManyWithoutSchoolInput
   }
@@ -12488,6 +12729,7 @@ export namespace Prisma {
     schoolCode: string
     address: string
     contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    logs?: LogsUncheckedCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
     student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -12527,6 +12769,7 @@ export namespace Prisma {
     schoolCode?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
     student?: StudentUpdateManyWithoutSchoolNestedInput
   }
@@ -12551,6 +12794,7 @@ export namespace Prisma {
     schoolCode?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUncheckedUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
     student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
@@ -12642,6 +12886,7 @@ export namespace Prisma {
     schoolCode: string
     address: string
     board?: BoardCreateNestedManyWithoutSchoolInput
+    logs?: LogsCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesCreateNestedManyWithoutSchoolInput
     student?: StudentCreateNestedManyWithoutSchoolInput
   }
@@ -12666,6 +12911,7 @@ export namespace Prisma {
     schoolCode: string
     address: string
     board?: BoardUncheckedCreateNestedManyWithoutSchoolInput
+    logs?: LogsUncheckedCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
     student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
@@ -12705,6 +12951,7 @@ export namespace Prisma {
     schoolCode?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
     student?: StudentUpdateManyWithoutSchoolNestedInput
   }
@@ -12729,6 +12976,7 @@ export namespace Prisma {
     schoolCode?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUncheckedUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUncheckedUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
     student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
@@ -12754,6 +13002,7 @@ export namespace Prisma {
     address: string
     board?: BoardCreateNestedManyWithoutSchoolInput
     contents?: ContentsCreateNestedManyWithoutSchoolInput
+    logs?: LogsCreateNestedManyWithoutSchoolInput
     student?: StudentCreateNestedManyWithoutSchoolInput
   }
 
@@ -12778,6 +13027,7 @@ export namespace Prisma {
     address: string
     board?: BoardUncheckedCreateNestedManyWithoutSchoolInput
     contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    logs?: LogsUncheckedCreateNestedManyWithoutSchoolInput
     student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
   }
 
@@ -12817,6 +13067,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUpdateManyWithoutSchoolNestedInput
     contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUpdateManyWithoutSchoolNestedInput
     student?: StudentUpdateManyWithoutSchoolNestedInput
   }
 
@@ -12841,6 +13092,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUncheckedUpdateManyWithoutSchoolNestedInput
     contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUncheckedUpdateManyWithoutSchoolNestedInput
     student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
@@ -12901,6 +13153,27 @@ export namespace Prisma {
 
   export type ContentsCreateManySchoolInputEnvelope = {
     data: ContentsCreateManySchoolInput | ContentsCreateManySchoolInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LogsCreateWithoutSchoolInput = {
+    content?: string | null
+    createdAt?: Date | string
+  }
+
+  export type LogsUncheckedCreateWithoutSchoolInput = {
+    id?: number
+    content?: string | null
+    createdAt?: Date | string
+  }
+
+  export type LogsCreateOrConnectWithoutSchoolInput = {
+    where: LogsWhereUniqueInput
+    create: XOR<LogsCreateWithoutSchoolInput, LogsUncheckedCreateWithoutSchoolInput>
+  }
+
+  export type LogsCreateManySchoolInputEnvelope = {
+    data: LogsCreateManySchoolInput | LogsCreateManySchoolInput[]
     skipDuplicates?: boolean
   }
 
@@ -13028,6 +13301,32 @@ export namespace Prisma {
     fileSize?: FloatNullableFilter<"Contents"> | number | null
   }
 
+  export type LogsUpsertWithWhereUniqueWithoutSchoolInput = {
+    where: LogsWhereUniqueInput
+    update: XOR<LogsUpdateWithoutSchoolInput, LogsUncheckedUpdateWithoutSchoolInput>
+    create: XOR<LogsCreateWithoutSchoolInput, LogsUncheckedCreateWithoutSchoolInput>
+  }
+
+  export type LogsUpdateWithWhereUniqueWithoutSchoolInput = {
+    where: LogsWhereUniqueInput
+    data: XOR<LogsUpdateWithoutSchoolInput, LogsUncheckedUpdateWithoutSchoolInput>
+  }
+
+  export type LogsUpdateManyWithWhereWithoutSchoolInput = {
+    where: LogsScalarWhereInput
+    data: XOR<LogsUpdateManyMutationInput, LogsUncheckedUpdateManyWithoutSchoolInput>
+  }
+
+  export type LogsScalarWhereInput = {
+    AND?: LogsScalarWhereInput | LogsScalarWhereInput[]
+    OR?: LogsScalarWhereInput[]
+    NOT?: LogsScalarWhereInput | LogsScalarWhereInput[]
+    id?: IntFilter<"Logs"> | number
+    content?: StringNullableFilter<"Logs"> | string | null
+    createdAt?: DateTimeFilter<"Logs"> | Date | string
+    schoolId?: StringNullableFilter<"Logs"> | string | null
+  }
+
   export type SchedulesUpsertWithWhereUniqueWithoutSchoolInput = {
     where: SchedulesWhereUniqueInput
     update: XOR<SchedulesUpdateWithoutSchoolInput, SchedulesUncheckedUpdateWithoutSchoolInput>
@@ -13133,6 +13432,7 @@ export namespace Prisma {
     address: string
     board?: BoardCreateNestedManyWithoutSchoolInput
     contents?: ContentsCreateNestedManyWithoutSchoolInput
+    logs?: LogsCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesCreateNestedManyWithoutSchoolInput
   }
 
@@ -13157,6 +13457,7 @@ export namespace Prisma {
     address: string
     board?: BoardUncheckedCreateNestedManyWithoutSchoolInput
     contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    logs?: LogsUncheckedCreateNestedManyWithoutSchoolInput
     schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
   }
 
@@ -13223,6 +13524,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUpdateManyWithoutSchoolNestedInput
     contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
   }
 
@@ -13247,7 +13549,123 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     board?: BoardUncheckedUpdateManyWithoutSchoolNestedInput
     contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    logs?: LogsUncheckedUpdateManyWithoutSchoolNestedInput
     schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
+  }
+
+  export type SchoolCreateWithoutLogsInput = {
+    id?: number
+    schoolId: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    createdAt?: Date | string
+    schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
+    board?: BoardCreateNestedManyWithoutSchoolInput
+    contents?: ContentsCreateNestedManyWithoutSchoolInput
+    schedules?: SchedulesCreateNestedManyWithoutSchoolInput
+    student?: StudentCreateNestedManyWithoutSchoolInput
+  }
+
+  export type SchoolUncheckedCreateWithoutLogsInput = {
+    id?: number
+    schoolId: string
+    schoolName: string
+    loginId: string
+    loginPw: string
+    teacherName: string
+    teacherEmail: string
+    teacherPhone: string
+    schoolLogo?: string | null
+    startAt?: Date | string
+    endAt: Date | string
+    schoolType?: $Enums.SchoolSchoolType
+    schoolLevel?: $Enums.SchoolSchoolLevel
+    createdAt?: Date | string
+    schoolStatus?: boolean
+    officeCode: string
+    schoolCode: string
+    address: string
+    board?: BoardUncheckedCreateNestedManyWithoutSchoolInput
+    contents?: ContentsUncheckedCreateNestedManyWithoutSchoolInput
+    schedules?: SchedulesUncheckedCreateNestedManyWithoutSchoolInput
+    student?: StudentUncheckedCreateNestedManyWithoutSchoolInput
+  }
+
+  export type SchoolCreateOrConnectWithoutLogsInput = {
+    where: SchoolWhereUniqueInput
+    create: XOR<SchoolCreateWithoutLogsInput, SchoolUncheckedCreateWithoutLogsInput>
+  }
+
+  export type SchoolUpsertWithoutLogsInput = {
+    update: XOR<SchoolUpdateWithoutLogsInput, SchoolUncheckedUpdateWithoutLogsInput>
+    create: XOR<SchoolCreateWithoutLogsInput, SchoolUncheckedCreateWithoutLogsInput>
+    where?: SchoolWhereInput
+  }
+
+  export type SchoolUpdateToOneWithWhereWithoutLogsInput = {
+    where?: SchoolWhereInput
+    data: XOR<SchoolUpdateWithoutLogsInput, SchoolUncheckedUpdateWithoutLogsInput>
+  }
+
+  export type SchoolUpdateWithoutLogsInput = {
+    schoolId?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    board?: BoardUpdateManyWithoutSchoolNestedInput
+    contents?: ContentsUpdateManyWithoutSchoolNestedInput
+    schedules?: SchedulesUpdateManyWithoutSchoolNestedInput
+    student?: StudentUpdateManyWithoutSchoolNestedInput
+  }
+
+  export type SchoolUncheckedUpdateWithoutLogsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    schoolId?: StringFieldUpdateOperationsInput | string
+    schoolName?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    loginPw?: StringFieldUpdateOperationsInput | string
+    teacherName?: StringFieldUpdateOperationsInput | string
+    teacherEmail?: StringFieldUpdateOperationsInput | string
+    teacherPhone?: StringFieldUpdateOperationsInput | string
+    schoolLogo?: NullableStringFieldUpdateOperationsInput | string | null
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolType?: EnumSchoolSchoolTypeFieldUpdateOperationsInput | $Enums.SchoolSchoolType
+    schoolLevel?: EnumSchoolSchoolLevelFieldUpdateOperationsInput | $Enums.SchoolSchoolLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolStatus?: BoolFieldUpdateOperationsInput | boolean
+    officeCode?: StringFieldUpdateOperationsInput | string
+    schoolCode?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    board?: BoardUncheckedUpdateManyWithoutSchoolNestedInput
+    contents?: ContentsUncheckedUpdateManyWithoutSchoolNestedInput
+    schedules?: SchedulesUncheckedUpdateManyWithoutSchoolNestedInput
+    student?: StudentUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type BoardCreateManySchoolInput = {
@@ -13269,6 +13687,12 @@ export namespace Prisma {
     contentsStatus?: boolean
     userFileName?: string | null
     fileSize?: number | null
+  }
+
+  export type LogsCreateManySchoolInput = {
+    id?: number
+    content?: string | null
+    createdAt?: Date | string
   }
 
   export type SchedulesCreateManySchoolInput = {
@@ -13351,6 +13775,23 @@ export namespace Prisma {
     contentsStatus?: BoolFieldUpdateOperationsInput | boolean
     userFileName?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type LogsUpdateWithoutSchoolInput = {
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LogsUncheckedUpdateWithoutSchoolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LogsUncheckedUpdateManyWithoutSchoolInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SchedulesUpdateWithoutSchoolInput = {

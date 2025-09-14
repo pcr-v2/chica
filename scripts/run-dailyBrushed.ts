@@ -102,6 +102,7 @@ async function main() {
         await mysqlPrisma.logs.create({
           data: {
             content: `오늘 ${school?.schoolName} ${grade}학년 ${count}개의 rows가 생성되었습니다.`,
+            schoolId: school?.schoolId,
           },
         });
       }
@@ -125,6 +126,7 @@ async function main() {
         await mysqlPrisma.logs.create({
           data: {
             content: `오늘 ${school?.schoolName} ${excludeGrades.join(",")}학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
+            schoolId: school?.schoolId,
           },
         });
       }
