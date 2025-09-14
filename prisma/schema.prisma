@@ -113,11 +113,12 @@ model Student {
 }
 
 model Logs {
-  id        Int      @id @default(autoincrement())
-  content   String?  @db.VarChar(255)
-  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(0)
-  schoolId  String?  @map("school_id") @db.VarChar(36)
-  school    School?  @relation(fields: [schoolId], references: [schoolId], map: "fk_logs_school")
+  id         Int             @id @default(autoincrement())
+  content    String?         @db.VarChar(255)
+  createdAt  DateTime        @default(now()) @map("created_at") @db.DateTime(0)
+  schoolId   String?         @map("school_id") @db.VarChar(36)
+  logsStatus LogsLogsStatus? @map("logs_status")
+  school     School?         @relation(fields: [schoolId], references: [schoolId], map: "fk_logs_school")
 
   @@index([schoolId], map: "fk_logs_school")
 }
@@ -161,4 +162,11 @@ enum SchoolSchoolLevel {
   high
 
   @@map("School_school_level")
+}
+
+enum LogsLogsStatus {
+  Ok
+  No
+
+  @@map("Logs_logs_status")
 }

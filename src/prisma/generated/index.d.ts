@@ -103,6 +103,14 @@ export const SchoolSchoolLevel: {
 
 export type SchoolSchoolLevel = (typeof SchoolSchoolLevel)[keyof typeof SchoolSchoolLevel]
 
+
+export const LogsLogsStatus: {
+  Ok: 'Ok',
+  No: 'No'
+};
+
+export type LogsLogsStatus = (typeof LogsLogsStatus)[keyof typeof LogsLogsStatus]
+
 }
 
 export type BrushedBrushedStatus = $Enums.BrushedBrushedStatus
@@ -124,6 +132,10 @@ export const SchoolSchoolType: typeof $Enums.SchoolSchoolType
 export type SchoolSchoolLevel = $Enums.SchoolSchoolLevel
 
 export const SchoolSchoolLevel: typeof $Enums.SchoolSchoolLevel
+
+export type LogsLogsStatus = $Enums.LogsLogsStatus
+
+export const LogsLogsStatus: typeof $Enums.LogsLogsStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -8799,6 +8811,7 @@ export namespace Prisma {
     content: string | null
     createdAt: Date | null
     schoolId: string | null
+    logsStatus: $Enums.LogsLogsStatus | null
   }
 
   export type LogsMaxAggregateOutputType = {
@@ -8806,6 +8819,7 @@ export namespace Prisma {
     content: string | null
     createdAt: Date | null
     schoolId: string | null
+    logsStatus: $Enums.LogsLogsStatus | null
   }
 
   export type LogsCountAggregateOutputType = {
@@ -8813,6 +8827,7 @@ export namespace Prisma {
     content: number
     createdAt: number
     schoolId: number
+    logsStatus: number
     _all: number
   }
 
@@ -8830,6 +8845,7 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     schoolId?: true
+    logsStatus?: true
   }
 
   export type LogsMaxAggregateInputType = {
@@ -8837,6 +8853,7 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     schoolId?: true
+    logsStatus?: true
   }
 
   export type LogsCountAggregateInputType = {
@@ -8844,6 +8861,7 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     schoolId?: true
+    logsStatus?: true
     _all?: true
   }
 
@@ -8938,6 +8956,7 @@ export namespace Prisma {
     content: string | null
     createdAt: Date
     schoolId: string | null
+    logsStatus: $Enums.LogsLogsStatus | null
     _count: LogsCountAggregateOutputType | null
     _avg: LogsAvgAggregateOutputType | null
     _sum: LogsSumAggregateOutputType | null
@@ -8964,6 +8983,7 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     schoolId?: boolean
+    logsStatus?: boolean
     school?: boolean | Logs$schoolArgs<ExtArgs>
   }, ExtArgs["result"]["logs"]>
 
@@ -8974,9 +8994,10 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     schoolId?: boolean
+    logsStatus?: boolean
   }
 
-  export type LogsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "schoolId", ExtArgs["result"]["logs"]>
+  export type LogsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "schoolId" | "logsStatus", ExtArgs["result"]["logs"]>
   export type LogsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     school?: boolean | Logs$schoolArgs<ExtArgs>
   }
@@ -8991,6 +9012,7 @@ export namespace Prisma {
       content: string | null
       createdAt: Date
       schoolId: string | null
+      logsStatus: $Enums.LogsLogsStatus | null
     }, ExtArgs["result"]["logs"]>
     composites: {}
   }
@@ -9365,6 +9387,7 @@ export namespace Prisma {
     readonly content: FieldRef<"Logs", 'String'>
     readonly createdAt: FieldRef<"Logs", 'DateTime'>
     readonly schoolId: FieldRef<"Logs", 'String'>
+    readonly logsStatus: FieldRef<"Logs", 'LogsLogsStatus'>
   }
     
 
@@ -9866,7 +9889,8 @@ export namespace Prisma {
     id: 'id',
     content: 'content',
     createdAt: 'createdAt',
-    schoolId: 'schoolId'
+    schoolId: 'schoolId',
+    logsStatus: 'logsStatus'
   };
 
   export type LogsScalarFieldEnum = (typeof LogsScalarFieldEnum)[keyof typeof LogsScalarFieldEnum]
@@ -10039,6 +10063,13 @@ export namespace Prisma {
    * Reference to a field of type 'StudentStudentGender'
    */
   export type EnumStudentStudentGenderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentStudentGender'>
+    
+
+
+  /**
+   * Reference to a field of type 'LogsLogsStatus'
+   */
+  export type EnumLogsLogsStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LogsLogsStatus'>
     
   /**
    * Deep Input Types
@@ -10601,6 +10632,7 @@ export namespace Prisma {
     content?: StringNullableFilter<"Logs"> | string | null
     createdAt?: DateTimeFilter<"Logs"> | Date | string
     schoolId?: StringNullableFilter<"Logs"> | string | null
+    logsStatus?: EnumLogsLogsStatusNullableFilter<"Logs"> | $Enums.LogsLogsStatus | null
     school?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
   }
 
@@ -10609,6 +10641,7 @@ export namespace Prisma {
     content?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrderInput | SortOrder
+    logsStatus?: SortOrderInput | SortOrder
     school?: SchoolOrderByWithRelationInput
     _relevance?: LogsOrderByRelevanceInput
   }
@@ -10621,6 +10654,7 @@ export namespace Prisma {
     content?: StringNullableFilter<"Logs"> | string | null
     createdAt?: DateTimeFilter<"Logs"> | Date | string
     schoolId?: StringNullableFilter<"Logs"> | string | null
+    logsStatus?: EnumLogsLogsStatusNullableFilter<"Logs"> | $Enums.LogsLogsStatus | null
     school?: XOR<SchoolNullableScalarRelationFilter, SchoolWhereInput> | null
   }, "id">
 
@@ -10629,6 +10663,7 @@ export namespace Prisma {
     content?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrderInput | SortOrder
+    logsStatus?: SortOrderInput | SortOrder
     _count?: LogsCountOrderByAggregateInput
     _avg?: LogsAvgOrderByAggregateInput
     _max?: LogsMaxOrderByAggregateInput
@@ -10644,6 +10679,7 @@ export namespace Prisma {
     content?: StringNullableWithAggregatesFilter<"Logs"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Logs"> | Date | string
     schoolId?: StringNullableWithAggregatesFilter<"Logs"> | string | null
+    logsStatus?: EnumLogsLogsStatusNullableWithAggregatesFilter<"Logs"> | $Enums.LogsLogsStatus | null
   }
 
   export type BoardCreateInput = {
@@ -11223,6 +11259,7 @@ export namespace Prisma {
   export type LogsCreateInput = {
     content?: string | null
     createdAt?: Date | string
+    logsStatus?: $Enums.LogsLogsStatus | null
     school?: SchoolCreateNestedOneWithoutLogsInput
   }
 
@@ -11231,11 +11268,13 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     schoolId?: string | null
+    logsStatus?: $Enums.LogsLogsStatus | null
   }
 
   export type LogsUpdateInput = {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logsStatus?: NullableEnumLogsLogsStatusFieldUpdateOperationsInput | $Enums.LogsLogsStatus | null
     school?: SchoolUpdateOneWithoutLogsNestedInput
   }
 
@@ -11244,6 +11283,7 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    logsStatus?: NullableEnumLogsLogsStatusFieldUpdateOperationsInput | $Enums.LogsLogsStatus | null
   }
 
   export type LogsCreateManyInput = {
@@ -11251,11 +11291,13 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     schoolId?: string | null
+    logsStatus?: $Enums.LogsLogsStatus | null
   }
 
   export type LogsUpdateManyMutationInput = {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logsStatus?: NullableEnumLogsLogsStatusFieldUpdateOperationsInput | $Enums.LogsLogsStatus | null
   }
 
   export type LogsUncheckedUpdateManyInput = {
@@ -11263,6 +11305,7 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    logsStatus?: NullableEnumLogsLogsStatusFieldUpdateOperationsInput | $Enums.LogsLogsStatus | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -11960,6 +12003,13 @@ export namespace Prisma {
     _max?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
   }
 
+  export type EnumLogsLogsStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.LogsLogsStatus | EnumLogsLogsStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LogsLogsStatus[] | null
+    notIn?: $Enums.LogsLogsStatus[] | null
+    not?: NestedEnumLogsLogsStatusNullableFilter<$PrismaModel> | $Enums.LogsLogsStatus | null
+  }
+
   export type SchoolNullableScalarRelationFilter = {
     is?: SchoolWhereInput | null
     isNot?: SchoolWhereInput | null
@@ -11976,6 +12026,7 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
+    logsStatus?: SortOrder
   }
 
   export type LogsAvgOrderByAggregateInput = {
@@ -11987,6 +12038,7 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
+    logsStatus?: SortOrder
   }
 
   export type LogsMinOrderByAggregateInput = {
@@ -11994,10 +12046,21 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
+    logsStatus?: SortOrder
   }
 
   export type LogsSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type EnumLogsLogsStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LogsLogsStatus | EnumLogsLogsStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LogsLogsStatus[] | null
+    notIn?: $Enums.LogsLogsStatus[] | null
+    not?: NestedEnumLogsLogsStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.LogsLogsStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumLogsLogsStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumLogsLogsStatusNullableFilter<$PrismaModel>
   }
 
   export type SchoolCreateNestedOneWithoutBoardInput = {
@@ -12384,6 +12447,10 @@ export namespace Prisma {
     connect?: SchoolWhereUniqueInput
   }
 
+  export type NullableEnumLogsLogsStatusFieldUpdateOperationsInput = {
+    set?: $Enums.LogsLogsStatus | null
+  }
+
   export type SchoolUpdateOneWithoutLogsNestedInput = {
     create?: XOR<SchoolCreateWithoutLogsInput, SchoolUncheckedCreateWithoutLogsInput>
     connectOrCreate?: SchoolCreateOrConnectWithoutLogsInput
@@ -12682,6 +12749,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
     _max?: NestedEnumStudentStudentGenderFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLogsLogsStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.LogsLogsStatus | EnumLogsLogsStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LogsLogsStatus[] | null
+    notIn?: $Enums.LogsLogsStatus[] | null
+    not?: NestedEnumLogsLogsStatusNullableFilter<$PrismaModel> | $Enums.LogsLogsStatus | null
+  }
+
+  export type NestedEnumLogsLogsStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LogsLogsStatus | EnumLogsLogsStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.LogsLogsStatus[] | null
+    notIn?: $Enums.LogsLogsStatus[] | null
+    not?: NestedEnumLogsLogsStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.LogsLogsStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumLogsLogsStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumLogsLogsStatusNullableFilter<$PrismaModel>
   }
 
   export type SchoolCreateWithoutBoardInput = {
@@ -13159,12 +13243,14 @@ export namespace Prisma {
   export type LogsCreateWithoutSchoolInput = {
     content?: string | null
     createdAt?: Date | string
+    logsStatus?: $Enums.LogsLogsStatus | null
   }
 
   export type LogsUncheckedCreateWithoutSchoolInput = {
     id?: number
     content?: string | null
     createdAt?: Date | string
+    logsStatus?: $Enums.LogsLogsStatus | null
   }
 
   export type LogsCreateOrConnectWithoutSchoolInput = {
@@ -13325,6 +13411,7 @@ export namespace Prisma {
     content?: StringNullableFilter<"Logs"> | string | null
     createdAt?: DateTimeFilter<"Logs"> | Date | string
     schoolId?: StringNullableFilter<"Logs"> | string | null
+    logsStatus?: EnumLogsLogsStatusNullableFilter<"Logs"> | $Enums.LogsLogsStatus | null
   }
 
   export type SchedulesUpsertWithWhereUniqueWithoutSchoolInput = {
@@ -13693,6 +13780,7 @@ export namespace Prisma {
     id?: number
     content?: string | null
     createdAt?: Date | string
+    logsStatus?: $Enums.LogsLogsStatus | null
   }
 
   export type SchedulesCreateManySchoolInput = {
@@ -13780,18 +13868,21 @@ export namespace Prisma {
   export type LogsUpdateWithoutSchoolInput = {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logsStatus?: NullableEnumLogsLogsStatusFieldUpdateOperationsInput | $Enums.LogsLogsStatus | null
   }
 
   export type LogsUncheckedUpdateWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logsStatus?: NullableEnumLogsLogsStatusFieldUpdateOperationsInput | $Enums.LogsLogsStatus | null
   }
 
   export type LogsUncheckedUpdateManyWithoutSchoolInput = {
     id?: IntFieldUpdateOperationsInput | number
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logsStatus?: NullableEnumLogsLogsStatusFieldUpdateOperationsInput | $Enums.LogsLogsStatus | null
   }
 
   export type SchedulesUpdateWithoutSchoolInput = {

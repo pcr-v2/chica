@@ -206,7 +206,8 @@ exports.Prisma.LogsScalarFieldEnum = {
   id: 'id',
   content: 'content',
   createdAt: 'createdAt',
-  schoolId: 'schoolId'
+  schoolId: 'schoolId',
+  logsStatus: 'logsStatus'
 };
 
 exports.Prisma.SortOrder = {
@@ -302,6 +303,11 @@ exports.SchoolSchoolLevel = exports.$Enums.SchoolSchoolLevel = {
 exports.StudentStudentGender = exports.$Enums.StudentStudentGender = {
   male: 'male',
   female: 'female'
+};
+
+exports.LogsLogsStatus = exports.$Enums.LogsLogsStatus = {
+  Ok: 'Ok',
+  No: 'No'
 };
 
 exports.Prisma.ModelName = {

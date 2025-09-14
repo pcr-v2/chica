@@ -7,12 +7,16 @@ async function main() {
   const today = todayDate.toISOString().split("T")[0];
   const dayOfWeek = todayDate.getDay();
 
-  // if (dayOfWeek === 0 || dayOfWeek === 6) {
-  //   await mysqlPrisma.logs.create({
-  //     data: { content: `[Batch] 오늘은 주말(${today})로 insert하지 않습니다.` },
-  //   });
-  //   return;
-  // }
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    await mysqlPrisma.logs.create({
+      data: {
+        content: `[Batch] 오늘은 주말(${today})로 insert하지 않습니다.`,
+        schoolId: null,
+        logsStatus: "No",
+      },
+    });
+    return;
+  }
 
   try {
     // 휴일 체크
@@ -24,6 +28,8 @@ async function main() {
       await mysqlPrisma.logs.create({
         data: {
           content: `[Batch] 오늘은 공휴일(${today})로 insert하지 않습니다.`,
+          schoolId: null,
+          logsStatus: "No",
         },
       });
       return;
@@ -103,6 +109,7 @@ async function main() {
           data: {
             content: `오늘 ${school?.schoolName} ${grade}학년 ${count}개의 rows가 생성되었습니다.`,
             schoolId: school?.schoolId,
+            logsStatus: "Ok",
           },
         });
       }
@@ -117,6 +124,8 @@ async function main() {
         await mysqlPrisma.logs.create({
           data: {
             content: `오늘 ${school?.schoolName} 전체 학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
+            schoolId: school?.schoolId,
+            logsStatus: "No",
           },
         });
       } else {
@@ -127,6 +136,7 @@ async function main() {
           data: {
             content: `오늘 ${school?.schoolName} ${excludeGrades.join(",")}학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
             schoolId: school?.schoolId,
+            logsStatus: "No",
           },
         });
       }
@@ -135,7 +145,11 @@ async function main() {
     console.log(`[Batch] ${insertData.length} rows inserted at ${today}`);
   } catch (err) {
     await mysqlPrisma.logs.create({
-      data: { content: `[Batch Error] ${err}` },
+      data: {
+        schoolId: null,
+        logsStatus: "No",
+        content: `[Batch Error] ${err}`,
+      },
     });
     console.error(err);
   }
