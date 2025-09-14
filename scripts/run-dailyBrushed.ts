@@ -9,6 +9,12 @@ async function main() {
   // 토요일(6) 또는 일요일(0) 이면 종료
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     console.log(`[Batch] Today is weekend (${today}). No inserts.`);
+
+    await mysqlPrisma.logs.create({
+      data: {
+        content: `[Batch] 오늘은 주말로 인해서 insert하지 않습니다. (${today})`,
+      },
+    });
     return;
   }
   try {
@@ -21,6 +27,11 @@ async function main() {
     });
     if (isHoliday) {
       console.log(`[Batch] Today is a holiday (${today}). No inserts.`);
+      await mysqlPrisma.logs.create({
+        data: {
+          content: `[Batch] 오늘은 공휴일로 인해서 insert하지 않습니다. (${today})`,
+        },
+      });
       return; // 종료
     }
 
@@ -102,6 +113,11 @@ async function main() {
       console.log(
         `[Batch] No students to insert after applying schedule filters.`,
       );
+      await mysqlPrisma.logs.create({
+        data: {
+          content: `[Batch] No students to insert after applying schedule filters.`,
+        },
+      });
       return;
     }
     // 5. brushed insert
