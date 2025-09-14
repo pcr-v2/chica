@@ -82,7 +82,7 @@ async function main() {
       brushedAt: new Date(),
       updatedAt: new Date(),
     }));
-    await mysqlPrisma.brushed.createMany({ data: insertData });
+    // await mysqlPrisma.brushed.createMany({ data: insertData });
 
     // 학교별 학년별 집계
     const schoolGradeMap = new Map<string, Map<number, number>>(); // schoolId -> grade -> count
