@@ -7,12 +7,12 @@ async function main() {
   const today = todayDate.toISOString().split("T")[0];
   const dayOfWeek = todayDate.getDay();
 
-  if (dayOfWeek === 0 || dayOfWeek === 6) {
-    await mysqlPrisma.logs.create({
-      data: { content: `[Batch] 오늘은 주말(${today})로 insert하지 않습니다.` },
-    });
-    return;
-  }
+  // if (dayOfWeek === 0 || dayOfWeek === 6) {
+  //   await mysqlPrisma.logs.create({
+  //     data: { content: `[Batch] 오늘은 주말(${today})로 insert하지 않습니다.` },
+  //   });
+  //   return;
+  // }
 
   try {
     // 휴일 체크
