@@ -48,7 +48,7 @@ export async function getMe() {
       `
         SELECT
           student_grade,
-          GROUP_CONCAT(DISTINCT student_class ORDER BY student_class) AS class_list
+          GROUP_CONCAT(DISTINCT student_class ORDER BY CAST(student_class AS UNSIGNED)) AS class_list
         FROM Student
         WHERE school_id = ? AND student_status = 1
         GROUP BY student_grade

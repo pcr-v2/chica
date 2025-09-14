@@ -129,7 +129,7 @@ export async function getRankPageStatistic(
   SELECT *
   FROM RankedStudents
   WHERE student_rank <= 30
-  ORDER BY student_rank, student_grade, student_class, student_number, student_name
+  ORDER BY student_rank, student_grade, CAST(student_class AS UNSIGNED), student_number, student_name
 `,
     gteDate,
     lteDate,
@@ -195,7 +195,7 @@ export async function getRankPageStatistic(
     )
     SELECT *
     FROM RankedClasses
-    ORDER BY student_rank, student_grade, student_class;
+    ORDER BY student_rank, student_grade, CAST(student_class AS UNSIGNED);
   `,
     schoolId,
     gteDate,

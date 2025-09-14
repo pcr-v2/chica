@@ -293,7 +293,7 @@ export async function getStatistic(request: GetDetailedStatisticRequest) {
         (school_level != 'elementary' AND student_grade BETWEEN 1 AND 3)
       )
   )
-  SELECT student_class, percentage FROM FilteredClasses ORDER BY student_class;
+  SELECT student_class, percentage FROM FilteredClasses ORDER BY CAST(student_class AS UNSIGNED);
     `,
     schoolId,
     gteDate,
