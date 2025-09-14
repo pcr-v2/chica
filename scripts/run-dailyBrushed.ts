@@ -6,6 +6,15 @@ async function main() {
   const todayDate = new Date();
   const today = new Date().toISOString().split("T")[0]; // "2025-08-12"
   const dayOfWeek = todayDate.getDay();
+
+  const logRes = await mysqlPrisma.logs.create({
+    data: {
+      content: `${today} 오늘 로그 테스트`,
+    },
+  });
+
+  console.log(logRes);
+
   // 토요일(6) 또는 일요일(0) 이면 종료
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     console.log(`[Batch] Today is weekend (${today}). No inserts.`);
