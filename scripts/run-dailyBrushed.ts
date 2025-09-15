@@ -8,13 +8,11 @@ async function main() {
   const dayOfWeek = todayDate.getDay();
 
   function formatToday(date: Date) {
-    const yy = String(date.getFullYear()).slice(2); // 뒤 2자리
-    const mm = String(date.getMonth() + 1).padStart(2, "0"); // 0~11 이므로 +1
+    const yy = String(date.getFullYear()).slice(2);
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
-
     const weekDayNames = ["일", "월", "화", "수", "목", "금", "토"];
     const dayName = weekDayNames[date.getDay()];
-
     return `${yy}.${mm}.${dd}(${dayName})`;
   }
 
@@ -60,27 +58,25 @@ async function main() {
       select: { scheduleTarget: true, schoolId: true, scheduleName: true },
     });
 
-    // exclude 조건 준비
+    // excludeMap 준비
     type ExcludeMap = Map<
       string,
-      { excludeGrades: number[] | "all"; reason: string }
+      { excludeGrades: number[] | "all"; reason: string }[]
     >;
     const excludeMap: ExcludeMap = new Map();
 
     for (const s of schedules) {
       const reason = s.scheduleName;
-      if (s.scheduleTarget === "all") {
-        excludeMap.set(s.schoolId, { excludeGrades: "all", reason });
-      } else {
-        const targets = s.scheduleTarget
-          .split(/[\s,]+/)
-          .map(Number)
-          .filter((x) => !isNaN(x));
-        const prev = excludeMap.get(s.schoolId);
-        if (prev?.excludeGrades === "all") continue;
-        const newGrades = prev ? [...prev.excludeGrades, ...targets] : targets;
-        excludeMap.set(s.schoolId, { excludeGrades: newGrades, reason });
-      }
+      const grades =
+        s.scheduleTarget === "all"
+          ? "all"
+          : s.scheduleTarget
+              .split(/[\s,]+/)
+              .map(Number)
+              .filter((x) => !isNaN(x));
+
+      if (!excludeMap.has(s.schoolId)) excludeMap.set(s.schoolId, []);
+      excludeMap.get(s.schoolId)!.push({ excludeGrades: grades, reason });
     }
 
     // 학생 조회
@@ -89,12 +85,12 @@ async function main() {
         studentStatus: true,
         OR: [
           { schoolId: { notIn: Array.from(excludeMap.keys()) } },
-          ...Array.from(excludeMap.entries()).map(
-            ([schoolId, { excludeGrades }]) => {
+          ...Array.from(excludeMap.entries()).flatMap(([schoolId, arr]) =>
+            arr.map(({ excludeGrades }) => {
               if (excludeGrades === "all")
                 return { schoolId, studentId: { equals: "__no_such_id__" } };
               return { schoolId, NOT: { studentGrade: { in: excludeGrades } } };
-            },
+            }),
           ),
         ],
       },
@@ -110,7 +106,7 @@ async function main() {
     // await mysqlPrisma.brushed.createMany({ data: insertData });
 
     // 학교별 학년별 집계
-    const schoolGradeMap = new Map<string, Map<number, number>>(); // schoolId -> grade -> count
+    const schoolGradeMap = new Map<string, Map<number, number>>();
     for (const s of students) {
       if (!schoolGradeMap.has(s.schoolId))
         schoolGradeMap.set(s.schoolId, new Map());
@@ -129,7 +125,7 @@ async function main() {
             content: `${formattedToday} ${school?.schoolName} ${grade}학년 ${count}개의 rows가 생성되었습니다.`,
             schoolId: school?.schoolId,
             logsStatus: "Ok",
-            count: count,
+            count,
             grade: `${grade}학년`,
             reason: null,
           },
@@ -137,40 +133,44 @@ async function main() {
       }
     }
 
-    // Logs 기록 - 생성되지 않은 학년
-    for (const [schoolId, { excludeGrades, reason }] of excludeMap.entries()) {
-      if (excludeGrades === "all") {
-        const school = await mysqlPrisma.school.findUnique({
-          where: { schoolId },
-        });
-        await mysqlPrisma.logs.create({
-          data: {
-            content: `${formattedToday} ${school?.schoolName} 전체 학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
-            schoolId: school?.schoolId,
-            logsStatus: "No",
-            reason: reason,
-            grade: "전교생",
-            count: 0,
-          },
-        });
-      } else {
-        const school = await mysqlPrisma.school.findUnique({
-          where: { schoolId },
-        });
-        await mysqlPrisma.logs.create({
-          data: {
-            content: `${formattedToday}은 ${school?.schoolName} ${excludeGrades.join(",")}학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
-            schoolId: school?.schoolId,
-            logsStatus: "No",
-            grade: `${excludeGrades.join(",")}학년`,
-            count: 0,
-            reason: reason,
-          },
-        });
+    // Logs 기록 - 생성되지 않은 학년 (학년별 reason 보존)
+    for (const [schoolId, arr] of excludeMap.entries()) {
+      const school = await mysqlPrisma.school.findUnique({
+        where: { schoolId },
+      });
+
+      for (const { excludeGrades, reason } of arr) {
+        if (excludeGrades === "all") {
+          await mysqlPrisma.logs.create({
+            data: {
+              content: `${formattedToday} ${school?.schoolName} 전체 학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
+              schoolId: school?.schoolId,
+              logsStatus: "No",
+              grade: "전교생",
+              count: 0,
+              reason,
+            },
+          });
+        } else {
+          for (const grade of excludeGrades) {
+            await mysqlPrisma.logs.create({
+              data: {
+                content: `${formattedToday} ${school?.schoolName} ${grade}학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
+                schoolId: school?.schoolId,
+                logsStatus: "No",
+                grade: `${grade}학년`,
+                count: 0,
+                reason,
+              },
+            });
+          }
+        }
       }
     }
 
-    console.log(`[Batch] ${insertData.length} rows inserted at ${today}`);
+    console.log(
+      `[Batch] ${insertData.length} rows inserted at ${formattedToday}`,
+    );
   } catch (err) {
     await mysqlPrisma.logs.create({
       data: {
@@ -184,4 +184,5 @@ async function main() {
     console.error(err);
   }
 }
+
 main();
