@@ -7,15 +7,28 @@ async function main() {
   const today = todayDate.toISOString().split("T")[0];
   const dayOfWeek = todayDate.getDay();
 
+  function formatToday(date: Date) {
+    const yy = String(date.getFullYear()).slice(2); // 뒤 2자리
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); // 0~11 이므로 +1
+    const dd = String(date.getDate()).padStart(2, "0");
+
+    const weekDayNames = ["일", "월", "화", "수", "목", "금", "토"];
+    const dayName = weekDayNames[date.getDay()];
+
+    return `${yy}.${mm}.${dd}(${dayName})`;
+  }
+
+  const formattedToday = formatToday(todayDate);
+
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     await mysqlPrisma.logs.create({
       data: {
-        content: `[Batch] 오늘은 주말(${today})로 insert하지 않습니다.`,
+        content: `[Batch] ${formattedToday}은 주말(${today})로 insert하지 않습니다.`,
         schoolId: null,
         logsStatus: "No",
         grade: "전교생",
         count: 0,
-        reason: `주말 ${today}입니다.`,
+        reason: `주말 ${formattedToday} 입니다.`,
       },
     });
     return;
@@ -30,7 +43,7 @@ async function main() {
     if (isHoliday) {
       await mysqlPrisma.logs.create({
         data: {
-          content: `[Batch] 오늘은 공휴일(${today})로 insert하지 않습니다.`,
+          content: `[Batch] ${formattedToday}은 공휴일(${today})로 insert하지 않습니다.`,
           schoolId: null,
           logsStatus: "No",
           grade: "전교생",
@@ -113,7 +126,7 @@ async function main() {
         });
         await mysqlPrisma.logs.create({
           data: {
-            content: `오늘 ${school?.schoolName} ${grade}학년 ${count}개의 rows가 생성되었습니다.`,
+            content: `${formattedToday} ${school?.schoolName} ${grade}학년 ${count}개의 rows가 생성되었습니다.`,
             schoolId: school?.schoolId,
             logsStatus: "Ok",
             count: count,
@@ -132,7 +145,7 @@ async function main() {
         });
         await mysqlPrisma.logs.create({
           data: {
-            content: `오늘 ${school?.schoolName} 전체 학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
+            content: `${formattedToday} ${school?.schoolName} 전체 학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
             schoolId: school?.schoolId,
             logsStatus: "No",
             reason: reason,
@@ -146,7 +159,7 @@ async function main() {
         });
         await mysqlPrisma.logs.create({
           data: {
-            content: `${today}일 ${school?.schoolName} ${excludeGrades.join(",")}학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
+            content: `${formattedToday}은 ${school?.schoolName} ${excludeGrades.join(",")}학년은 '${reason}' 일정으로 인해 생성되지 않았습니다.`,
             schoolId: school?.schoolId,
             logsStatus: "No",
             grade: `${excludeGrades.join(",")}학년`,
