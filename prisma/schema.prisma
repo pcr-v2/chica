@@ -118,6 +118,9 @@ model Logs {
   createdAt  DateTime        @default(now()) @map("created_at") @db.DateTime(0)
   schoolId   String?         @map("school_id") @db.VarChar(36)
   logsStatus LogsLogsStatus? @map("logs_status")
+  count      Int?
+  grade      String?         @db.VarChar(255)
+  reason     String?         @db.VarChar(255)
   school     School?         @relation(fields: [schoolId], references: [schoolId], map: "fk_logs_school")
 
   @@index([schoolId], map: "fk_logs_school")
