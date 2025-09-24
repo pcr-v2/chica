@@ -44,7 +44,7 @@ export async function getUnChecked(request: GetUnCheckedRequest) {
       studentId: validated.data.studentId,
       brushedAt: {
         gte: today.subtract(7, "day").startOf("day").toDate(),
-        lte: today.endOf("day").toDate(),
+        lte: today.subtract(1, "day").endOf("day").toDate(),
       },
       brushedStatus: { not: "Ok" },
     },
