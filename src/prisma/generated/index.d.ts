@@ -106,7 +106,8 @@ export type SchoolSchoolLevel = (typeof SchoolSchoolLevel)[keyof typeof SchoolSc
 
 export const LogsLogsStatus: {
   Ok: 'Ok',
-  No: 'No'
+  No: 'No',
+  Del: 'Del'
 };
 
 export type LogsLogsStatus = (typeof LogsLogsStatus)[keyof typeof LogsLogsStatus]

@@ -7,7 +7,7 @@ import CloseIcon from "@/assets/icon/close-icon.svg";
 interface IProps {
   open: boolean;
   children: ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export default function Modal(props: IProps) {
@@ -29,7 +29,7 @@ export default function Modal(props: IProps) {
     if (!open) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" && onClose) {
         onClose();
       }
     };
@@ -54,7 +54,7 @@ export default function Modal(props: IProps) {
             transition={{ duration: 0.25 }}
           >
             {children}
-            <Close onClick={onClose} />
+            {onClose && <Close onClick={onClose} />}
           </Content>
         </Background>
       )}
