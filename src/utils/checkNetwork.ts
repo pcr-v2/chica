@@ -1,4 +1,4 @@
-export async function checkNetwork(timeout = 5000): Promise<boolean> {
+export async function checkNetwork(timeout = 10000): Promise<boolean> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
