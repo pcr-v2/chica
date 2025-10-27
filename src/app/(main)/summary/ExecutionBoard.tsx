@@ -43,6 +43,13 @@ export default function ExecutionBoard(props: IProps) {
     })
     .sort((a, b) => b.rate - a.rate);
 
+  // const result = allClassRateArray
+  //   ?.map((rate, index) => ({
+  //     classNum: index + 1, // index + 1 → 반 번호
+  //     rate,
+  //   }))
+  //   .sort((a, b) => b.rate - a.rate); // 내림차순 정렬
+
   const baseHeightTop3 = 240; // 1등 시작 높이
   const baseHeightOthers = baseHeightTop3 - 40 * 2; // 3등 높이
   const gapTop3 = 40;
@@ -84,7 +91,7 @@ export default function ExecutionBoard(props: IProps) {
           initial={{ height: 0, marginTop: 0, paddingLeft: 0 }}
           animate={{
             overflowY: "hidden",
-            height: open ? (isMobile ? convertVw(288) : "288px") : 0,
+            height: open ? (isMobile ? convertVw(288) : "328px") : 0,
             marginTop: open ? (isMobile ? convertVw(24) : 24) : 0,
             paddingLeft: isKrClassName ? convertVw(32) : 0,
           }}
@@ -122,8 +129,9 @@ export default function ExecutionBoard(props: IProps) {
                   iskrclassname={isKrClassName.toString()}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{
-                    height: open ? (isMobile ? convertVw(34) : 34) : 0,
+                    height: open ? (isMobile ? convertVw(34) : 50) : 0,
                     opacity: 1,
+                    rotate: isKrClassName ? -30 : 0,
                   }}
                 >
                   {el.class}반
@@ -209,16 +217,16 @@ const ClassText = styled(motion.div)<{ iskrclassname: string }>(({
   iskrclassname,
 }) => {
   return {
-    fontSize: 25,
-    width: iskrclassname === "true" ? "120px" : "54px",
+    fontSize: iskrclassname === "true" ? 16 : 25,
+    width: iskrclassname === "true" ? "72px" : "54px",
     fontWeight: 700,
-    lineHeight: "150%",
+    lineHeight: iskrclassname === "true" ? "120%" : "150%",
     color: "#464b53",
     textAlign: "center",
     letterSpacing: "-0.5px",
     "@media (max-width:834px)": {
-      width: iskrclassname === "true" ? convertVw(120) : convertVw(54),
-      fontSize: convertVw(25),
+      width: iskrclassname === "true" ? convertVw(72) : convertVw(54),
+      fontSize: iskrclassname === "true" ? convertVw(16) : convertVw(25),
       letterSpacing: convertVw(-0.5),
     },
   };
@@ -239,12 +247,12 @@ const BoardContent = styled(motion.div)<{ iskrclassname: string }>(({
   iskrclassname,
 }) => {
   return {
-    gap: iskrclassname === "true" ? "80px" : "32px",
+    gap: "32px",
     width: "100%",
     display: "flex",
     alignItems: "end",
     "@media (max-width:834px)": {
-      gap: iskrclassname === "true" ? convertVw(80) : convertVw(32),
+      gap: convertVw(32),
     },
   };
 });
