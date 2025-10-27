@@ -301,9 +301,10 @@ export async function getStatistic(request: GetDetailedStatisticRequest) {
     studentGrade,
   );
 
-  const gradeClassPercentages = rawGradeClassPercentages.map((item) =>
-    Number(item.percentage ?? 0),
-  );
+  const gradeClassPercentages = rawGradeClassPercentages.map((item) => ({
+    className: item.student_class,
+    percent: Number(item.percentage ?? 0),
+  }));
 
   // 우리반의 인원이 몇명인지
   const classPeopleCount = await mysqlPrisma.student.count({

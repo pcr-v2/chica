@@ -2,29 +2,46 @@
 
 import { Box, styled } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Arrow from "@/assets/summary/board-arrow.svg";
 import useResponsive from "@/libs/hooks/useResponsive";
 import { convertVw } from "@/utils/convertVw";
 
 interface IProps {
-  allClassRateArray: number[];
+  allClassRateArray: { className: string; percent: number }[];
 }
 
 export default function ExecutionBoard(props: IProps) {
   const { allClassRateArray } = props;
 
+  const [isMounted, setIsMounted] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isKrClassName, setIsKrClassName] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (allClassRateArray.length > 0) {
+      const hasKoreanClass = allClassRateArray.some((cls) =>
+        /^[ㄱ-ㅎㅏ-ㅣ가-힣\s]+$/.test(cls.className.trim()),
+      );
+      setIsKrClassName(hasKoreanClass);
+    }
+  }, [allClassRateArray]);
 
   const isMobile = useResponsive("down", "tablet");
 
   const result = allClassRateArray
-    ?.map((rate, index) => ({
-      classNum: index + 1, // index + 1 → 반 번호
-      rate,
-    }))
-    .sort((a, b) => b.rate - a.rate); // 내림차순 정렬
+    ?.map((cls, index) => {
+      return {
+        classNum: isKrClassName ? cls.className : index + 1,
+        rate: Number(cls.percent),
+      };
+    })
+    .sort((a, b) => b.rate - a.rate);
 
   const baseHeightTop3 = 240; // 1등 시작 높이
   const baseHeightOthers = baseHeightTop3 - 40 * 2; // 3등 높이
@@ -52,6 +69,8 @@ export default function ExecutionBoard(props: IProps) {
     };
   });
 
+  if (!isMounted) return null;
+
   return (
     <Wrapper>
       <Title onClick={() => setOpen(!open)}>
@@ -61,11 +80,13 @@ export default function ExecutionBoard(props: IProps) {
 
       <AnimatePresence initial={false} mode="wait">
         <BoardContent
-          initial={{ height: 0, marginTop: 0 }}
+          iskrclassname={isKrClassName.toString()}
+          initial={{ height: 0, marginTop: 0, paddingLeft: 0 }}
           animate={{
             overflowY: "hidden",
             height: open ? (isMobile ? convertVw(288) : "288px") : 0,
             marginTop: open ? (isMobile ? convertVw(24) : 24) : 0,
+            paddingLeft: isKrClassName ? convertVw(32) : 0,
           }}
           transition={{
             duration: 0.3,
@@ -98,6 +119,7 @@ export default function ExecutionBoard(props: IProps) {
                   }}
                 />
                 <ClassText
+                  iskrclassname={isKrClassName.toString()}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{
                     height: open ? (isMobile ? convertVw(34) : 34) : 0,
@@ -183,17 +205,19 @@ const GraphWrap = styled(Box)(() => {
   };
 });
 
-const ClassText = styled(motion.div)(() => {
+const ClassText = styled(motion.div)<{ iskrclassname: string }>(({
+  iskrclassname,
+}) => {
   return {
     fontSize: 25,
-    width: "54px",
+    width: iskrclassname === "true" ? "120px" : "54px",
     fontWeight: 700,
     lineHeight: "150%",
     color: "#464b53",
     textAlign: "center",
     letterSpacing: "-0.5px",
     "@media (max-width:834px)": {
-      width: convertVw(54),
+      width: iskrclassname === "true" ? convertVw(120) : convertVw(54),
       fontSize: convertVw(25),
       letterSpacing: convertVw(-0.5),
     },
@@ -211,14 +235,16 @@ const GraphBar = styled(motion.div)(() => {
   };
 });
 
-const BoardContent = styled(motion.div)(() => {
+const BoardContent = styled(motion.div)<{ iskrclassname: string }>(({
+  iskrclassname,
+}) => {
   return {
-    gap: "32px",
+    gap: iskrclassname === "true" ? "80px" : "32px",
     width: "100%",
     display: "flex",
     alignItems: "end",
     "@media (max-width:834px)": {
-      gap: convertVw(32),
+      gap: iskrclassname === "true" ? convertVw(80) : convertVw(32),
     },
   };
 });

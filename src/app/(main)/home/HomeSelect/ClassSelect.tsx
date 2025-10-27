@@ -23,11 +23,13 @@ export default function ClassSelect(props: IProps) {
   return (
     <Wrapper>
       {classList.map((cls, idx) => {
+        const isKrcls = /^[ㄱ-ㅎㅏ-ㅣ가-힣\s]+$/.test(cls.trim());
         return (
           <ClassBtn
             key={idx}
             isselect={(cls === selected).toString()}
             onClick={() => onClick(cls)}
+            iskrcls={isKrcls.toString()}
           >
             {cls}반
           </ClassBtn>
@@ -49,12 +51,15 @@ const Wrapper = styled(Box)(() => {
   };
 });
 
-const ClassBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
+const ClassBtn = styled(Box)<{ isselect: string; iskrcls: string }>(({
+  isselect,
+  iskrcls,
+}) => {
   const on = isselect === "true";
 
   return {
-    fontSize: 32,
-    padding: "24px",
+    fontSize: iskrcls === "true" ? 24 : 32,
+    padding: iskrcls === "true" ? "20px" : "24px",
     fontWeight: 700,
     display: "flex",
     cursor: "pointer",
@@ -68,8 +73,8 @@ const ClassBtn = styled(Box)<{ isselect: string }>(({ isselect }) => {
     outline: on ? "4px solid #32C794" : "none",
     backgroundColor: on ? "#6EDBB5" : "#F1F2F3",
     "@media (max-width:834px)": {
-      fontSize: convertVw(32),
-      padding: `${convertVw(24)}`,
+      fontSize: iskrcls === "true" ? convertVw(20) : convertVw(32),
+      padding: iskrcls === "true" ? convertVw(20) : `${convertVw(24)}`,
       letterSpacing: convertVw(-0.64),
       outline: on ? `${convertVw(4)} solid #32C794` : "none",
     },
