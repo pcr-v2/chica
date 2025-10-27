@@ -14,15 +14,19 @@ interface IProps {
 export default function ClassSelect(props: IProps) {
   const { selected, classList, onClick } = props;
 
+  const sortedClassList = [...classList].sort((a, b) =>
+    a.localeCompare(b, "ko-KR"),
+  );
+
   useEffect(() => {
-    if (classList && classList.length === 1) {
-      onClick(classList[0]);
+    if (sortedClassList && sortedClassList.length === 1) {
+      onClick(sortedClassList[0]);
     }
-  }, [classList]);
+  }, [sortedClassList]);
 
   return (
     <Wrapper>
-      {classList.map((cls, idx) => {
+      {sortedClassList.map((cls, idx) => {
         const isKrcls = /^[ㄱ-ㅎㅏ-ㅣ가-힣\s]+$/.test(cls.trim());
         return (
           <ClassBtn
